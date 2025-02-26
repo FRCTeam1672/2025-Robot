@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.util.Elastic;
 
 public class ArmSubsystem extends SubsystemBase {
     private SparkMax lElevator = new SparkMax(51, MotorType.kBrushless);
@@ -62,7 +63,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
-            /* TODO elastic notifications */}));
+            Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Unbalanced Elevators", "Elevator motors have gone out of sync, stopped elevators to not break elevator.", 10));
+        }));
         config.idleMode(IdleMode.kBrake);
         coralShooter.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         lAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -223,6 +225,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL1() {
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish" ,2));
         return extendL1().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 
@@ -234,6 +237,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL2() {
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish", 2));
         return extendL2().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 
@@ -245,6 +249,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL3() {
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish" ,2));
         return extendL3().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 

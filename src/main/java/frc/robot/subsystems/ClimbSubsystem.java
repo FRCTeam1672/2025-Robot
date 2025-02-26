@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.util.Elastic;
 
 public class ClimbSubsystem extends SubsystemBase {
     private SparkMax lClimb = new SparkMax(61, MotorType.kBrushless);
@@ -26,6 +27,10 @@ public class ClimbSubsystem extends SubsystemBase {
     private Trigger badClimbTrigger = new Trigger(() -> !isClimbGood());
 
     public ClimbSubsystem() {
+        badClimbTrigger.onTrue(Commands.runOnce(() -> {
+            Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Twisted Climb Shaft", "Climb motors have gone out of sync, stopped elevators to not twist climb shaft.", 10000));
+        }));
+
         config.idleMode(IdleMode.kBrake);
         lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
