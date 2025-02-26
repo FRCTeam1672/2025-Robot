@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
@@ -32,10 +33,12 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandPS5Controller driverPS5 = new CommandPS5Controller(0);
+  final CommandPS5Controller oppsPS5 = new CommandPS5Controller(1);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
   private final ArmSubsystem arm = new ArmSubsystem();
+  private final ClimbSubsystem climb = new ClimbSubsystem();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -125,17 +128,19 @@ public class RobotContainer {
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleKeyboard);
 
-    driverPS5.cross().onTrue((Commands.runOnce(arm::homeEverything, arm)));
-    driverPS5.triangle().onTrue(arm.extendTo(5));
+    driverPS5.cross().onTrue(arm.homeEverything());
+    driverPS5.triangle().onTrue(arm.extendElevatorTo(5));
     driverPS5.square().onTrue(arm.coralTo(3));
     driverPS5.circle().onTrue(arm.algaeTo(2));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
-    // driverPS5.().whileTrue(Commands.none());
     driverPS5.R2().whileTrue(arm.shootCoral());
     driverPS5.R1().onTrue(arm.intakeCoral());
     driverPS5.L2().whileTrue(arm.shootAlgae());
     driverPS5.L1().onTrue(arm.intakeAlgae());
     driverPS5.povDown().onTrue(arm.scoreL2());
+
+    oppsPS5.triangle().whileTrue(climb.climb());
+    oppsPS5.cross().whileTrue(climb.unclimb());
   }
 
   /**

@@ -58,8 +58,7 @@ public class ArmSubsystem extends SubsystemBase {
     private double coralWristPosition = 0;
     private double elevatorPosition = 0;
 
-    private Trigger badElevTrigger = new Trigger(() -> Math
-            .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE);
+    private Trigger badElevTrigger = new Trigger(() -> !isArmGood());
 
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
@@ -84,16 +83,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Coral Shooter Velocity", coralShooter.getEncoder().getVelocity());
-        SmartDashboard.putNumber("lAlgae Intake Velocity", lAlgaeIntake.getEncoder().getVelocity());
-        SmartDashboard.putNumber("rAlgae Intake Velocity", rAlgaeIntake.getEncoder().getVelocity());
-        SmartDashboard.putNumber("Coral Wrist Angle", coralWrist.getEncoder().getPosition());
-        SmartDashboard.putNumber("Algae Wrist Angle", algaeWrist.getEncoder().getPosition());
-        SmartDashboard.putNumber("lElevator Height", lElevator.getEncoder().getPosition());
-        SmartDashboard.putNumber("rElevator Height", rElevator.getEncoder().getPosition());
-        SmartDashboard.putNumber("Coral Wrist Setpoint", coralWristPosition);
-        SmartDashboard.putNumber("Algae Wrist Setpoint", algaeWristPosition);
-        SmartDashboard.putNumber("Elevator Setpoint", elevatorPosition);
+        SmartDashboard.putNumber("coral/Coral Shooter Velocity", coralShooter.getEncoder().getVelocity());
+        SmartDashboard.putNumber("algae/lAlgae Intake Velocity", lAlgaeIntake.getEncoder().getVelocity());
+        SmartDashboard.putNumber("algae/rAlgae Intake Velocity", rAlgaeIntake.getEncoder().getVelocity());
+        SmartDashboard.putNumber("coral/Coral Wrist Angle", coralWrist.getEncoder().getPosition());
+        SmartDashboard.putNumber("algae/Algae Wrist Angle", algaeWrist.getEncoder().getPosition());
+        SmartDashboard.putNumber("elevator/lElevator Height", lElevator.getEncoder().getPosition());
+        SmartDashboard.putNumber("elevator/rElevator Height", rElevator.getEncoder().getPosition());
+        SmartDashboard.putNumber("coral/Coral Wrist Setpoint", coralWristPosition);
+        SmartDashboard.putNumber("algae/Algae Wrist Setpoint", algaeWristPosition);
+        SmartDashboard.putNumber("elevator/Elevator Setpoint", elevatorPosition);
 
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
         algaeWrist.getClosedLoopController().setReference(algaeWristPosition, ControlType.kPosition);
@@ -105,6 +104,10 @@ public class ArmSubsystem extends SubsystemBase {
             lElevator.stopMotor();
             rElevator.stopMotor();
         }
+    }
+
+    public boolean isArmGood() {
+        return Math.abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
 
     public boolean isCoralIntaked() {
@@ -160,11 +163,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command homeEverything() {
-        return Commands.runOnce(() -> {
-            homeCoral();
-            homeElevator();
-            homeAlgae();
-        });
+        return Commands.parallel(homeCoral(), homeElevator(), homeAlgae());
     }
 
     public Command intakeCoral() {
@@ -198,7 +197,7 @@ public class ArmSubsystem extends SubsystemBase {
         });
     }
 
-    public Command extendTo(double pos) {
+    public Command extendElevatorTo(double pos) {
         return Commands.runOnce(() -> {
             elevatorPosition = pos;
         }).andThen(Commands.waitUntil(this::isElevatorAtPosition));

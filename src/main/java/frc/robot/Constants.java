@@ -83,6 +83,7 @@ public final class Constants
 
   public static class Tolerances {
     public static final double ELEVATOR_TOLERANCE = 0.5;
+    public static final double CLIMB_TOLERANCE = 0.5;
   }
 
   public static class OperatorConstants
