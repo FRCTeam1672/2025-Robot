@@ -59,8 +59,8 @@ public final class Constants
   }
 
   public static class HomeConstants {
-    public static final double CORAL_HOME_POSITION = 0.0;
-    public static final double ALGAE_HOME_POSITION = 0.0;
+    public static final double CORAL_HOME_POSITION = 3.0;
+    public static final double ALGAE_HOME_POSITION = 3.0;
     public static final double ELEVATOR_HOME_POSITION = 0.0;
   }
 
