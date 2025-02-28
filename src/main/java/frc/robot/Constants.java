@@ -40,15 +40,15 @@ public final class Constants
   }
 
   public static class PIDConstants {
-    public static final double ELEVATOR_P = 1.0;
+    public static final double ELEVATOR_P = 0.0;
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.0;
 
-    public static final double C_WRIST_P = 1.0;
+    public static final double C_WRIST_P = 0.0;
     public static final double C_WRIST_I = 0.0;
     public static final double C_WRIST_D = 0.0;
 
-    public static final double A_WRIST_P = 1.0;
+    public static final double A_WRIST_P = 0.0;
     public static final double A_WRIST_I = 0.0;
     public static final double A_WRIST_D = 0.0;
   }
