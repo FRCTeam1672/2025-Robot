@@ -44,9 +44,9 @@ public final class Constants
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.0;
 
-    public static final double C_WRIST_P = 0.0;
-    public static final double C_WRIST_I = 0.0;
-    public static final double C_WRIST_D = 0.0;
+    public static final double C_WRIST_P = 0.06; // halve this 
+    public static final double C_WRIST_I = 0.00005;
+    public static final double C_WRIST_D = 0.07;
 
     public static final double A_WRIST_P = 0.0;
     public static final double A_WRIST_I = 0.0;
@@ -55,7 +55,7 @@ public final class Constants
 
   public static class ClimbConstants {
     public static final double CLIMB_LIMIT = 10.0;
-    public static final double CLIMB_SPEED = 0.7;
+    public static final double CLIMB_SPEED = 0.35;
   }
 
   public static class HomeConstants {
@@ -65,9 +65,9 @@ public final class Constants
   }
 
   public static class IOSpeeds {
-    public static final double CORAL_INTAKE_SPEED = 1.0;
+    public static final double CORAL_INTAKE_SPEED = -1.0;
     public static final double ALGAE_INTAKE_SPEED = 1.0;
-    public static final double CORAL_SHOOT_SPEED = -0.75;
+    public static final double CORAL_SHOOT_SPEED = 0.75;
     public static final double ALGAE_SHOOT_SPEED = -0.75;
   }
 

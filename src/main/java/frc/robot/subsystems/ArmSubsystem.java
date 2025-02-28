@@ -55,15 +55,17 @@ public class ArmSubsystem extends SubsystemBase {
 
     private SparkMaxConfig config = new SparkMaxConfig();
 
-    private double algaeWristPosition = 0;
-    private double coralWristPosition = 0;
-    private double elevatorPosition = 0;
+    private double algaeWristPosition = ALGAE_HOME_POSITION;
+    private double coralWristPosition = CORAL_HOME_POSITION;
+    private double elevatorPosition = ELEVATOR_HOME_POSITION;
 
     private Trigger badElevTrigger = new Trigger(() -> !isArmGood());
 
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
-            Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Unbalanced Elevators", "Elevator motors have gone out of sync, stopped elevators to not break elevator.", 10));
+            Elastic.sendNotification(
+                    new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Unbalanced Elevators",
+                            "Elevator motors have gone out of sync, stopped elevators to not break elevator.", 10));
         }));
         config.idleMode(IdleMode.kBrake);
         coralShooter.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -75,10 +77,10 @@ public class ArmSubsystem extends SubsystemBase {
         config.inverted(true);
         rElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        config.inverted(false);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
         coralWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        config.inverted(false);
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -109,7 +111,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean isArmGood() {
-        return Math.abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
+        return Math
+                .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
 
     public boolean isCoralIntaked() {
@@ -122,28 +125,28 @@ public class ArmSubsystem extends SubsystemBase {
 
     public boolean isElevatorHomed() {
         return MathUtil.isNear(ELEVATOR_HOME_POSITION,
-                (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 2);
+                (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 20);
     }
 
     public boolean isCoralHomed() {
-        return MathUtil.isNear(CORAL_HOME_POSITION, coralWrist.getEncoder().getPosition(), 1);
+        return MathUtil.isNear(CORAL_HOME_POSITION, coralWrist.getEncoder().getPosition(), 20);
     }
 
     public boolean isAlgaeHomed() {
-        return MathUtil.isNear(ALGAE_HOME_POSITION, algaeWrist.getEncoder().getPosition(), 1);
+        return MathUtil.isNear(ALGAE_HOME_POSITION, algaeWrist.getEncoder().getPosition(), 20);
     }
 
     public boolean isElevatorAtPosition() {
         return MathUtil.isNear(elevatorPosition,
-                (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 2);
+                (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 20);
     }
 
     public boolean isCoralAtPosition() {
-        return MathUtil.isNear(coralWristPosition, coralWrist.getEncoder().getPosition(), 1);
+        return MathUtil.isNear(coralWristPosition, coralWrist.getEncoder().getPosition(), 20);
     }
 
     public boolean isAlgaeAtPosition() {
-        return MathUtil.isNear(algaeWristPosition, algaeWrist.getEncoder().getPosition(), 1);
+        return MathUtil.isNear(algaeWristPosition, algaeWrist.getEncoder().getPosition(), 20);
     }
 
     public Command homeElevator() {
@@ -225,7 +228,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL1() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish" ,2));
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
+                "Scoring completed", "\"yippee\" -daanish", 2));
         return extendL1().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 
@@ -237,7 +241,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL2() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish", 2));
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
+                "Scoring completed", "\"yippee\" -daanish", 2));
         return extendL2().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 
@@ -249,7 +254,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL3() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Scoring completed", "\"yippee\" -daanish" ,2));
+        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
+                "Scoring completed", "\"yippee\" -daanish", 2));
         return extendL3().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
     }
 
