@@ -128,6 +128,8 @@ public class RobotContainer {
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleKeyboard);
 
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    
     driverPS5.cross().onTrue(arm.homeEverything());
     driverPS5.triangle().onTrue(arm.extendElevatorTo(5));
     driverPS5.square().onTrue(arm.coralTo(3));
@@ -138,7 +140,9 @@ public class RobotContainer {
     driverPS5.L2().whileTrue(arm.shootAlgae());
     driverPS5.L1().onTrue(arm.intakeAlgae());
     driverPS5.povDown().onTrue(arm.scoreL2());
+    
 
+    oppsPS5.square().onTrue(Commands.runOnce(drivebase::zeroGyro));
     oppsPS5.triangle().whileTrue(climb.climb());
     oppsPS5.cross().whileTrue(climb.unclimb());
   }
