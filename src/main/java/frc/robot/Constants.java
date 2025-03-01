@@ -40,15 +40,15 @@ public final class Constants
   }
 
   public static class PIDConstants {
-    public static final double ELEVATOR_P = 0.0;
+    public static final double ELEVATOR_P = 0.11;
     public static final double ELEVATOR_I = 0.0;
-    public static final double ELEVATOR_D = 0.0;
+    public static final double ELEVATOR_D = 0.0025;
 
-    public static final double C_WRIST_P = 0.06; // halve this 
-    public static final double C_WRIST_I = 0.00005;
-    public static final double C_WRIST_D = 0.07;
+    public static final double C_WRIST_P = 0.07;
+    public static final double C_WRIST_I = 0.000003;
+    public static final double C_WRIST_D = 0.4;
 
-    public static final double A_WRIST_P = 0.0;
+    public static final double A_WRIST_P = 0.23;
     public static final double A_WRIST_I = 0.0;
     public static final double A_WRIST_D = 0.0;
   }
@@ -56,11 +56,11 @@ public final class Constants
   public static class ClimbConstants {
     public static final double CLIMB_LIMIT = 10.0;
     public static final double CLIMB_SPEED = 0.35;
-  }
+  } // 4 for intaking from coral station
 
   public static class HomeConstants {
-    public static final double CORAL_HOME_POSITION = 3.0;
-    public static final double ALGAE_HOME_POSITION = 3.0;
+    public static final double CORAL_HOME_POSITION = 1.0;
+    public static final double ALGAE_HOME_POSITION = 1.0;
     public static final double ELEVATOR_HOME_POSITION = 0.0;
   }
 
@@ -72,17 +72,17 @@ public final class Constants
   }
 
   public static class ReefLevels {
-    public static final double E_L1_POSITION = 1.0;
-    public static final double E_L2_POSITION = 2.0;
-    public static final double E_L3_POSITION = 3.0;
+    public static final double E_L1_POSITION = 30;
+    public static final double E_L2_POSITION = 60;
+    public static final double E_L3_POSITION = 60;
 
     public static final double C_L1_POSITION = 1.0;
-    public static final double C_L2_POSITION = 2.0;
-    public static final double C_L3_POSITION = 3.0;
+    public static final double C_L2_POSITION = 10.0;
+    public static final double C_L3_POSITION = 10;
   }
 
   public static class Tolerances {
-    public static final double ELEVATOR_TOLERANCE = 0.5;
+    public static final double ELEVATOR_TOLERANCE = 1;
     public static final double CLIMB_TOLERANCE = 0.5;
   }
 

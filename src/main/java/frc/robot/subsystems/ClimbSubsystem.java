@@ -31,6 +31,7 @@ public class ClimbSubsystem extends SubsystemBase {
             Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Twisted Climb Shaft", "Climb motors have gone out of sync, stopped elevators to not twist climb shaft.", 10000));
         }));
 
+        config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
         lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
