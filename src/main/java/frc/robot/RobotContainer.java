@@ -132,7 +132,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     driverPS5.cross().onTrue(arm.homeEverything());
-    driverPS5.triangle().onTrue(arm.extendElevatorTo(15));
+    driverPS5.triangle().onTrue(arm.extendElevatorTo(60));
     driverPS5.square().onTrue(arm.coralTo(4));
     driverPS5.circle().onTrue(arm.algaeTo(8));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
@@ -150,6 +150,8 @@ public class RobotContainer {
 
     oppsPS5.povUp().onTrue(arm.extendL3());
     driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel())));
+    driverPS5.L2().onTrue(drivebase.getAutonomousCommand("ALGAE-" + scoringApp.getAlgaeSide()).andThen(arm.ioAlgae(scoringApp.getAlgaeLevel())));
+    //driverPS5.l1.onTrue(drivebase.getAutonomousCommand("STATION-" + scoringApp.getCoralStation().andThen(arm.intakeAlgae())));
     oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));
   }
 

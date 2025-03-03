@@ -59,7 +59,7 @@ public final class Constants
   } // 4 for intaking from coral station
 
   public static class HomeConstants {
-    public static final double CORAL_HOME_POSITION = 1.0;
+    public static final double CORAL_HOME_POSITION = 2.5;
     public static final double ALGAE_HOME_POSITION = 1.0;
     public static final double ELEVATOR_HOME_POSITION = 0.0;
   }
@@ -80,9 +80,14 @@ public final class Constants
     public static final double C_L2_POSITION = 10.0;
     public static final double C_L3_POSITION = 10.0;
 
-    public static final double A_L2_POSITION = 10.0;
-    public static final double A_L3_POSITION = 20.0;
-    public static final double PROCESSOR_POSITION = 0.0;
+    public static final double A_IO_POSITION = 5;
+
+    public static final double E_PROCESSOR_POSITION = 20;
+    public static final double E_AL2_POSITION = 50;
+    public static final double E_AL3_POSITION = 0;
+
+    public static final double E_STATION_POSITION = 15;
+    public static final double C_STATION_POSITION = 4;
   }
 
   public static class Tolerances {

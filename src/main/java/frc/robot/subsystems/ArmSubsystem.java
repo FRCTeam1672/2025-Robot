@@ -23,12 +23,16 @@ import static frc.robot.Constants.PIDConstants.C_WRIST_P;
 import static frc.robot.Constants.PIDConstants.ELEVATOR_D;
 import static frc.robot.Constants.PIDConstants.ELEVATOR_I;
 import static frc.robot.Constants.PIDConstants.ELEVATOR_P;
+import static frc.robot.Constants.ReefLevels.A_IO_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L3_POSITION;
+import static frc.robot.Constants.ReefLevels.E_AL2_POSITION;
+import static frc.robot.Constants.ReefLevels.E_AL3_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L3_POSITION;
+import static frc.robot.Constants.ReefLevels.E_PROCESSOR_POSITION;
 import static frc.robot.Constants.Tolerances.ELEVATOR_TOLERANCE;
 
 import com.revrobotics.spark.SparkMax;
@@ -75,10 +79,10 @@ public class ArmSubsystem extends SubsystemBase {
         rAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.smartCurrentLimit(40);
-        config.idleMode(IdleMode.kCoast);
+        config.idleMode(IdleMode.kBrake);
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-        config.closedLoop.maxOutput(0.7);
-        config.closedLoop.minOutput(-0.4);
+        config.closedLoop.maxOutput(0.3);
+        config.closedLoop.minOutput(-0.3);
         rElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -118,7 +122,8 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("algae/Algae atPosition", isAlgaeAtPosition());
         SmartDashboard.putBoolean("coral/Coral atPosition", isCoralAtPosition());
         
-        
+        SmartDashboard.putNumber("algae/lAlgae.get", lAlgaeIntake.get());
+        SmartDashboard.putNumber("algae/rAlgae.get", rAlgaeIntake.get());
         
 
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
@@ -220,6 +225,16 @@ public class ArmSubsystem extends SubsystemBase {
         }).until(this::isAlgaeIntaked);
     }
 
+    public Command dumIntakeAlgae() {
+        return Commands.run(() -> {
+            lAlgaeIntake.set(ALGAE_INTAKE_SPEED);
+            rAlgaeIntake.set(ALGAE_INTAKE_SPEED);
+        }).handleInterrupt(() -> {
+            lAlgaeIntake.stopMotor();
+            rAlgaeIntake.stopMotor();
+        });
+    }
+
     public Command shootCoral() {
         return Commands.run(() -> {
             coralShooter.set(CORAL_SHOOT_SPEED);
@@ -297,6 +312,35 @@ public class ArmSubsystem extends SubsystemBase {
                 return scoreL2();
             case 3:
                 return scoreL3();
+            default:
+                return Commands.none();
+        }
+    }
+
+    // public Command intakeStation() {
+    //     return extendElevatorTo(E_PROCESSOR_POSITION)
+    // }
+
+    public Command algaeL2() {
+        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(dumIntakeAlgae()).withTimeout(1.5).andThen(homeElevator());
+    }
+
+    public Command algaeL3() {
+        return extendElevatorTo(E_AL3_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(dumIntakeAlgae()).withTimeout(1.5).andThen(homeElevator());
+    }
+
+    public Command processor() {
+        return extendElevatorTo(E_PROCESSOR_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(shootAlgae()).withTimeout(1.5).andThen(homeElevator());
+    }
+
+    public Command ioAlgae(int level) {
+        switch (level) {
+            case 0:
+                return processor();
+            case 2:
+                return algaeL2();
+            case 3:
+                return algaeL3();
             default:
                 return Commands.none();
         }
