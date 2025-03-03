@@ -31,8 +31,6 @@ import static frc.robot.Constants.ReefLevels.E_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L3_POSITION;
 import static frc.robot.Constants.Tolerances.ELEVATOR_TOLERANCE;
 
-import java.util.logging.Level;
-
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.MathUtil;
@@ -77,12 +75,15 @@ public class ArmSubsystem extends SubsystemBase {
         rAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.smartCurrentLimit(40);
+        config.idleMode(IdleMode.kCoast);
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-        config.closedLoop.minOutput(-0.5);
+        config.closedLoop.maxOutput(0.7);
+        config.closedLoop.minOutput(-0.4);
         rElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
         config.closedLoop.maxOutput(0.2);

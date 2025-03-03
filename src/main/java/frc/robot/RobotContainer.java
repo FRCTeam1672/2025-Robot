@@ -40,6 +40,7 @@ public class RobotContainer {
   private final ArmSubsystem arm = new ArmSubsystem();
   private final ClimbSubsystem climb = new ClimbSubsystem();
 
+  private final ScoringApp scoringApp = new ScoringApp();
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
    * by angular velocity.
@@ -135,17 +136,20 @@ public class RobotContainer {
     driverPS5.square().onTrue(arm.coralTo(4));
     driverPS5.circle().onTrue(arm.algaeTo(8));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
-    driverPS5.R2().whileTrue(arm.shootCoral());
-    // driverPS5.R1().onTrue(arm.intakeCoral());
-    driverPS5.R1().whileTrue(arm.dumIntakeCoral());
-    driverPS5.L2().whileTrue(arm.shootAlgae());
-    driverPS5.L1().onTrue(arm.intakeAlgae());
+   
+    driverPS5.povUp().whileTrue(arm.shootCoral());
+    driverPS5.povDown().whileTrue(arm.dumIntakeCoral());
+    driverPS5.povRight().whileTrue(arm.shootAlgae());
+    driverPS5.povLeft().onTrue(arm.intakeAlgae());
 
-    driverPS5.povDown().onTrue(arm.scoreL3());
+    driverPS5.R1().onTrue(arm.scoreL3());
     
     oppsPS5.square().onTrue(Commands.runOnce(drivebase::zeroGyro));
     oppsPS5.triangle().whileTrue(climb.climb());
     oppsPS5.cross().whileTrue(climb.unclimb());
+
+    oppsPS5.povUp().onTrue(arm.extendL3());
+    oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));
   }
 
   /**
