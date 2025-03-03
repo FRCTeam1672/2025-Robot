@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.939409722222221,
-        "y": 2.697309027777777
+        "x": 3.879,
+        "y": 2.679
       },
       "prevControl": {
-        "x": 3.7519061053589575,
-        "y": 2.3725432367676764
+        "x": 3.71579861111111,
+        "y": 2.2361111111111107
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.300277449185565
+    "rotation": 59.771525387253675
   },
   "reversed": false,
   "folder": "CORAL ALIGNMENTS",
