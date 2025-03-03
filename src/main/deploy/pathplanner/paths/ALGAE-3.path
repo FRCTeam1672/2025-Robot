@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.055989583333332,
-        "y": 4.122829861111111
+        "x": 5.630468749999999,
+        "y": 2.068402777777777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.775081601562418,
-        "y": 4.122829861111111
+        "x": 5.406857638888888,
+        "y": 2.473697916666666
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.951909722222222,
-        "y": 4.108854166666666
+        "x": 5.2391493055555545,
+        "y": 2.795138888888888
       },
       "prevControl": {
-        "x": 6.287617422927735,
-        "y": 4.108854166666666
+        "x": 5.4487847222222205,
+        "y": 2.4038194444444434
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 121.90810693565312
   },
   "reversed": false,
-  "folder": "CORAL ALIGNMENTS",
+  "folder": "ALGAE ALIGNMENT",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 176.18592516570973
+    "rotation": 119.51149855709028
   },
   "useDefaultConstraints": true
 }
