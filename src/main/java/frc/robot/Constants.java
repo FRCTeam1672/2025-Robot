@@ -78,7 +78,11 @@ public final class Constants
 
     public static final double C_L1_POSITION = 1.0;
     public static final double C_L2_POSITION = 10.0;
-    public static final double C_L3_POSITION = 10;
+    public static final double C_L3_POSITION = 10.0;
+
+    public static final double A_L2_POSITION = 10.0;
+    public static final double A_L3_POSITION = 20.0;
+    public static final double PROCESSOR_POSITION = 0.0;
   }
 
   public static class Tolerances {

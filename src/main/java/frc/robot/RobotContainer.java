@@ -40,7 +40,7 @@ public class RobotContainer {
   private final ArmSubsystem arm = new ArmSubsystem();
   private final ClimbSubsystem climb = new ClimbSubsystem();
 
-  private final ScoringApp scoringApp = new ScoringApp();
+  private final ScoringApp scoringApp = ScoringApp.getInstance();
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
    * by angular velocity.
@@ -149,6 +149,7 @@ public class RobotContainer {
     oppsPS5.cross().whileTrue(climb.unclimb());
 
     oppsPS5.povUp().onTrue(arm.extendL3());
+    driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel())));
     oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));
   }
 
