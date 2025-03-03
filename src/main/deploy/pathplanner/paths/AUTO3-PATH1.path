@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.274015410958904,
-        "y": 5.392337328767123
+        "x": 5.379,
+        "y": 5.129
       },
       "prevControl": {
-        "x": 5.950171232876712,
-        "y": 5.602696917808219
+        "x": 6.055155821917808,
+        "y": 5.339359589041095
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.14160123226166
+    "rotation": -119.53878225955806
   },
   "reversed": false,
   "folder": "PATHS FOR AUTO3",

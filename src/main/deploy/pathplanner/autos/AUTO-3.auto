@@ -27,6 +27,18 @@
           "data": {
             "pathName": "AUTO3-PATH4"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AUTO3-PATH5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AUTO3-PATH6"
+          }
         }
       ]
     }
