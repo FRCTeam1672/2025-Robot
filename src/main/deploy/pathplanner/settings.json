@@ -1,14 +1,15 @@
 {
-  "robotWidth": 0.8382,
+  "robotWidth": 0.6858,
   "robotLength": 0.99695,
   "holonomicMode": true,
   "pathFolders": [
+    "ALGAE ALIGNMENT",
     "CORAL ALIGNMENTS",
-    "New Folder",
+    "CORAL STATION ALIGNMENT",
+    "PATH FOR AUTO4",
     "PATHS FOR AUTO1",
     "PATHS FOR AUTO2",
-    "PATHS FOR AUTO3",
-    "ALGAE ALIGNMENT"
+    "PATHS FOR AUTO3"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
@@ -37,6 +38,6 @@
   "bumperOffsetY": 0.0,
   "robotFeatures": [
     "{\"name\":\"Battery\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.35,\"y\":0.0},\"size\":{\"width\":0.18415,\"length\":0.08255},\"borderRadius\":0.02,\"strokeWidth\":0.01,\"filled\":true}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.603,\"y\":0.25},\"end\":{\"x\":0.5,\"y\":0.25},\"strokeWidth\":0.1}}"
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.603,\"y\":0.0792},\"end\":{\"x\":0.5,\"y\":0.0792},\"strokeWidth\":0.1524}}"
   ]
 }

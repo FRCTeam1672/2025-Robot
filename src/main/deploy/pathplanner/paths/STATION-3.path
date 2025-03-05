@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.679708904109589,
-        "y": 5.8280821917808225
+        "x": 1.3399305555555543,
+        "y": 6.051475694444445
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.484049181887366,
-        "y": 5.464714136225267
+        "x": 0.9346354166666653,
+        "y": 6.512673611111112
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.289041095890411,
-        "y": 5.257106164383561
+        "x": 0.8368055555555545,
+        "y": 6.638454861111111
       },
       "prevControl": {
-        "x": 5.44252624926914,
-        "y": 5.454444218727644
+        "x": 1.07439236111111,
+        "y": 6.372916666666666
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.96375653207362
+    "rotation": 129.01940047528652
   },
   "reversed": false,
-  "folder": "CORAL ALIGNMENTS",
+  "folder": "CORAL STATION ALIGNMENT",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -122.3998401739194
+    "rotation": 129.61068824002658
   },
   "useDefaultConstraints": true
 }

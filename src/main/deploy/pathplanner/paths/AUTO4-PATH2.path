@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.679708904109589,
-        "y": 5.8280821917808225
+        "x": 5.937934027777777,
+        "y": 4.248611111111111
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.484049181887366,
-        "y": 5.464714136225267
+        "x": 6.329253472222222,
+        "y": 5.799913194444445
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.289041095890411,
-        "y": 5.257106164383561
+        "x": 4.400607638888888,
+        "y": 7.2953125
       },
       "prevControl": {
-        "x": 5.44252624926914,
-        "y": 5.454444218727644
+        "x": 5.069824030286006,
+        "y": 6.967823627614176
+      },
+      "nextControl": {
+        "x": 3.7437500000000004,
+        "y": 7.616753472222221
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.8151041666666656,
+        "y": 7.309288194444445
+      },
+      "prevControl": {
+        "x": 1.5712026402113095,
+        "y": 7.364170298929853
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.96375653207362
+    "rotation": 130.42607874009917
   },
   "reversed": false,
-  "folder": "CORAL ALIGNMENTS",
+  "folder": "PATH FOR AUTO4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -122.3998401739194
+    "rotation": 177.47388308838046
   },
   "useDefaultConstraints": true
 }
