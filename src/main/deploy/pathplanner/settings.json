@@ -38,6 +38,6 @@
   "bumperOffsetY": 0.0,
   "robotFeatures": [
     "{\"name\":\"Battery\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.35,\"y\":0.0},\"size\":{\"width\":0.18415,\"length\":0.08255},\"borderRadius\":0.02,\"strokeWidth\":0.01,\"filled\":true}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.603,\"y\":0.0792},\"end\":{\"x\":0.5,\"y\":0.0792},\"strokeWidth\":0.1524}}"
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.77,\"y\":0.13},\"end\":{\"x\":0.5,\"y\":0.13},\"strokeWidth\":0.1524}}"
   ]
 }
