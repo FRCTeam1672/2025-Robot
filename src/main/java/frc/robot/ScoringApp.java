@@ -17,10 +17,10 @@ public class ScoringApp {
     private IntegerSubscriber coralStation;
 
     public ScoringApp() {
-        IntegerTopic coralIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("AppScoring/CoralLevel");
-        IntegerTopic algaeIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("AppScoring/AlgaeLevel");
-        StringTopic reefStringTopic = NetworkTableInstance.getDefault().getStringTopic("AppScoring/ReefSide");
-        IntegerTopic coralIntegerTopic2 = NetworkTableInstance.getDefault().getIntegerTopic("AppScoring/CoralStation");
+        IntegerTopic coralIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralLevel");
+        IntegerTopic algaeIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/AlgaeLevel");
+        StringTopic reefStringTopic = NetworkTableInstance.getDefault().getStringTopic("/AppScoring/ReefSide");
+        IntegerTopic coralIntegerTopic2 = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralStation");
         coralLevel = coralIntegerTopic.subscribe(-1, PubSubOption.sendAll(true));
         algaeLevel = algaeIntegerTopic.subscribe(-1, PubSubOption.sendAll(true));
         reefSide = reefStringTopic.subscribe("A", PubSubOption.sendAll(true));

@@ -5,13 +5,19 @@
 package frc.robot;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.FileVersionException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -99,7 +105,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    try {
+        configureBindings();
+    } catch (FileVersionException | IOException | ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
@@ -116,8 +127,11 @@ public class RobotContainer {
    * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick
    * Flight joysticks}.
+ * @throws ParseException 
+ * @throws IOException 
+ * @throws FileVersionException 
    */
-  private void configureBindings() {
+  private void configureBindings() throws FileVersionException, IOException, ParseException {
 
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
@@ -142,14 +156,15 @@ public class RobotContainer {
     driverPS5.povRight().whileTrue(arm.shootAlgae());
     driverPS5.povLeft().onTrue(arm.intakeAlgae());
 
-    driverPS5.R1().onTrue(arm.scoreL3());
+    // driverPS5.R1().onTrue(arm.scoreL3());
     
     oppsPS5.square().onTrue(Commands.runOnce(drivebase::zeroGyro));
     oppsPS5.R2().whileTrue(climb.climb());
     oppsPS5.L2().whileTrue(climb.unclimb());
 
     oppsPS5.povUp().onTrue(arm.extendL3());
-    driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel())));
+    // driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()));
+    driverPS5.R1().whileTrue(new ProxyCommand(drivebase.getPath("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel()))));
     driverPS5.L2().onTrue(drivebase.getAutonomousCommand("ALGAE-" + scoringApp.getAlgaeSide()).andThen(arm.ioAlgae(scoringApp.getAlgaeLevel())));
     //driverPS5.l1.onTrue(drivebase.getAutonomousCommand("STATION-" + scoringApp.getCoralStation().andThen(arm.intakeAlgae())));
     oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));

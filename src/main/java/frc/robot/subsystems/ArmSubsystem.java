@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import static frc.robot.Constants.HomeConstants.ALGAE_HOME_POSITION;
 import static frc.robot.Constants.HomeConstants.CORAL_HOME_POSITION;
+import static frc.robot.Constants.HomeConstants.CORAL_STOW_POSITION;
 import static frc.robot.Constants.HomeConstants.ELEVATOR_HOME_POSITION;
 import static frc.robot.Constants.IOSpeeds.ALGAE_INTAKE_SPEED;
 import static frc.robot.Constants.IOSpeeds.ALGAE_SHOOT_SPEED;
@@ -43,6 +44,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.Elastic;
@@ -62,7 +64,7 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkMaxConfig config = new SparkMaxConfig();
 
     private double algaeWristPosition = ALGAE_HOME_POSITION;
-    private double coralWristPosition = CORAL_HOME_POSITION;
+    private double coralWristPosition = CORAL_STOW_POSITION;
     private double elevatorPosition = ELEVATOR_HOME_POSITION;
 
     private Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
@@ -205,7 +207,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command homeEverything() {
-        return Commands.parallel(homeCoral(), homeElevator(), homeAlgae());
+        return Commands.parallel(homeCoral(), homeElevator(), homeAlgae()).andThen(coralTo(CORAL_STOW_POSITION));
     }
 
     public Command intakeCoral() {
@@ -266,9 +268,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendElevatorTo(double pos) {
-        return Commands.runOnce(() -> {
+        return coralTo(CORAL_HOME_POSITION).andThen(Commands.runOnce(() -> {
             elevatorPosition = pos;
-        }).andThen(Commands.waitUntil(this::isElevatorAtPosition));
+        }).andThen(Commands.waitUntil(this::isElevatorAtPosition)));
     }
 
     public Command coralTo(double pos) {
@@ -311,9 +313,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL3() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
-                "Scoring completed", "\"yippee\" -daanish", 2));
-        return extendL3().andThen(shootCoral()).withTimeout(1).andThen(homeElevator()).alongWith(homeCoral());
+        return extendL3().andThen(Commands.runOnce(this::shootCoral).withTimeout(2));
     }
 
     public Command scoreCoral(int level) {

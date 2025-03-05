@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -54,25 +55,29 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        ;
-        backPoseEst.update(backCam.getAllUnreadResults().get(0));
     }
 
     public void updatePoseEstimation(SwerveDrive swerve) {
-        PhotonPipelineResult frontPhotonPipelineResult = frontCam.getAllUnreadResults().get(0);
-        PhotonPipelineResult backPhotonPipelineResult = backCam.getAllUnreadResults().get(0);
-
-        Optional<EstimatedRobotPose> frontUpdate = frontPoseEst.update(frontPhotonPipelineResult);
-        if (frontUpdate.isPresent()) {
-            EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
-            swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
-                    frontPhotonPipelineResult.getTimestampSeconds());
+        List<PhotonPipelineResult> frontResults = frontCam.getAllUnreadResults();
+        List<PhotonPipelineResult> backResults = backCam.getAllUnreadResults();
+        if (!frontResults.isEmpty()) {
+            PhotonPipelineResult frontPhotonPipelineResult = frontResults.get(0);
+            Optional<EstimatedRobotPose> frontUpdate = frontPoseEst.update(frontPhotonPipelineResult);
+            if (frontUpdate.isPresent()) {
+                EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
+                swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
+                        frontPhotonPipelineResult.getTimestampSeconds());
+            }
         }
-        Optional<EstimatedRobotPose> backUpdate = backPoseEst.update(backPhotonPipelineResult);
-        if (backUpdate.isPresent()) {
-            EstimatedRobotPose estimatedRobotPose = backUpdate.get();
-            swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
-                    backPhotonPipelineResult.getTimestampSeconds());
+        if(!backResults.isEmpty()) {
+            PhotonPipelineResult backPhotonPipelineResult = backResults.get(0);
+            Optional<EstimatedRobotPose> backUpdate = backPoseEst.update(backPhotonPipelineResult);
+            if (backUpdate.isPresent()) {
+                EstimatedRobotPose estimatedRobotPose = backUpdate.get();
+                swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
+                        backPhotonPipelineResult.getTimestampSeconds());
+            }
         }
+        
     }
 }
