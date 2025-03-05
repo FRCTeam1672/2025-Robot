@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.576,
-        "y": 5.157
+        "x": 3.4782118055555546,
+        "y": 5.115104166666666
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7095069444444446,
-        "y": 5.827833333333334
+        "x": 2.611718749999999,
+        "y": 5.7859375
       },
       "isLocked": false,
       "linkedName": null
@@ -48,7 +48,7 @@
   "folder": "PATHS FOR AUTO3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -59.64912996454618
+    "rotation": -53.13010235415602
   },
   "useDefaultConstraints": true
 }
