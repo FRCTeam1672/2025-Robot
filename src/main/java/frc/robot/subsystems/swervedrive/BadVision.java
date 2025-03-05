@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
  * Example PhotonVision class to aid in the pursuit of accurate odometry. Taken from
  * https://gitlab.com/ironclad_code/ironclad-2024/-/blob/master/src/main/java/frc/robot/vision/Vision.java?ref_type=heads
  */
-public class Vision
+public class BadVision
 {
 
   /**
@@ -55,7 +56,7 @@ public class Vision
   public static final AprilTagFieldLayout fieldLayout                     = AprilTagFieldLayout.loadField(
       AprilTagFields.k2025ReefscapeWelded);
   /**
-   * Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
+   * Ambiguity defined as a value between (0,1). Used in {@link BadVision#filterPose}.
    */
   private final       double              maximumAmbiguity                = 0.25;
   /**
@@ -75,6 +76,9 @@ public class Vision
    */
   private             Field2d             field2d;
 
+  private Field2d testField = new Field2d();
+
+
 
   /**
    * Constructor for the Vision class.
@@ -82,7 +86,7 @@ public class Vision
    * @param currentPose Current pose supplier, should reference {@link SwerveDrive#getPose()}
    * @param field       Current field, should be {@link SwerveDrive#field}
    */
-  public Vision(Supplier<Pose2d> currentPose, Field2d field)
+  public BadVision(Supplier<Pose2d> currentPose, Field2d field)
   {
     this.currentPose = currentPose;
     this.field2d = field;
@@ -146,6 +150,13 @@ public class Vision
       if (poseEst.isPresent())
       {
         var pose = poseEst.get();
+
+        if(camera.name().equals("FORWARDS")) {
+          testField.setRobotPose(pose.estimatedPose.toPose2d());
+          SmartDashboard.putData("test/testfield", testField);
+
+        }
+
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
                                          pose.timestampSeconds,
                                          camera.curStdDevs);
@@ -338,30 +349,21 @@ public class Vision
     /**
      * Left Camera
      */
-    LEFT_CAM("left",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
-             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
+    BACKWARDS("1672_Camera2",
+             new Rotation3d(0, Math.toRadians(0), Math.toRadians(180)),
+             new Translation3d(Units.inchesToMeters(4),
+                               Units.inchesToMeters(-11),
+                               Units.inchesToMeters(25)),
+                               VecBuilder.fill(0,0,0), VecBuilder.fill(0,0,0)),
+                               /**
      * Right Camera
      */
-    RIGHT_CAM("right",
-              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-              new Translation3d(Units.inchesToMeters(12.056),
-                                Units.inchesToMeters(-10.981),
-                                Units.inchesToMeters(8.44)),
-              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
-     * Center Camera
-     */
-    CENTER_CAM("center",
-               new Rotation3d(0, Units.degreesToRadians(18), 0),
-               new Translation3d(Units.inchesToMeters(-4.628),
-                                 Units.inchesToMeters(-10.687),
-                                 Units.inchesToMeters(16.129)),
-               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
+    FORWARDS("1672_Camera1",
+              new Rotation3d(0, Math.toRadians(0), Math.toRadians(3)),
+              new Translation3d(Units.inchesToMeters(6),
+                                Units.inchesToMeters(-11),
+                                Units.inchesToMeters(25)),
+              VecBuilder.fill(0,0,0), VecBuilder.fill(0,0,0));
 
     /**
      * Latency alert to use when high latency is detected.
@@ -429,7 +431,7 @@ public class Vision
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
-      poseEstimator = new PhotonPoseEstimator(Vision.fieldLayout,
+      poseEstimator = new PhotonPoseEstimator(BadVision.fieldLayout,
                                               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                                               robotToCamTransform);
       poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);

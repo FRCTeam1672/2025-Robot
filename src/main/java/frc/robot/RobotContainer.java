@@ -5,18 +5,25 @@
 package frc.robot;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.FileVersionException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
@@ -32,11 +39,14 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandPS5Controller driverPS5 = new CommandPS5Controller(0);
+  final CommandPS5Controller oppsPS5 = new CommandPS5Controller(1);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
   private final ArmSubsystem arm = new ArmSubsystem();
+  private final ClimbSubsystem climb = new ClimbSubsystem();
 
+  private final ScoringApp scoringApp = ScoringApp.getInstance();
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
    * by angular velocity.
@@ -95,7 +105,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    try {
+        configureBindings();
+    } catch (FileVersionException | IOException | ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
@@ -112,8 +127,11 @@ public class RobotContainer {
    * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick
    * Flight joysticks}.
+ * @throws ParseException 
+ * @throws IOException 
+ * @throws FileVersionException 
    */
-  private void configureBindings() {
+  private void configureBindings() throws FileVersionException, IOException, ParseException {
 
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
@@ -125,17 +143,31 @@ public class RobotContainer {
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleKeyboard);
 
-    driverPS5.cross().onTrue((Commands.runOnce(arm::homeEverything, arm)));
-    driverPS5.triangle().onTrue(arm.extendTo(5));
-    driverPS5.square().onTrue(arm.coralTo(3));
-    driverPS5.circle().onTrue(arm.algaeTo(2));
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    
+    driverPS5.cross().onTrue(arm.homeEverything());
+    driverPS5.triangle().onTrue(arm.extendElevatorTo(13.1));
+    driverPS5.square().onTrue(arm.coralTo(6.14));
+    driverPS5.circle().onTrue(arm.algaeTo(8));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
-    // driverPS5.().whileTrue(Commands.none());
-    driverPS5.R2().whileTrue(arm.shootCoral());
-    driverPS5.R1().onTrue(arm.intakeCoral());
-    driverPS5.L2().whileTrue(arm.shootAlgae());
-    driverPS5.L1().onTrue(arm.intakeAlgae());
-    driverPS5.povDown().onTrue(arm.scoreL2());
+   
+    driverPS5.povUp().whileTrue(arm.shootCoral());
+    driverPS5.povDown().whileTrue(arm.dumIntakeCoral());
+    driverPS5.povRight().whileTrue(arm.shootAlgae());
+    driverPS5.povLeft().onTrue(arm.intakeAlgae());
+
+    // driverPS5.R1().onTrue(arm.scoreL3());
+    
+    oppsPS5.square().onTrue(Commands.runOnce(drivebase::zeroGyro));
+    oppsPS5.R2().whileTrue(climb.climb());
+    oppsPS5.L2().whileTrue(climb.unclimb());
+
+    oppsPS5.povUp().onTrue(arm.extendL3());
+    // driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()));
+    driverPS5.R1().whileTrue(new ProxyCommand(drivebase.getPath("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel()))));
+    driverPS5.L2().onTrue(drivebase.getAutonomousCommand("ALGAE-" + scoringApp.getAlgaeSide()).andThen(arm.ioAlgae(scoringApp.getAlgaeLevel())));
+    //driverPS5.l1.onTrue(drivebase.getAutonomousCommand("STATION-" + scoringApp.getCoralStation().andThen(arm.intakeAlgae())));
+    oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));
   }
 
   /**
