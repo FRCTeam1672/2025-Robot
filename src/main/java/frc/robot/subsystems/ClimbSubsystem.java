@@ -32,7 +32,7 @@ public class ClimbSubsystem extends SubsystemBase {
         }));
 
         config.smartCurrentLimit(40);
-        config.idleMode(IdleMode.kBrake);
+        config.idleMode(IdleMode.kCoast);
         lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         rClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -41,15 +41,16 @@ public class ClimbSubsystem extends SubsystemBase {
     public void periodic() {        
         SmartDashboard.putNumber("climb/lHeight", lClimb.getEncoder().getPosition());
         SmartDashboard.putNumber("climb/rHeight", rClimb.getEncoder().getPosition());
+        SmartDashboard.putBoolean("climb/twist", badClimbTrigger.getAsBoolean());
 
-        if (badClimbTrigger.getAsBoolean()) {
-            lClimb.stopMotor();
-            rClimb.stopMotor();
-        }
-        if (lClimb.getEncoder().getPosition() > CLIMB_LIMIT || rClimb.getEncoder().getPosition() > CLIMB_LIMIT) {
-            lClimb.stopMotor();
-            rClimb.stopMotor();
-        }
+        // if (badClimbTrigger.getAsBoolean()) {
+        //     lClimb.stopMotor();
+        //     rClimb.stopMotor();
+        // }
+        // if (lClimb.getEncoder().getPosition() > CLIMB_LIMIT || rClimb.getEncoder().getPosition() > CLIMB_LIMIT) {
+        //     lClimb.stopMotor();
+        //     rClimb.stopMotor();
+        // }
     }
 
     public Command climb() {

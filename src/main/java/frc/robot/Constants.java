@@ -55,7 +55,7 @@ public final class Constants
 
   public static class ClimbConstants {
     public static final double CLIMB_LIMIT = 10.0;
-    public static final double CLIMB_SPEED = 0.35;
+    public static final double CLIMB_SPEED = 0.75;
   } // 4 for intaking from coral station
 
   public static class HomeConstants {
@@ -86,13 +86,13 @@ public final class Constants
     public static final double E_AL2_POSITION = 50;
     public static final double E_AL3_POSITION = 0;
 
-    public static final double E_STATION_POSITION = 15;
-    public static final double C_STATION_POSITION = 4;
+    public static final double E_STATION_POSITION = 13.1;
+    public static final double C_STATION_POSITION = 6.14;
   }
 
   public static class Tolerances {
     public static final double ELEVATOR_TOLERANCE = 1;
-    public static final double CLIMB_TOLERANCE = 0.5;
+    public static final double CLIMB_TOLERANCE = 10;
   }
 
   public static class OperatorConstants

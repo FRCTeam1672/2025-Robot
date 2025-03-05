@@ -27,12 +27,14 @@ import static frc.robot.Constants.ReefLevels.A_IO_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L3_POSITION;
+import static frc.robot.Constants.ReefLevels.C_STATION_POSITION;
 import static frc.robot.Constants.ReefLevels.E_AL2_POSITION;
 import static frc.robot.Constants.ReefLevels.E_AL3_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L3_POSITION;
 import static frc.robot.Constants.ReefLevels.E_PROCESSOR_POSITION;
+import static frc.robot.Constants.ReefLevels.E_STATION_POSITION;
 import static frc.robot.Constants.Tolerances.ELEVATOR_TOLERANCE;
 
 import com.revrobotics.spark.SparkMax;
@@ -81,8 +83,8 @@ public class ArmSubsystem extends SubsystemBase {
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-        config.closedLoop.maxOutput(0.3);
-        config.closedLoop.minOutput(-0.3);
+        config.closedLoop.maxOutput(0.15);
+        config.closedLoop.minOutput(-0.15);
         rElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -90,8 +92,8 @@ public class ArmSubsystem extends SubsystemBase {
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
-        config.closedLoop.maxOutput(0.2);
-        config.closedLoop.minOutput(-0.2);
+        config.closedLoop.maxOutput(0.1);
+        config.closedLoop.minOutput(-0.1);
         coralWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.smartCurrentLimit(30);
@@ -225,6 +227,16 @@ public class ArmSubsystem extends SubsystemBase {
         }).until(this::isAlgaeIntaked);
     }
 
+    public Command dumintakeAlgae() {
+        return Commands.run(() -> {
+            lAlgaeIntake.set(ALGAE_INTAKE_SPEED);
+            rAlgaeIntake.set(ALGAE_INTAKE_SPEED);
+        }).handleInterrupt(() -> {
+            rAlgaeIntake.stopMotor();
+            lAlgaeIntake.stopMotor();
+        });
+    }
+
     public Command dumIntakeAlgae() {
         return Commands.run(() -> {
             lAlgaeIntake.set(ALGAE_INTAKE_SPEED);
@@ -331,6 +343,10 @@ public class ArmSubsystem extends SubsystemBase {
 
     public Command processor() {
         return extendElevatorTo(E_PROCESSOR_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(shootAlgae()).withTimeout(1.5).andThen(homeElevator());
+    }
+
+    public Command extendCoralStation() {
+        return extendElevatorTo(E_STATION_POSITION).andThen(coralTo(C_STATION_POSITION));
     }
 
     public Command ioAlgae(int level) {

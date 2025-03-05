@@ -132,8 +132,8 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     driverPS5.cross().onTrue(arm.homeEverything());
-    driverPS5.triangle().onTrue(arm.extendElevatorTo(60));
-    driverPS5.square().onTrue(arm.coralTo(4));
+    driverPS5.triangle().onTrue(arm.extendElevatorTo(13.1));
+    driverPS5.square().onTrue(arm.coralTo(6.14));
     driverPS5.circle().onTrue(arm.algaeTo(8));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
    
@@ -145,8 +145,8 @@ public class RobotContainer {
     driverPS5.R1().onTrue(arm.scoreL3());
     
     oppsPS5.square().onTrue(Commands.runOnce(drivebase::zeroGyro));
-    oppsPS5.triangle().whileTrue(climb.climb());
-    oppsPS5.cross().whileTrue(climb.unclimb());
+    oppsPS5.R2().whileTrue(climb.climb());
+    oppsPS5.L2().whileTrue(climb.unclimb());
 
     oppsPS5.povUp().onTrue(arm.extendL3());
     driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel())));
