@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
@@ -146,8 +147,8 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     driverPS5.cross().onTrue(arm.homeEverything());
-    driverPS5.triangle().onTrue(arm.extendElevatorTo(13.1));
-    driverPS5.square().onTrue(arm.coralTo(6.14));
+    driverPS5.triangle().onTrue(arm.extendElevatorTo(14.5));
+    driverPS5.square().onTrue(arm.coralTo(5.8));
     driverPS5.circle().onTrue(arm.algaeTo(8));
     driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
    
@@ -164,7 +165,17 @@ public class RobotContainer {
 
     oppsPS5.povUp().onTrue(arm.extendL3());
     // driverPS5.R2().onTrue(drivebase.getAutonomousCommand("CORAL-" + scoringApp.getReefSide()));
-    driverPS5.R1().whileTrue(new ProxyCommand(drivebase.getPath("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel()))));
+    driverPS5.R1().whileTrue(Commands.defer(() -> {
+        try {
+            System.out.println("Reef side " + scoringApp.getReefSide());
+            System.out.println("Coral Level " + scoringApp.getCoralLevel());
+            return drivebase.getPath("CORAL-" + scoringApp.getReefSide()).andThen(arm.scoreCoral(scoringApp.getCoralLevel()));
+        } catch (FileVersionException | IOException | ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        return Commands.none();
+        }
+    },Set.of()));
     driverPS5.L2().onTrue(drivebase.getAutonomousCommand("ALGAE-" + scoringApp.getAlgaeSide()).andThen(arm.ioAlgae(scoringApp.getAlgaeLevel())));
     //driverPS5.l1.onTrue(drivebase.getAutonomousCommand("STATION-" + scoringApp.getCoralStation().andThen(arm.intakeAlgae())));
     oppsPS5.povDown().onTrue(arm.scoreCoral(scoringApp.getCoralLevel()));

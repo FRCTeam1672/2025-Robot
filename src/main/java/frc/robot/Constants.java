@@ -68,18 +68,18 @@ public final class Constants
   public static class IOSpeeds {
     public static final double CORAL_INTAKE_SPEED = -1.0;
     public static final double ALGAE_INTAKE_SPEED = 1.0;
-    public static final double CORAL_SHOOT_SPEED = 0.75;
+    public static final double CORAL_SHOOT_SPEED = 0.3;
     public static final double ALGAE_SHOOT_SPEED = -0.75;
   }
 
   public static class ReefLevels {
-    public static final double E_L1_POSITION = 30;
-    public static final double E_L2_POSITION = 60;
-    public static final double E_L3_POSITION = 60;
+    public static final double E_L1_POSITION = 15;
+    public static final double E_L2_POSITION = 30;
+    public static final double E_L3_POSITION = 62.5;
 
     public static final double C_L1_POSITION = 1.0;
     public static final double C_L2_POSITION = 10.0;
-    public static final double C_L3_POSITION = 10.0;
+    public static final double C_L3_POSITION = 11.5;
 
     public static final double A_IO_POSITION = 5;
 

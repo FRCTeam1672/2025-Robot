@@ -85,8 +85,8 @@ public class ArmSubsystem extends SubsystemBase {
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-        config.closedLoop.maxOutput(0.15);
-        config.closedLoop.minOutput(-0.15);
+        config.closedLoop.maxOutput(0.45);
+        config.closedLoop.minOutput(-0.45);
         rElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -94,14 +94,14 @@ public class ArmSubsystem extends SubsystemBase {
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
-        config.closedLoop.maxOutput(0.1);
-        config.closedLoop.minOutput(-0.1);
+        config.closedLoop.maxOutput(0.15);
+        config.closedLoop.minOutput(-0.15);
         coralWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.smartCurrentLimit(30);
         config.inverted(false);
-        config.closedLoop.maxOutput(0.3);
-        config.closedLoop.minOutput(-0.3);
+        config.closedLoop.maxOutput(0.2);
+        config.closedLoop.minOutput(-0.2);
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -303,9 +303,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL2() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
-                "Scoring completed", "\"yippee\" -daanish", 2));
-        return extendL2().andThen(shootCoral()).withTimeout(1.5).andThen(Commands.parallel(homeElevator(), homeCoral()));
+        return extendL2().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
     }
 
     public Command extendL3() {
@@ -313,7 +311,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL3() {
-        return extendL3().andThen(Commands.runOnce(this::shootCoral).withTimeout(2));
+        return extendL3().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
     }
 
     public Command scoreCoral(int level) {
