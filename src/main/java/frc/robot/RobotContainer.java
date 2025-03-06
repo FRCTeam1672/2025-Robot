@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITIOn;
+import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +183,7 @@ public class RobotContainer {
 
         oppsPS5.circle().onTrue(arm.algaeL2());
         oppsPS5.triangle().onTrue(arm.algaeL3());
-        oppsPS5.square().onTrue(arm.algaeTo(A_TILT_HIGH_POSITIOn));
+        oppsPS5.square().onTrue(arm.algaeTo(A_TILT_HIGH_POSITION));
         oppsPS5.cross().onTrue(arm.homeEverything());
 
         oppsPS5.R2().whileTrue(climb.climb());

@@ -83,7 +83,7 @@ public final class Constants
 
     public static final double A_IO_POSITION = 5;
 
-    public static final double A_TILT_HIGH_POSITIOn = 12;
+    public static final double A_TILT_HIGH_POSITION = 12;
 
     public static final double E_PROCESSOR_POSITION = 20;
     public static final double E_AL2_POSITION = 50;
