@@ -74,16 +74,21 @@ public class ArmSubsystem extends SubsystemBase {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
             Elastic.sendNotification(
                     new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Unbalanced Elevators",
-                            "Elevator motors have gone out of sync, stopped elevators to not break elevator.", 10000));
+                            "Elevator motors have gone out of sync, stopped elevators to not break elevator.").withDisplaySeconds(10));
         }));
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         coralShooter.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         lAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        config.inverted(true);
         rAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+
 
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
+        config.inverted(false);
+
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
         config.closedLoop.maxOutput(0.45);
         config.closedLoop.minOutput(-0.45);
@@ -286,20 +291,15 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL1() {
-        return Commands.runOnce(() -> {
-            elevatorPosition = E_L1_POSITION;
-            coralWristPosition = C_L1_POSITION;
-        }).andThen(Commands.waitUntil(() -> isElevatorAtPosition() && isCoralAtPosition()));
+        return extendElevatorTo(E_L1_POSITION).alongWith(coralTo(C_L1_POSITION));
     }
 
     public Command scoreL1() {
-        Elastic.sendNotification(new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO,
-                "Scoring completed", "\"yippee\" -daanish", 2));
-        return extendL1().andThen(shootCoral()).withTimeout(2.5).andThen(homeElevator()).alongWith(homeCoral());
+        return extendL1().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
     }
 
     public Command extendL2() {
-        return extendElevatorTo(E_L2_POSITION).andThen(coralTo(C_L2_POSITION));
+        return extendElevatorTo(E_L2_POSITION).alongWith(coralTo(C_L2_POSITION));
     }
 
     public Command scoreL2() {
@@ -307,11 +307,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL3() {
-        return extendElevatorTo(E_L3_POSITION).andThen(coralTo(C_L3_POSITION));
+        return extendElevatorTo(E_L3_POSITION).alongWith(coralTo(C_L3_POSITION));
     }
 
     public Command scoreL3() {
-        return extendL3().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
+        return extendL3().andThen(Commands.waitSeconds(0.3).andThen(shootCoral().withTimeout(0.5))).andThen(homeEverything());
     }
 
     public Command scoreCoral(int level) {

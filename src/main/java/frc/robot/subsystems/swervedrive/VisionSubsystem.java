@@ -16,11 +16,17 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.counter.UpDownCounter;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.util.Elastic;
+import frc.robot.util.Elastic.Notification;
 import swervelib.SwerveDrive;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -41,20 +47,36 @@ public class VisionSubsystem extends SubsystemBase {
                                                                         // forward of center, half a meter up from
                                                                         // center.
 
+    private Trigger backCamTrigger = new Trigger(backCam::isConnected);
+    private Trigger frontCamTrigger = new Trigger(frontCam::isConnected);
+
+
     // Construct PhotonPoseEstimator
     private PhotonPoseEstimator frontPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, frontCamPos);
     private PhotonPoseEstimator backPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, backCamPos);
-    private Field2d field;
 
     /** Creates a new VisionSubsystem. */
-    public VisionSubsystem(Field2d field) {
-        this.field = field;
+    public VisionSubsystem() {
+        backCamTrigger.onFalse(Commands.runOnce(() -> {
+            Elastic.sendNotification(
+                new Notification(Notification.NotificationLevel.ERROR, "Back Camera Disconnect", "Rear camera disconnect").withDisplaySeconds(5)
+            );
+        }));
+        frontCamTrigger.onTrue(Commands.runOnce(() -> {
+            Elastic.sendNotification(
+                new Notification(Notification.NotificationLevel.ERROR, "Front Camera Disconnect", "front camera disconnect").withDisplaySeconds(5)
+            );
+        }));
+
     }
 
     @Override
     public void periodic() {
+
+        SmartDashboard.putBoolean("vision/Rear Camera Connected", backCamTrigger.getAsBoolean());
+        SmartDashboard.putBoolean("vision/Front Camera Connected", frontCamTrigger.getAsBoolean());
     }
 
     public void updatePoseEstimation(SwerveDrive swerve) {

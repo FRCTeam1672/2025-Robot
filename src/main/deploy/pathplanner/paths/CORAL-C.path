@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.6172500000000003,
-        "y": 2.6892499999999995
+        "x": 3.6427693994121744,
+        "y": 2.6542574147092957
       },
       "prevControl": {
-        "x": 3.467250000000001,
-        "y": 2.489249999999999
+        "x": 3.492769399412175,
+        "y": 2.454257414709295
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 56.88865803962794
+    "rotation": 57.41332299618022
   },
   "reversed": false,
   "folder": "CORAL ALIGNMENTS",

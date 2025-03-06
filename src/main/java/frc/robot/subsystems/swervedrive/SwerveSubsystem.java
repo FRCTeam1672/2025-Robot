@@ -138,7 +138,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    vision = new VisionSubsystem(swerveDrive.field);
+    vision = new VisionSubsystem();
   }
 
   @Override
