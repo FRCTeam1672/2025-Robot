@@ -291,7 +291,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL1() {
-        return extendElevatorTo(E_L1_POSITION).alongWith(coralTo(C_L1_POSITION));
+        return extendElevatorTo(E_L1_POSITION).andThen(coralTo(C_L1_POSITION));
     }
 
     public Command scoreL1() {
@@ -299,7 +299,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL2() {
-        return extendElevatorTo(E_L2_POSITION).alongWith(coralTo(C_L2_POSITION));
+        return extendElevatorTo(E_L2_POSITION).andThen(coralTo(C_L2_POSITION));
     }
 
     public Command scoreL2() {
@@ -307,7 +307,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL3() {
-        return extendElevatorTo(E_L3_POSITION).alongWith(coralTo(C_L3_POSITION));
+        return extendElevatorTo(E_L3_POSITION).andThen(coralTo(C_L3_POSITION));
     }
 
     public Command scoreL3() {
@@ -332,7 +332,7 @@ public class ArmSubsystem extends SubsystemBase {
     // }
 
     public Command algaeL2() {
-        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(dumIntakeAlgae()).withTimeout(1.5).andThen(homeElevator());
+        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_IO_POSITION));
     }
 
     public Command algaeL3() {

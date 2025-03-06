@@ -32,7 +32,7 @@ public class ClimbSubsystem extends SubsystemBase {
         }));
 
         config.smartCurrentLimit(40);
-        config.idleMode(IdleMode.kCoast);
+        config.idleMode(IdleMode.kBrake);
         lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         rClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

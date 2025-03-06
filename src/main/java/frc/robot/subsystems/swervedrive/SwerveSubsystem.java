@@ -255,7 +255,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public Command getPath(String pathName) throws FileVersionException, IOException, ParseException {
     PathPlannerPath fromPathFile = PathPlannerPath.fromPathFile(pathName);
-    return driveToPose(fromPathFile.getStartingHolonomicPose().get()).andThen(AutoBuilder.followPath(fromPathFile));
+    Pose2d pose;
+    if(DriverStation.getAlliance().get() == Alliance.Red) {
+      pose = fromPathFile.flipPath().getStartingHolonomicPose().get();
+    }
+    else {
+      pose = fromPathFile.getStartingHolonomicPose().get(); 
+    }
+    return driveToPose(pose).andThen(AutoBuilder.followPath(fromPathFile));
   }
 
   /**
@@ -267,7 +274,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveToPose(Pose2d pose) {
     // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        0.80, 1.5,
+        0.50, 1,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands

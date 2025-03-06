@@ -86,18 +86,22 @@ public class VisionSubsystem extends SubsystemBase {
             PhotonPipelineResult frontPhotonPipelineResult = frontResults.get(0);
             Optional<EstimatedRobotPose> frontUpdate = frontPoseEst.update(frontPhotonPipelineResult);
             if (frontUpdate.isPresent()) {
-                EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
+                if(frontPhotonPipelineResult.getBestTarget().poseAmbiguity < 0.4) {
+                    EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
                 swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         frontPhotonPipelineResult.getTimestampSeconds());
+                }
             }
         }
         if(!backResults.isEmpty()) {
             PhotonPipelineResult backPhotonPipelineResult = backResults.get(0);
             Optional<EstimatedRobotPose> backUpdate = backPoseEst.update(backPhotonPipelineResult);
             if (backUpdate.isPresent()) {
+                if(backPhotonPipelineResult.getBestTarget().poseAmbiguity < 0.4) {
                 EstimatedRobotPose estimatedRobotPose = backUpdate.get();
                 swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         backPhotonPipelineResult.getTimestampSeconds());
+                }
             }
         }
         

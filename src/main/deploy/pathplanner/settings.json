@@ -6,14 +6,13 @@
     "ALGAE ALIGNMENT",
     "CORAL ALIGNMENTS",
     "CORAL STATION ALIGNMENT",
-    "PATHS FOR AUTO-LEAVE",
     "PATH FOR AUTO4",
     "PATHS FOR AUTO1",
     "PATHS FOR AUTO2",
     "PATHS FOR AUTO3"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.0,
+  "defaultMaxVel": 1.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
@@ -39,6 +38,6 @@
   "bumperOffsetY": 0.0,
   "robotFeatures": [
     "{\"name\":\"Battery\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.35,\"y\":0.0},\"size\":{\"width\":0.18415,\"length\":0.08255},\"borderRadius\":0.02,\"strokeWidth\":0.01,\"filled\":true}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.76,\"y\":0.085},\"end\":{\"x\":0.5,\"y\":0.085},\"strokeWidth\":0.1524}}"
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.76,\"y\":0.0792},\"end\":{\"x\":0.5,\"y\":0.079},\"strokeWidth\":0.1524}}"
   ]
 }

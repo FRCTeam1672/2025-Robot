@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.605468749999999,
-        "y": 6.66640625
+        "x": 1.7145245674215799,
+        "y": 6.287105540863502
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4102515476392408,
-        "y": 6.822580011888605
+        "x": 1.5550767923353006,
+        "y": 6.501671065362322
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3119791666666654,
-        "y": 7.001822916666666
+        "x": 1.1055714888017152,
+        "y": 7.075677872889226
       },
       "prevControl": {
-        "x": 1.5355902777777766,
-        "y": 6.750260416666666
+        "x": 1.2823481841026008,
+        "y": 6.898901177596837
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -48,7 +48,7 @@
   "folder": "CORAL STATION ALIGNMENT",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 130.76360520094119
+    "rotation": 126.13813559360244
   },
   "useDefaultConstraints": true
 }

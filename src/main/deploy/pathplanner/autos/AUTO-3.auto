@@ -11,9 +11,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "CoralL3"
+            "pathName": "CORAL-I"
           }
         },
         {
@@ -23,9 +23,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "CoralStation"
+            "pathName": "STATION-2"
           }
         },
         {
@@ -35,33 +35,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ScoreL3"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "AUTO3-PATH4"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "CoralStation"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "AUTO3-PATH5"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreL3"
           }
         },
         {

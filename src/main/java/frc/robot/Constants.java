@@ -55,18 +55,18 @@ public final class Constants
 
   public static class ClimbConstants {
     public static final double CLIMB_LIMIT = 10.0;
-    public static final double CLIMB_SPEED = 0.75;
+    public static final double CLIMB_SPEED = 1;
   } // 4 for intaking from coral station
 
   public static class HomeConstants {
-    public static final double CORAL_HOME_POSITION = 2.5;
+    public static final double CORAL_HOME_POSITION = 3.5;
     public static final double CORAL_STOW_POSITION = 0.5;
     public static final double ALGAE_HOME_POSITION = 1.0;
     public static final double ELEVATOR_HOME_POSITION = 0.0;
   }
 
   public static class IOSpeeds {
-    public static final double CORAL_INTAKE_SPEED = -1.0;
+    public static final double CORAL_INTAKE_SPEED = -0.3;
     public static final double ALGAE_INTAKE_SPEED = 1.0;
     public static final double CORAL_SHOOT_SPEED = 0.3;
     public static final double ALGAE_SHOOT_SPEED = -0.75;
@@ -75,21 +75,21 @@ public final class Constants
   public static class ReefLevels {
     public static final double E_L1_POSITION = 15;
     public static final double E_L2_POSITION = 30;
-    public static final double E_L3_POSITION = 62.5;
+    public static final double E_L3_POSITION = 65.5;
 
     public static final double C_L1_POSITION = 1.0;
-    public static final double C_L2_POSITION = 10.0;
+    public static final double C_L2_POSITION = 11.5;
     public static final double C_L3_POSITION = 11.5;
 
-    public static final double A_IO_POSITION = 5;
 
     public static final double A_TILT_HIGH_POSITION = 12;
 
-    public static final double E_PROCESSOR_POSITION = 20;
-    public static final double E_AL2_POSITION = 50;
+    public static final double E_PROCESSOR_POSITION = 2;
+    public static final double E_AL2_POSITION = 10;
     public static final double E_AL3_POSITION = 0;
+    public static final double A_IO_POSITION = 8;
 
-    public static final double E_STATION_POSITION = 13.1;
+    public static final double E_STATION_POSITION = 19.1;
     public static final double C_STATION_POSITION = 6.14;
   }
 

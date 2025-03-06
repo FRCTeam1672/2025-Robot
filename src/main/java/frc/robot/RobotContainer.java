@@ -104,9 +104,9 @@ public class RobotContainer {
         driverPS5.povRight().whileTrue(arm.shootAlgae());
         driverPS5.povLeft().onTrue(arm.intakeAlgae());
 
-        driverPS5.triangle().onTrue(arm.extendElevatorTo(14.5));
+        driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
-        driverPS5.circle().onTrue(arm.algaeTo(8));
+        driverPS5.circle().onTrue(arm.algaeL2());
 
         //CORAL AUTOSCORE
         driverPS5.R1().whileTrue(Commands.defer(() -> {
@@ -155,8 +155,8 @@ public class RobotContainer {
                 () -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
-                        return drivebase.getPath("STATION-" + scoringApp.getCoralStation())
-                                .andThen(arm.extendCoralStation());
+                        return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
+                                // .andThen(arm.extendCoralStation());
                     } catch (FileVersionException | IOException | ParseException e) {
                         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                                 .withTitle("Could not load pathplanner path for coral station.")
