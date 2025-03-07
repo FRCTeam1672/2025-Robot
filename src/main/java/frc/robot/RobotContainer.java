@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.ClimbConstants.CLIMB_SPEED;
 import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 
 import java.io.File;
@@ -74,7 +75,7 @@ public class RobotContainer {
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer(){
+    public RobotContainer() {
 
         // Configure the trigger bindings
         try {
@@ -86,6 +87,12 @@ public class RobotContainer {
         }
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        NamedCommands.registerCommand("ScoreL2", arm.scoreL2().asProxy());
+        NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
+                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
+        );
+
     }
 
     private void configureBindings() throws FileVersionException, IOException, ParseException {
@@ -108,7 +115,7 @@ public class RobotContainer {
         driverPS5.square().onTrue(arm.coralTo(5.8));
         driverPS5.circle().onTrue(arm.algaeL2());
 
-        //CORAL AUTOSCORE
+        // CORAL AUTOSCORE
         driverPS5.R1().whileTrue(Commands.defer(() -> {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
@@ -119,8 +126,7 @@ public class RobotContainer {
                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                         .withTitle("Could not load pathplanner path for coral auto-scoring.")
                         .withDescription("Please use manual scoring.")
-                        .withDisplaySeconds(10)
-                        );
+                        .withDisplaySeconds(10));
                 DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
                 e.printStackTrace();
                 return Commands.none();
@@ -129,40 +135,38 @@ public class RobotContainer {
             arm.homeEverything().schedule();
         }));
 
-        //ALGAE AUTOSCORE
+        // ALGAE AUTOSCORE
         driverPS5.L1().whileTrue(Commands.defer(
-            () -> {
-                try {
-                    System.out.println("Reef side " + scoringApp.getReefSide());
-                    System.out.println("Algae Level " + scoringApp.getAlgaeLevel());
-                    return drivebase.getPath("ALGAE-" + scoringApp.getReefSide())
-                            .andThen(arm.ioAlgae(scoringApp.getAlgaeLevel()));
-                } catch (FileVersionException | IOException | ParseException e) {
-                    Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
-                            .withTitle("Could not load pathplanner path for algae auto-scoring.")
-                            .withDescription("Please use manual scoring.")
-                            .withDisplaySeconds(10)
-                            );
-                    DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
-                    e.printStackTrace();
-                    return Commands.none();
-                }
-            }, Set.of()).handleInterrupt(() -> {
-                arm.homeEverything().schedule();
-            }));
-            //CORAL STATION
-            driverPS5.R2().whileTrue(Commands.defer(
+                () -> {
+                    try {
+                        System.out.println("Reef side " + scoringApp.getReefSide());
+                        System.out.println("Algae Level " + scoringApp.getAlgaeLevel());
+                        return drivebase.getPath("ALGAE-" + scoringApp.getReefSide())
+                                .andThen(arm.ioAlgae(scoringApp.getAlgaeLevel()));
+                    } catch (FileVersionException | IOException | ParseException e) {
+                        Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
+                                .withTitle("Could not load pathplanner path for algae auto-scoring.")
+                                .withDescription("Please use manual scoring.")
+                                .withDisplaySeconds(10));
+                        DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
+                        e.printStackTrace();
+                        return Commands.none();
+                    }
+                }, Set.of()).handleInterrupt(() -> {
+                    arm.homeEverything().schedule();
+                }));
+        // CORAL STATION
+        driverPS5.R2().whileTrue(Commands.defer(
                 () -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
                         return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
-                                // .andThen(arm.extendCoralStation());
+                        // .andThen(arm.extendCoralStation());
                     } catch (FileVersionException | IOException | ParseException e) {
                         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                                 .withTitle("Could not load pathplanner path for coral station.")
                                 .withDescription("Please use alignment.")
-                                .withDisplaySeconds(10)
-                        );
+                                .withDisplaySeconds(10));
                         DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
                         e.printStackTrace();
                         return Commands.none();
@@ -172,22 +176,29 @@ public class RobotContainer {
                 }));
         // driverPS5.R1().onTrue(arm.scoreL3());
 
-
-
         oppsPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         oppsPS5.povLeft().onTrue(arm.processor());
         oppsPS5.povDown().onTrue(arm.extendL1());
         oppsPS5.povRight().onTrue(arm.extendL2());
         oppsPS5.povUp().onTrue(arm.extendL3());
 
-
         oppsPS5.circle().onTrue(arm.algaeL2());
         oppsPS5.triangle().onTrue(arm.algaeL3());
         oppsPS5.square().onTrue(arm.algaeTo(A_TILT_HIGH_POSITION));
         oppsPS5.cross().onTrue(arm.homeEverything());
 
-        oppsPS5.R2().whileTrue(climb.climb());
-        oppsPS5.L2().whileTrue(climb.unclimb());
+        oppsPS5.R2().whileTrue(climb.simpleClimb());
+        oppsPS5.L2().whileTrue(climb.simpleUnClimb());
+
+        //FOR TESTING!!
+
+        // oppsPS5.R2().whileTrue(climb.climbAtSpeed(() -> {
+        //     return ((oppsPS5.getR2Axis() + 1.0) * 0.5) * CLIMB_SPEED;
+        // }));
+        // oppsPS5.L2().whileTrue(climb.unclimbAtSpeed(() -> {
+        //     return ((oppsPS5.getL2Axis() + 1.0) * 0.5) * CLIMB_SPEED;
+        // }));
+
     }
 
     /**

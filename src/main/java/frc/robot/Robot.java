@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -74,10 +76,13 @@ public class Robot extends TimedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putString("Reefscoring", ScoringApp.getInstance().getReefSide());
-    SmartDashboard.putNumber("CORAL_level", ScoringApp.getInstance().getCoralLevel());
+    SmartDashboard.putString("App/Reef Side", ScoringApp.getInstance().getReefSide());
+    SmartDashboard.putNumber("App/Coral Level", ScoringApp.getInstance().getCoralLevel());
+    SmartDashboard.putNumber("App/Coral Station", ScoringApp.getInstance().getCoralStation());
+    SmartDashboard.putNumber("App/Algae Level", ScoringApp.getInstance().getAlgaeLevel());
 
-    new PrintCommand("stuff in network tables");
+    SmartDashboard.putNumber("FMS/MatchTime", DriverStation.getMatchTime());
+    SmartDashboard.putNumber("FMS/MatchNumber", DriverStation.getMatchNumber());
   }
 
   /**

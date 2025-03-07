@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.285217913522448,
-        "y": 5.664740402032411
+        "x": 5.388157894736842,
+        "y": 5.410526315789473
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4262482100619844,
-        "y": 5.458317400751133
+        "x": 5.869243421052631,
+        "y": 7.055838815789473
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.5470703294008574,
-        "y": 5.244314749699288
+        "x": 1.9443317751441105,
+        "y": 6.0514421161249325
       },
       "prevControl": {
-        "x": 3.416045972984774,
-        "y": 5.457229328875424
+        "x": 3.6473745383020066,
+        "y": 4.8872151424407235
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -59.99999999999999
+    "velocity": 1.3,
+    "rotation": 129.80557109226527
   },
   "reversed": false,
-  "folder": "CORAL ALIGNMENTS",
+  "folder": "MOUNT OLIVE AUTO",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -124.43898930880371
   },
   "useDefaultConstraints": false
 }

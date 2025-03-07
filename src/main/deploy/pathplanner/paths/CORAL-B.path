@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5868074570378776,
-        "y": 3.748239998604366
+        "x": 2.388645580525628,
+        "y": 3.7693621754155267
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8741298782073743,
-        "y": 3.744963406861585
+        "x": 2.961734580564416,
+        "y": 3.7443038955199004
       },
       "prevControl": {
-        "x": 2.4509977776334475,
-        "y": 3.7438590412042236
+        "x": 2.712040361152932,
+        "y": 3.7566649954907683
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.9545226955099274
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "CORAL ALIGNMENTS",

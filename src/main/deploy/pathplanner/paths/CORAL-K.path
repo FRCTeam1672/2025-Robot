@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.786603191895751,
-        "y": 5.482873263220811
+        "x": 3.8236583779959705,
+        "y": 5.438184361222484
       },
       "prevControl": {
-        "x": 3.496856488616828,
-        "y": 6.033713573430243
+        "x": 3.533911674717048,
+        "y": 5.989024671431916
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -60.94539590092286
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "CORAL ALIGNMENTS",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -59.62087398863166
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": false
 }

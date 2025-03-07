@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.4047697368424588,
+        "y": 6.719078947364424
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 3.6410116565921644,
+        "y": 6.2339093445976514
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 5.349671052631578,
+        "y": 6.237993421052631
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 4.339443573218305,
+        "y": 6.425362541741198
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.2,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.3,
+    "rotation": -122.93869054295547
   },
   "reversed": false,
-  "folder": null,
+  "folder": "MOUNT OLIVE AUTO",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 131.9872124958167
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

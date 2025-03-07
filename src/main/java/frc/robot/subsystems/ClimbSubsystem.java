@@ -4,6 +4,8 @@ import static frc.robot.Constants.ClimbConstants.CLIMB_LIMIT;
 import static frc.robot.Constants.ClimbConstants.CLIMB_SPEED;
 import static frc.robot.Constants.Tolerances.CLIMB_TOLERANCE;
 
+import java.util.function.Supplier;
+
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -53,7 +55,7 @@ public class ClimbSubsystem extends SubsystemBase {
         // }
     }
 
-    public Command climb() {
+    public Command simpleClimb() {
         return Commands.run(() -> {
             lClimb.set(CLIMB_SPEED);
             rClimb.set(CLIMB_SPEED);
@@ -63,10 +65,30 @@ public class ClimbSubsystem extends SubsystemBase {
         });
     }
 
-    public Command unclimb() {
+    public Command simpleUnClimb() {
         return Commands.run(() -> {
             lClimb.set(-CLIMB_SPEED);
             rClimb.set(-CLIMB_SPEED);
+        }).handleInterrupt(() -> {
+            lClimb.stopMotor();
+            rClimb.stopMotor();
+        });
+    }
+
+    public Command climbAtSpeed(Supplier<Double> speed) {
+        return Commands.run(() -> {
+            lClimb.set(-speed.get());
+            rClimb.set(-speed.get());
+        }).handleInterrupt(() -> {
+            lClimb.stopMotor();
+            rClimb.stopMotor();
+        });
+    }
+
+    public Command unclimbAtSpeed(Supplier<Double> speed) {
+        return Commands.run(() -> {
+            lClimb.set(speed.get());
+            rClimb.set(speed.get());
         }).handleInterrupt(() -> {
             lClimb.stopMotor();
             rClimb.stopMotor();

@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.7448812969422
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "CORAL ALIGNMENTS",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.89890183861462
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": false
 }
