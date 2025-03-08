@@ -297,6 +297,19 @@ public class ArmSubsystem extends SubsystemBase {
         return extendElevatorTo(E_L2_POSITION).andThen(coralTo(C_L2_POSITION));
     }
 
+    public Command extendTo(int x) {
+        switch (x) {
+            case 1:
+                return extendL1();
+            case 2:
+                return extendL2();
+            case 3:
+                return extendL3();
+            default:
+                return Commands.none();
+        }
+    }
+
     public Command scoreL2() {
         return extendL2().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
     }

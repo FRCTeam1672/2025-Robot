@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 5.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -45,7 +45,7 @@
     "rotation": 129.80557109226527
   },
   "reversed": false,
-  "folder": "MOUNT OLIVE AUTO",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -124.43898930880371

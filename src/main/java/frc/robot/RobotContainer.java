@@ -114,13 +114,14 @@ public class RobotContainer {
         driverPS5.povUp().onTrue(arm.algaeL3());
         driverPS5.povDown().onTrue(arm.homeNotAlgae());
 
-        // CORAL AUTOSCORE
+        // CORAL AUTOSCORE (extending rn)
         driverPS5.R1().whileTrue(Commands.defer(() -> {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
                 return drivebase.getPath("CORAL-" + scoringApp.getReefSide())
-                        .andThen(arm.scoreCoral(scoringApp.getCoralLevel()));
+                        .andThen(arm.extendTo(scoringApp.getCoralLevel()));
+                // arm.scoreCoral(scoringApp.getCoralLevel())
             } catch (FileVersionException | IOException | ParseException e) {
                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                         .withTitle("Could not load pathplanner path for coral auto-scoring.")
