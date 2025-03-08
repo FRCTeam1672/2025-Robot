@@ -106,17 +106,17 @@ public class RobotContainer {
         driverPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
 
-        driverPS5.R2().whileTrue(arm.shootCoral());
-        driverPS5.R1().whileTrue(arm.dumIntakeCoral());
-        driverPS5.L2().whileTrue(arm.shootAlgae());
-        driverPS5.L1().onTrue(arm.intakeAlgae());
+        driverPS5.povUp().whileTrue(arm.shootCoral());
+        driverPS5.povDown().whileTrue(arm.dumIntakeCoral());
+        driverPS5.povRight().whileTrue(arm.shootAlgae());
+        driverPS5.povLeft().onTrue(arm.intakeAlgae());
 
         driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
         driverPS5.circle().onTrue(arm.algaeL2());
 
         // CORAL AUTOSCORE
-        driverPS5.povUp().whileTrue(Commands.defer(() -> {
+        driverPS5.R1().whileTrue(Commands.defer(() -> {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
@@ -136,7 +136,7 @@ public class RobotContainer {
         }));
 
         // ALGAE AUTOSCORE
-        driverPS5.povDown().whileTrue(Commands.defer(
+        driverPS5.L1().whileTrue(Commands.defer(
                 () -> {
                     try {
                         System.out.println("Reef side " + scoringApp.getReefSide());
@@ -156,7 +156,7 @@ public class RobotContainer {
                     arm.homeEverything().schedule();
                 }));
         // CORAL STATION
-        driverPS5.povRight().whileTrue(Commands.defer(
+        driverPS5.R2().whileTrue(Commands.defer(
                 () -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
