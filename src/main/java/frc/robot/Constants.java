@@ -48,7 +48,7 @@ public final class Constants
     public static final double C_WRIST_I = 0.000003;
     public static final double C_WRIST_D = 0.4;
 
-    public static final double A_WRIST_P = 0.23;
+    public static final double A_WRIST_P = 0.3;
     public static final double A_WRIST_I = 0.0;
     public static final double A_WRIST_D = 0.0;
   }
@@ -67,9 +67,9 @@ public final class Constants
 
   public static class IOSpeeds {
     public static final double CORAL_INTAKE_SPEED = -0.3;
-    public static final double ALGAE_INTAKE_SPEED = 1.0;
+    public static final double ALGAE_INTAKE_SPEED = -1.0;
     public static final double CORAL_SHOOT_SPEED = 0.3;
-    public static final double ALGAE_SHOOT_SPEED = -0.75;
+    public static final double ALGAE_SHOOT_SPEED = 0.75;
   }
 
   public static class ReefLevels {

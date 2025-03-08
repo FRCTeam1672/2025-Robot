@@ -76,7 +76,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-
+        NamedCommands.registerCommand("ScoreL2", arm.scoreL2().asProxy());
+        NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
+                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
+        );
         // Configure the trigger bindings
         try {
             configureBindings();
@@ -87,12 +90,6 @@ public class RobotContainer {
         }
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
-        NamedCommands.registerCommand("ScoreL2", arm.scoreL2().asProxy());
-        NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
-                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
-        );
-
     }
 
     private void configureBindings() throws FileVersionException, IOException, ParseException {
@@ -106,14 +103,16 @@ public class RobotContainer {
         driverPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
 
-        driverPS5.povUp().whileTrue(arm.shootCoral());
-        driverPS5.povDown().whileTrue(arm.dumIntakeCoral());
-        driverPS5.povRight().whileTrue(arm.shootAlgae());
-        driverPS5.povLeft().onTrue(arm.intakeAlgae());
+        driverPS5.circle().whileTrue(arm.shootCoral());
+        driverPS5.L1().whileTrue(arm.dumIntakeCoral());
+        driverPS5.povLeft().whileTrue(arm.shootAlgae());
+        driverPS5.L2().whileTrue(arm.dumIntakeAlgae());
 
         driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
-        driverPS5.circle().onTrue(arm.algaeL2());
+        driverPS5.povRight().onTrue(arm.algaeL2());
+        driverPS5.povUp().onTrue(arm.algaeL3());
+        driverPS5.povDown().onTrue(arm.homeNotAlgae());
 
         // CORAL AUTOSCORE
         driverPS5.R1().whileTrue(Commands.defer(() -> {
@@ -136,32 +135,33 @@ public class RobotContainer {
         }));
 
         // ALGAE AUTOSCORE
-        driverPS5.L1().whileTrue(Commands.defer(
-                () -> {
-                    try {
-                        System.out.println("Reef side " + scoringApp.getReefSide());
-                        System.out.println("Algae Level " + scoringApp.getAlgaeLevel());
-                        return drivebase.getPath("ALGAE-" + scoringApp.getReefSide())
-                                .andThen(arm.ioAlgae(scoringApp.getAlgaeLevel()));
-                    } catch (FileVersionException | IOException | ParseException e) {
-                        Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
-                                .withTitle("Could not load pathplanner path for algae auto-scoring.")
-                                .withDescription("Please use manual scoring.")
-                                .withDisplaySeconds(10));
-                        DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
-                        e.printStackTrace();
-                        return Commands.none();
-                    }
-                }, Set.of()).handleInterrupt(() -> {
-                    arm.homeEverything().schedule();
-                }));
+        // driverPS5.L1().whileTrue(Commands.defer(
+        //         () -> {
+        //             try {
+        //                 System.out.println("Reef side " + scoringApp.getReefSide());
+        //                 System.out.println("Algae Level " + scoringApp.getAlgaeLevel());
+        //                 return drivebase.getPath("ALGAE-" + scoringApp.getReefSide())
+        //                         .andThen(arm.ioAlgae(scoringApp.getAlgaeLevel()));
+        //             } catch (FileVersionException | IOException | ParseException e) {
+        //                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
+        //                         .withTitle("Could not load pathplanner path for algae auto-scoring.")
+        //                         .withDescription("Please use manual scoring.")
+        //                         .withDisplaySeconds(10));
+        //                 DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
+        //                 e.printStackTrace();
+        //                 return Commands.none();
+        //             }
+        //         }, Set.of()).handleInterrupt(() -> {
+        //             arm.homeEverything().schedule();
+        //         }));
+
         // CORAL STATION
         driverPS5.R2().whileTrue(Commands.defer(
                 () -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
                         return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
-                        // .andThen(arm.extendCoralStation());
+                        // .andThen(arm.extendCoralStation());a
                     } catch (FileVersionException | IOException | ParseException e) {
                         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                                 .withTitle("Could not load pathplanner path for coral station.")
@@ -171,7 +171,7 @@ public class RobotContainer {
                         e.printStackTrace();
                         return Commands.none();
                     }
-                }, Set.of()).handleInterrupt(() -> {
+                }, Set.of()).andThen(arm.extendCoralStation()).handleInterrupt(() -> {
                     arm.homeEverything().schedule();
                 }));
         // driverPS5.R1().onTrue(arm.scoreL3());
@@ -179,7 +179,6 @@ public class RobotContainer {
         oppsPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         oppsPS5.povLeft().onTrue(arm.processor());
         oppsPS5.povDown().onTrue(arm.extendL1());
-        oppsPS5.povRight().onTrue(arm.extendL2());
         oppsPS5.povUp().onTrue(arm.extendL3());
 
         oppsPS5.circle().onTrue(arm.algaeL2());

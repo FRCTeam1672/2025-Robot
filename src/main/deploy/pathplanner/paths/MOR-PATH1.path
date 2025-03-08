@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.097916666666666,
-        "y": 4.7796875
+        "x": 7.18063524590164,
+        "y": 1.585502049180327
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.747000000000001,
-        "y": 4.492999999999999
+        "x": 6.485348360655738,
+        "y": 1.993084016393442
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.40575,
-        "y": 4.13225
+        "x": 5.814036885245901,
+        "y": 2.41265368852459
       },
       "prevControl": {
-        "x": 6.785999999999999,
-        "y": 4.278499999999999
+        "x": 5.9219262295081965,
+        "y": 2.1848872950819667
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -176.42366562500277
+    "rotation": 127.66562119858327
   },
   "reversed": false,
-  "folder": "PATH FOR AUTO4",
+  "folder": "PATHS FOR MOUNT OLIVE REV.",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -166.60750224624897
+    "rotation": 151.72796392056728
   },
   "useDefaultConstraints": true
 }

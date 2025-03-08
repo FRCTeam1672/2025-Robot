@@ -106,7 +106,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         config.smartCurrentLimit(30);
         config.inverted(false);
-        config.closedLoop.maxOutput(0.2);
+        config.closedLoop.maxOutput(0.22);
         config.closedLoop.minOutput(-0.2);
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -216,6 +216,10 @@ public class ArmSubsystem extends SubsystemBase {
         return Commands.parallel(homeCoral(), homeElevator(), homeAlgae()).andThen(coralTo(CORAL_STOW_POSITION));
     }
 
+    public Command homeNotAlgae() {
+        return Commands.parallel(homeCoral(), homeElevator()).andThen(coralTo(CORAL_STOW_POSITION));
+    }
+
     public Command intakeCoral() {
         return Commands.run(() -> {
             coralShooter.set(CORAL_INTAKE_SPEED);
@@ -235,23 +239,13 @@ public class ArmSubsystem extends SubsystemBase {
         }).until(this::isAlgaeIntaked);
     }
 
-    public Command dumintakeAlgae() {
-        return Commands.run(() -> {
-            lAlgaeIntake.set(ALGAE_INTAKE_SPEED);
-            rAlgaeIntake.set(ALGAE_INTAKE_SPEED);
-        }).handleInterrupt(() -> {
-            rAlgaeIntake.stopMotor();
-            lAlgaeIntake.stopMotor();
-        });
-    }
-
     public Command dumIntakeAlgae() {
         return Commands.run(() -> {
             lAlgaeIntake.set(ALGAE_INTAKE_SPEED);
             rAlgaeIntake.set(ALGAE_INTAKE_SPEED);
         }).handleInterrupt(() -> {
-            lAlgaeIntake.stopMotor();
             rAlgaeIntake.stopMotor();
+            lAlgaeIntake.stopMotor();
         });
     }
 
