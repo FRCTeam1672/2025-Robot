@@ -80,6 +80,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
                 arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
         );
+        // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings
         try {
             configureBindings();
@@ -179,7 +180,7 @@ public class RobotContainer {
 
         oppsPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         oppsPS5.povLeft().onTrue(arm.processor());
-        oppsPS5.povDown().onTrue(arm.extendL1());
+        oppsPS5.povDown().onTrue(arm.extendL2());
         oppsPS5.povUp().onTrue(arm.extendL3());
 
         oppsPS5.circle().onTrue(arm.algaeL2());

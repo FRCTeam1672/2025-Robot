@@ -157,7 +157,7 @@ public class ArmSubsystem extends SubsystemBase {
                 .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
      public boolean isAlgaeGood() {
-        return algaeWrist.getEncoder().getPosition() <= 8;
+        return algaeWrist.getEncoder().getPosition() <= 13;
      }
 
     public boolean isCoralIntaked() {
@@ -308,6 +308,10 @@ public class ArmSubsystem extends SubsystemBase {
             default:
                 return Commands.none();
         }
+    }
+
+    public void zeroEncoders() {
+        
     }
 
     public Command scoreL2() {
