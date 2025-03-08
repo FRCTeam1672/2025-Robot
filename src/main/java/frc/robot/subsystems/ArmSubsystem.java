@@ -25,6 +25,7 @@ import static frc.robot.Constants.PIDConstants.ELEVATOR_D;
 import static frc.robot.Constants.PIDConstants.ELEVATOR_I;
 import static frc.robot.Constants.PIDConstants.ELEVATOR_P;
 import static frc.robot.Constants.ReefLevels.A_IO_POSITION;
+import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L3_POSITION;
@@ -332,15 +333,15 @@ public class ArmSubsystem extends SubsystemBase {
     // }
 
     public Command algaeL2() {
-        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_IO_POSITION));
+        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_TILT_HIGH_POSITION));
     }
 
     public Command algaeL3() {
-        return extendElevatorTo(E_AL3_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(dumIntakeAlgae()).withTimeout(1.5).andThen(homeElevator());
+        return extendElevatorTo(E_AL3_POSITION).andThen(algaeTo(A_TILT_HIGH_POSITION));
     }
 
     public Command processor() {
-        return extendElevatorTo(E_PROCESSOR_POSITION).andThen(algaeTo(A_IO_POSITION)).andThen(shootAlgae()).withTimeout(1.5).andThen(homeElevator());
+        return extendElevatorTo(E_PROCESSOR_POSITION).andThen(algaeTo(A_IO_POSITION));
     }
 
     public Command extendCoralStation() {

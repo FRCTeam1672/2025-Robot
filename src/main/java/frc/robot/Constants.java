@@ -82,14 +82,20 @@ public final class Constants
     public static final double C_L3_POSITION = 11.5;
 
 
-    public static final double A_TILT_HIGH_POSITION = 12;
+    public static final double A_TILT_HIGH_POSITION = 14
+    
+    
+    
+    
+    
+    ;
 
     public static final double E_PROCESSOR_POSITION = 2;
-    public static final double E_AL2_POSITION = 10;
-    public static final double E_AL3_POSITION = 0;
+    public static final double E_AL2_POSITION = 40;
+    public static final double E_AL3_POSITION = 75;
     public static final double A_IO_POSITION = 8;
 
-    public static final double E_STATION_POSITION = 19.1;
+    public static final double E_STATION_POSITION = 18.1;
     public static final double C_STATION_POSITION = 6.14;
   }
 
