@@ -157,7 +157,7 @@ public class ArmSubsystem extends SubsystemBase {
                 .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
      public boolean isAlgaeGood() {
-        return algaeWrist.getEncoder().getPosition() <= 13;
+        return algaeWrist.getEncoder().getPosition() <= 8;
      }
 
     public boolean isCoralIntaked() {
