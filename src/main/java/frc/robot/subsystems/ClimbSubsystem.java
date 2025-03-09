@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.ClimbConstants.CLIMB_LIMIT;
 import static frc.robot.Constants.ClimbConstants.CLIMB_SPEED;
 import static frc.robot.Constants.Tolerances.CLIMB_TOLERANCE;
 

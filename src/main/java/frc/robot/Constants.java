@@ -69,6 +69,7 @@ public final class Constants
     public static final double CORAL_INTAKE_SPEED = -0.3;
     public static final double ALGAE_INTAKE_SPEED = -1.0;
     public static final double CORAL_SHOOT_SPEED = 0.3;
+    public static final double CORAL_IDLE_SPEED = 0.05;
     public static final double ALGAE_SHOOT_SPEED = 0.75;
   }
 

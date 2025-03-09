@@ -4,12 +4,10 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.ClimbConstants.CLIMB_SPEED;
 import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Driver;
 import java.util.Set;
 
 import org.json.simple.parser.ParseException;
@@ -24,11 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -80,6 +75,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
                 arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
         );
+        NamedCommands.registerCommand("ExtendL2", arm.extendL2());
+        NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation());
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings
         try {
