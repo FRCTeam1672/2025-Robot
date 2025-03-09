@@ -76,6 +76,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        NamedCommands.registerCommand("ExtendL2", arm.extendL2().asProxy());
+        NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2().asProxy());
         NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
                 arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))

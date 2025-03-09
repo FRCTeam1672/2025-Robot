@@ -21,6 +21,24 @@
           "data": {
             "name": "ScoreL2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MOR-PATH2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STATION-5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
         }
       ]
     }

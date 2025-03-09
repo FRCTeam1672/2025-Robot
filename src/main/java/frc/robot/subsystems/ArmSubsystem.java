@@ -87,7 +87,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 
         config.smartCurrentLimit(40);
-        config.idleMode(IdleMode.kBrake);
+        config.idleMode(IdleMode.kCoast);
         config.inverted(false);
 
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
