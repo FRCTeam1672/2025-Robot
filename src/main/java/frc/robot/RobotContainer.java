@@ -76,7 +76,7 @@ public class RobotContainer {
                 arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
         );
         NamedCommands.registerCommand("ExtendL2", arm.extendL2());
-        NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation());
+        NamedCommands.registerCommand("ExtendStxation", arm.extendCoralStation());
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings
         try {

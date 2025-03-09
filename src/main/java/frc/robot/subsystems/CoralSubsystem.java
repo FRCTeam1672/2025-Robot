@@ -49,7 +49,7 @@ public class CoralSubsystem extends SubsystemBase {
     config.closedLoop.minOutput(-0.15);
     coralWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    setDefaultCommand(run(() -> coralShooter.set(CORAL_IDLE_SPEED)));
+    setDefaultCommand(run(() -> coralShooter.set(-CORAL_IDLE_SPEED)));
   }
 
   @Override
