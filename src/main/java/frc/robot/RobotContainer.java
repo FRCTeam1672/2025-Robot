@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
+import static frc.robot.Constants.ReefLevel.A_TILT_HIGH_POSITION;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
+import frc.robot.util.ReefAlignment;
 import org.json.simple.parser.ParseException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -88,12 +89,24 @@ public class RobotContainer {
         }
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        SmartDashboard.putData("DO thingy", Commands.runOnce(() -> {
+            String[] Reef = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"};
+            for(String alignment : Reef) {
+                drivebase.alignTo(alignment);
+            }
+        }).ignoringDisable(true));
     }
 
     private void configureBindings() throws FileVersionException, IOException, ParseException {
-
         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+
+        String[] Reef = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"};
+            for(String alignment : Reef) {
+                drivebase.alignTo(alignment);
+        }
 
         // Driver PS5
 

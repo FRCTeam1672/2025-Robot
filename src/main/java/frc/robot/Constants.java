@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -37,6 +38,18 @@ public final class Constants
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
+  }
+
+  public static class ReefPose {
+    public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.5, 4);
+    public static final Translation2d RED_REEF_CENTER = new Translation2d(13, 4);
+    //positive = further way
+    public static final Translation2d frontBackOffset = new Translation2d(1.5, 0);
+    //positive = further from the center
+
+    public static final Translation2d centerOffset = new Translation2d(0, 0.1536);
+    public static final Translation2d leftRightOffset = new Translation2d(0, 0.05);
+
   }
 
   public static class PIDConstants {
@@ -73,7 +86,7 @@ public final class Constants
     public static final double ALGAE_SHOOT_SPEED = 0.75;
   }
 
-  public static class ReefLevels {
+  public static class ReefLevel {
     public static final double E_L1_POSITION = 15;
     public static final double E_L2_POSITION = 30;
     public static final double E_L3_POSITION = 65.5;

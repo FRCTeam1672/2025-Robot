@@ -31,12 +31,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.ReefLevel;
 import frc.robot.subsystems.swervedrive.BadVision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import frc.robot.util.Reef;
+import frc.robot.util.ReefAlignment;
 import org.json.simple.parser.ParseException;
 import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
@@ -217,6 +222,13 @@ public class SwerveSubsystem extends SubsystemBase {
     // Preload PathPlanner Path finding
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
+  }
+
+
+  public Command alignTo(String side) {
+    ReefAlignment alignment = Reef.fromSide(side);
+    swerveDrive.field.getObject("Calculated-" + side).setPose(alignment.getAlignmentPose());
+    return driveToPose(alignment.getAlignmentPose());
   }
 
   /**
