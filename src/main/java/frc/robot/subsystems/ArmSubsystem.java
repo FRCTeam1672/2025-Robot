@@ -15,15 +15,15 @@ import static frc.robot.Constants.IOSpeeds.ALGAE_INTAKE_SPEED;
 import static frc.robot.Constants.IOSpeeds.ALGAE_SHOOT_SPEED;
 import static frc.robot.Constants.IOSpeeds.CORAL_INTAKE_SPEED;
 import static frc.robot.Constants.IOSpeeds.CORAL_SHOOT_SPEED;
-import static frc.robot.Constants.PIDConstants.A_WRIST_D;
-import static frc.robot.Constants.PIDConstants.A_WRIST_I;
-import static frc.robot.Constants.PIDConstants.A_WRIST_P;
-import static frc.robot.Constants.PIDConstants.C_WRIST_D;
-import static frc.robot.Constants.PIDConstants.C_WRIST_I;
-import static frc.robot.Constants.PIDConstants.C_WRIST_P;
-import static frc.robot.Constants.PIDConstants.ELEVATOR_D;
-import static frc.robot.Constants.PIDConstants.ELEVATOR_I;
-import static frc.robot.Constants.PIDConstants.ELEVATOR_P;
+import static frc.robot.Constants.ElevPID.A_WRIST_D;
+import static frc.robot.Constants.ElevPID.A_WRIST_I;
+import static frc.robot.Constants.ElevPID.A_WRIST_P;
+import static frc.robot.Constants.ElevPID.C_WRIST_D;
+import static frc.robot.Constants.ElevPID.C_WRIST_I;
+import static frc.robot.Constants.ElevPID.C_WRIST_P;
+import static frc.robot.Constants.ElevPID.ELEVATOR_D;
+import static frc.robot.Constants.ElevPID.ELEVATOR_I;
+import static frc.robot.Constants.ElevPID.ELEVATOR_P;
 import static frc.robot.Constants.ReefLevels.A_IO_POSITION;
 import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 import static frc.robot.Constants.ReefLevels.C_L1_POSITION;
@@ -87,7 +87,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 
         config.smartCurrentLimit(40);
-        config.idleMode(IdleMode.kCoast);
+        config.idleMode(IdleMode.kBrake);
         config.inverted(false);
 
         config.closedLoop.pid(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
@@ -106,7 +106,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         config.smartCurrentLimit(30);
         config.inverted(false);
-        config.closedLoop.maxOutput(0.22);
+        config.closedLoop.maxOutput(0.3);
         config.closedLoop.minOutput(-0.2);
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -157,7 +157,7 @@ public class ArmSubsystem extends SubsystemBase {
                 .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
      public boolean isAlgaeGood() {
-        return algaeWrist.getEncoder().getPosition() <= 8;
+        return algaeWrist.getEncoder().getPosition() <= 11;
      }
 
     public boolean isCoralIntaked() {

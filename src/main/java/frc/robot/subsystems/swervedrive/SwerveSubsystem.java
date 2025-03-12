@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -29,6 +30,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -38,11 +40,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.PositionPIDCommand;
 import frc.robot.subsystems.swervedrive.BadVision.Cameras;
+import frc.robot.util.Reef;
+import frc.robot.util.ReefAlignment;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -184,14 +191,7 @@ public class SwerveSubsystem extends SubsystemBase {
           },
           // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also
           // optionally outputs individual module feedforwards
-          new PPHolonomicDriveController(
-              // PPHolonomicController is the built in path following controller for holonomic
-              // drive trains
-              new PIDConstants(5.0, 0.0, 0.0),
-              // Translation PID constants
-              new PIDConstants(0.9, 0.0, 0.02)
-          // Rotation PID constants
-          ),
+          Constants.DrivebaseConstants.PP_CONTROLLER,
           config,
           // The robot configuration
           () -> {
@@ -220,6 +220,10 @@ public class SwerveSubsystem extends SubsystemBase {
     PathfindingCommand.warmupCommand().schedule();
   }
 
+  public Command alignToReef(String name) {
+    ReefAlignment fromSide = Reef.fromSide(name);
+    return driveToPose(fromSide.getAlignmentPose()).andThen(PositionPIDCommand.generateCommand(this, fromSide.getAlignmentPose(), Seconds.of(2)));
+  }
   /**
    * Aim the robot at the target returned by PhotonVision.
    *

@@ -102,7 +102,7 @@ public class RobotContainer {
 
         // Driver PS5
 
-        driverPS5.cross().onTrue(arm.homeEverything());
+        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true));
         driverPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
 
@@ -122,10 +122,10 @@ public class RobotContainer {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
-                return drivebase.getPath("CORAL-" + scoringApp.getReefSide())
+                return drivebase.alignToReef(scoringApp.getReefSide())
                         .andThen(arm.extendTo(scoringApp.getCoralLevel()));
                 // arm.scoreCoral(scoringApp.getCoralLevel())
-            } catch (FileVersionException | IOException | ParseException e) {
+            } catch (FileVersionException e) {
                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
                         .withTitle("Could not load pathplanner path for coral auto-scoring.")
                         .withDescription("Please use manual scoring.")

@@ -35,15 +35,15 @@ public class VisionSubsystem extends SubsystemBase {
     private final PhotonCamera frontCam = new PhotonCamera("1672_Camera1");
     private final PhotonCamera backCam = new PhotonCamera("1672_Camera2");
 
-    private final Transform3d frontCamPos = new Transform3d(new Translation3d(Units.inchesToMeters(6),
+    private final Transform3d frontCamPos = new Transform3d(new Translation3d(Units.inchesToMeters(0),
             Units.inchesToMeters(-11),
             Units.inchesToMeters(25)),
-            new Rotation3d(0, Math.toRadians(0), Math.toRadians(3)));
+            new Rotation3d(0, Math.toRadians(0), Math.toRadians(-3.3)));
 
     private final Transform3d backCamPos = new Transform3d(new Translation3d(Units.inchesToMeters(4),
             Units.inchesToMeters(-11),
             Units.inchesToMeters(25)),
-            new Rotation3d(0, Math.toRadians(0), Math.toRadians(180))); // Cam mounted facing forward, half a meter
+            new Rotation3d(0, Math.toRadians(-2), Math.toRadians(179))); // Cam mounted facing forward, half a meter
                                                                         // forward of center, half a meter up from
                                                                         // center.
 
