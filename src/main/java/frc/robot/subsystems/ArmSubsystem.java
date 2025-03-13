@@ -152,6 +152,12 @@ public class ArmSubsystem extends SubsystemBase {
         }
     }
 
+    public Command zeroCoralWrist() {
+        return Commands.runOnce(() -> {
+            coralWrist.getEncoder().setPosition(0);
+        });
+    }
+
     public boolean isElevatorGood() {
         return Math
                 .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;

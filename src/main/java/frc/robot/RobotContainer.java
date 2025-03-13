@@ -93,6 +93,7 @@ public class RobotContainer {
         }
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
     }
 
     private void configureBindings() throws FileVersionException, IOException, ParseException {
