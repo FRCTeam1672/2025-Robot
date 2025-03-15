@@ -123,7 +123,7 @@ public class RobotContainer {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
-                return drivebase.alignToReef(scoringApp.getReefSide())
+                return drivebase.alignTo(scoringApp.getReefSide())
                         .andThen(arm.extendTo(scoringApp.getCoralLevel()));
                 // arm.scoreCoral(scoringApp.getCoralLevel())
             } catch (FileVersionException e) {

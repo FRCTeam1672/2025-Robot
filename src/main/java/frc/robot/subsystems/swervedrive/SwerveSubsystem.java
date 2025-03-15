@@ -5,16 +5,21 @@
 package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
@@ -30,6 +35,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -41,6 +47,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.PositionPIDCommand;
+import frc.robot.Robot;
 import frc.robot.subsystems.swervedrive.BadVision.Cameras;
 import frc.robot.util.Reef;
 import frc.robot.util.ReefAlignment;
@@ -48,6 +55,7 @@ import frc.robot.util.ReefAlignment;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -94,9 +102,11 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
-          new Pose2d(new Translation2d(Meter.of(0),
-              Meter.of(0)),
-              Rotation2d.fromDegrees(0)));
+          Robot.isSimulation() ? new Pose2d(new Translation2d(Meter.of(2),
+          Meter.of(2)),
+          Rotation2d.fromDegrees(0)) : new Pose2d(new Translation2d(Meter.of(0),
+          Meter.of(0)),
+          Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON
       // files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
@@ -125,20 +135,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     setupPathPlanner();
     RobotModeTriggers.autonomous().onTrue(Commands.runOnce(swerveDrive::zeroGyro));
-  }
-
-  /**
-   * Construct the swerve drive.
-   *
-   * @param driveCfg      SwerveDriveConfiguration for the swerve.
-   * @param controllerCfg Swerve Controller.
-   */
-  public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg) {
-    swerveDrive = new SwerveDrive(driveCfg,
-        controllerCfg,
-        Constants.MAX_SPEED,
-        new Pose2d(new Translation2d(Meter.of(0), Meter.of(0)),
-            Rotation2d.fromDegrees(0)));
   }
 
   /**
@@ -218,11 +214,46 @@ public class SwerveSubsystem extends SubsystemBase {
     // Preload PathPlanner Path finding
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
+    FollowPathCommand.warmupCommand().schedule();;
   }
 
-  public Command alignToReef(String name) {
-    ReefAlignment fromSide = Reef.fromSide(name);
-    return driveToPose(fromSide.getAlignmentPose()).andThen(PositionPIDCommand.generateCommand(this, fromSide.getAlignmentPose(), Seconds.of(2)));
+  public Command alignTo(String side) {
+    ReefAlignment alignment = Reef.fromSide(side);
+    Pose2d waypoint = alignment.getAlignmentPose();
+    swerveDrive.field.getObject("Calculated-" + side).setPose(alignment.getAlignmentPose());
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(swerveDrive.getPose().getTranslation(),
+            getPathVelocityHeading(swerveDrive.getFieldVelocity(), waypoint)),
+        waypoint);
+
+    PathConstraints constraints = new PathConstraints(
+        1, 3,
+        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
+
+    PathPlannerPath path = new PathPlannerPath(
+        waypoints,
+        constraints,
+        new IdealStartingState(getVelocityMagnitude(swerveDrive.getFieldVelocity()), swerveDrive.getOdometryHeading()),
+        new GoalEndState(0.0, waypoint.getRotation())
+    );
+    path.preventFlipping = true;
+    return AutoBuilder.followPath(path).andThen(
+      Commands.print("start position PID loop"),
+      PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(2)),
+      Commands.print("end position PID loop")
+  );
+  }
+
+  private Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {
+    if (getVelocityMagnitude(cs).in(MetersPerSecond) < 0.25) {
+      var diff = target.minus(swerveDrive.getPose()).getTranslation();
+      return (diff.getNorm() < 0.01) ? target.getRotation() : diff.getAngle();// .rotateBy(Rotation2d.k180deg);
+    }
+    return new Rotation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond);
+  }
+
+  private LinearVelocity getVelocityMagnitude(ChassisSpeeds cs) {
+    return MetersPerSecond.of(new Translation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond).getNorm());
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
