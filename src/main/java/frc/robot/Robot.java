@@ -83,6 +83,8 @@ public class Robot extends TimedRobot
 
     SmartDashboard.putNumber("FMS/MatchTime", DriverStation.getMatchTime());
     SmartDashboard.putNumber("FMS/MatchNumber", DriverStation.getMatchNumber());
+
+    SmartDashboard.putBoolean("Controller/SlowMode", m_robotContainer.isSlowMode());
   }
 
   /**

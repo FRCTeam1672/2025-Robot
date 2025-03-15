@@ -65,12 +65,17 @@ public class RobotContainer {
      * by angular velocity.
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-            () -> -driverPS5.getLeftY(),
-            () -> -driverPS5.getLeftX())
+            () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
+            () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
             .withControllerRotationAxis(() -> -driverPS5.getRightX())
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
+
+
+    public boolean isSlowMode() {
+        return driverPS5.L1().getAsBoolean();
+    }
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -108,8 +113,14 @@ public class RobotContainer {
         driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
 
         driverPS5.circle().whileTrue(arm.shootCoral());
+        //L1 IS USED FOR THE SLOW MODE 
+
         driverPS5.L1().whileTrue(arm.dumIntakeCoral());
         driverPS5.povLeft().whileTrue(arm.shootAlgae());
+
+
+
+
         driverPS5.L2().whileTrue(arm.dumIntakeAlgae());
 
         driverPS5.triangle().onTrue(arm.extendCoralStation());
@@ -138,27 +149,6 @@ public class RobotContainer {
         }, Set.of()).handleInterrupt(() -> {
             arm.homeEverything().schedule();
         }));
-
-        // ALGAE AUTOSCORE
-        // driverPS5.L1().whileTrue(Commands.defer(
-        //         () -> {
-        //             try {
-        //                 System.out.println("Reef side " + scoringApp.getReefSide());
-        //                 System.out.println("Algae Level " + scoringApp.getAlgaeLevel());
-        //                 return drivebase.getPath("ALGAE-" + scoringApp.getReefSide())
-        //                         .andThen(arm.ioAlgae(scoringApp.getAlgaeLevel()));
-        //             } catch (FileVersionException | IOException | ParseException e) {
-        //                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
-        //                         .withTitle("Could not load pathplanner path for algae auto-scoring.")
-        //                         .withDescription("Please use manual scoring.")
-        //                         .withDisplaySeconds(10));
-        //                 DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
-        //                 e.printStackTrace();
-        //                 return Commands.none();
-        //             }
-        //         }, Set.of()).handleInterrupt(() -> {
-        //             arm.homeEverything().schedule();
-        //         }));
 
         // CORAL STATION
         driverPS5.R2().whileTrue(Commands.defer(
