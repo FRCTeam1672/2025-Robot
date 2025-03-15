@@ -86,6 +86,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 
 
+        //TODO: CHANEG
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
         config.inverted(false);
@@ -97,6 +98,7 @@ public class ArmSubsystem extends SubsystemBase {
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        //TODO CHANGE
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
@@ -110,6 +112,12 @@ public class ArmSubsystem extends SubsystemBase {
         config.closedLoop.minOutput(-0.2);
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        setDefaultCommand(run(
+            () -> {
+                coralShooter.set(-0.07);
+            }
+        ));
     }
 
     @Override
@@ -227,13 +235,13 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command intakeCoral() {
-        return Commands.run(() -> {
+        return run(() -> {
             coralShooter.set(CORAL_INTAKE_SPEED);
         }).until(this::isCoralIntaked);
     }
 
     public Command dumIntakeCoral() {
-        return Commands.run(() -> {
+        return run(() -> {
             coralShooter.set(CORAL_INTAKE_SPEED);
         }).handleInterrupt(coralShooter::stopMotor);
     }
@@ -256,7 +264,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command shootCoral() {
-        return Commands.run(() -> {
+        return run(() -> {
             coralShooter.set(CORAL_SHOOT_SPEED);
         }).handleInterrupt(() -> {
             coralShooter.stopMotor();

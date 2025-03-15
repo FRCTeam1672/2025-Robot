@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -92,11 +95,11 @@ public final class Constants
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.5, 4);
     public static final Translation2d RED_REEF_CENTER = new Translation2d(13, 4);
     //positive = further way
-    public static final Translation2d frontBackOffset = new Translation2d(1.3, 0);
+    public static final Translation2d frontBackOffset = new Translation2d(Inches.of(55).in(Meters), 0);
     //positive = further from the center
 
-    public static final Translation2d centerOffset = new Translation2d(0, 0.15336);
-    public static final Translation2d leftRightOffset = new Translation2d(0, 0.18);
+    public static final Translation2d centerOffset = new Translation2d(0, Inches.of(5.9).in(Meters));
+    public static final Translation2d leftRightOffset = new Translation2d(0, Inches.of(3.5).in(Meters));
 
   }
 
@@ -116,8 +119,8 @@ public final class Constants
     public static final double E_AL3_POSITION = 75;
     public static final double A_IO_POSITION = 8;
 
-    public static final double E_STATION_POSITION = 17; // tweak this value a bit
-    public static final double C_STATION_POSITION = 6.14;
+    public static final double E_STATION_POSITION = 18.34; // tweak this value a bit
+    public static final double C_STATION_POSITION = 5.95;
   }
 
   public static class Tolerances {

@@ -220,14 +220,16 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command alignTo(String side) {
     ReefAlignment alignment = Reef.fromSide(side);
     Pose2d waypoint = alignment.getAlignmentPose();
-    swerveDrive.field.getObject("Calculated-" + side).setPose(alignment.getAlignmentPose());
+    swerveDrive.field.getObject("AlignPose").setPose(alignment.getAlignmentPose()); 
+    swerveDrive.field.getObject("InitialPose").setPose(alignment.getInitalPose());
+    swerveDrive.field.getObject("CenterPose").setPose(alignment.getCenterPose());
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(swerveDrive.getPose().getTranslation(),
-            getPathVelocityHeading(swerveDrive.getFieldVelocity(), waypoint)),
-        waypoint);
+        alignment.getInitalPose(),
+        waypoint
+    );
 
     PathConstraints constraints = new PathConstraints(
-        1, 3,
+        0.75, 1,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     PathPlannerPath path = new PathPlannerPath(
@@ -237,11 +239,12 @@ public class SwerveSubsystem extends SubsystemBase {
         new GoalEndState(0.0, waypoint.getRotation())
     );
     path.preventFlipping = true;
-    return AutoBuilder.followPath(path).andThen(
+    return driveToPose(alignment.getInitalPose()).andThen(
+      AutoBuilder.followPath(path).andThen(
       Commands.print("start position PID loop"),
       PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(2)),
-      Commands.print("end position PID loop")
-  );
+      Commands.print("end position PID loop"))
+    );
   }
 
   private Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {
@@ -309,7 +312,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveToPose(Pose2d pose) {
     // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        0.9, 1,
+        1.3, 1,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands

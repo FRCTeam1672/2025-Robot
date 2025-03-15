@@ -15,6 +15,16 @@ public record ReefAlignment(ReefOrientation orientation, ReefSide side) {
         reefPose = reefPose.rotateAround(BLUE_REEF_CENTER, Rotation2d.fromDegrees(orientation.getReefRotation()));
         return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
     }
+    public Pose2d getInitalPose() {
+        Translation2d reefPose = BLUE_REEF_CENTER.minus(new Translation2d(2, 0)).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1)).minus(leftRightOffset);
+        reefPose = reefPose.rotateAround(BLUE_REEF_CENTER, Rotation2d.fromDegrees(orientation.getReefRotation()));
+        return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
+    }
+
+    public Pose2d getCenterPose() {
+        Translation2d reefPose = BLUE_REEF_CENTER.minus(new Translation2d(2, 0)).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1));
+        return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
+    }
 
     private Pose2d flipPose(Pose2d pose) {
         if(!DriverStation.getAlliance().isPresent() || DriverStation.getAlliance().get() == Alliance.Blue){

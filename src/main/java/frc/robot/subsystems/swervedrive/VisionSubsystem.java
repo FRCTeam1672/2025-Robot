@@ -12,10 +12,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.counter.UpDownCounter;
@@ -88,6 +90,8 @@ public class VisionSubsystem extends SubsystemBase {
             if (frontUpdate.isPresent()) {
                 if(frontPhotonPipelineResult.getBestTarget().poseAmbiguity < 0.4) {
                     EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
+
+                swerve.field.getObject("FrontPose").setPose(estimatedRobotPose.estimatedPose.toPose2d());
                 swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         frontPhotonPipelineResult.getTimestampSeconds());
                 }
@@ -99,6 +103,7 @@ public class VisionSubsystem extends SubsystemBase {
             if (backUpdate.isPresent()) {
                 if(backPhotonPipelineResult.getBestTarget().poseAmbiguity < 0.4) {
                 EstimatedRobotPose estimatedRobotPose = backUpdate.get();
+                swerve.field.getObject("BackPose").setPose(estimatedRobotPose.estimatedPose.toPose2d());
                 swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         backPhotonPipelineResult.getTimestampSeconds());
                 }

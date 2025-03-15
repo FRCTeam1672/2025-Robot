@@ -14,10 +14,10 @@ public class Reef {
             case "f" -> new ReefAlignment(ReefOrientation.BACK_RIGHT, ReefSide.RIGHT);
             case "g" -> new ReefAlignment(ReefOrientation.BACK, ReefSide.LEFT);
             case "h" -> new ReefAlignment(ReefOrientation.BACK, ReefSide.RIGHT);
-            case "i" -> new ReefAlignment(ReefOrientation.BACK_LEFT, ReefSide.LEFT);
-            case "j" -> new ReefAlignment(ReefOrientation.BACK_LEFT, ReefSide.RIGHT);
-            case "k" -> new ReefAlignment(ReefOrientation.FRONT_LEFT, ReefSide.LEFT);
-            case "l" -> new ReefAlignment(ReefOrientation.FRONT_LEFT, ReefSide.RIGHT);
+            case "k" -> new ReefAlignment(ReefOrientation.BACK_LEFT, ReefSide.LEFT);
+            case "l" -> new ReefAlignment(ReefOrientation.BACK_LEFT, ReefSide.RIGHT);
+            case "i" -> new ReefAlignment(ReefOrientation.FRONT_LEFT, ReefSide.LEFT);
+            case "j" -> new ReefAlignment(ReefOrientation.FRONT_LEFT, ReefSide.RIGHT);
             default -> throw new IllegalArgumentException("Illegal side.");
         };
 

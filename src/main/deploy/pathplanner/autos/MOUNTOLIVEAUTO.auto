@@ -11,15 +11,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "CORAL-I"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "ScoreL2"
+            "name": "AlignL3_I"
           }
         },
         {

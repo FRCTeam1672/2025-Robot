@@ -27,7 +27,7 @@ public class PositionPIDCommand extends Command{
       // drive trains
       new PIDConstants(8, 0.15, 0.03),
       // Translation PID constants
-      new PIDConstants(1.9, 0.0, 0.02)
+      new PIDConstants(2.5, 0.0, 0.02)
     );;
 
     private final Trigger endTrigger;
