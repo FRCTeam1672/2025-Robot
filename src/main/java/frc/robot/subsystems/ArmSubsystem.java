@@ -328,26 +328,26 @@ public class ArmSubsystem extends SubsystemBase {
         
     }
 
-    public Command scoreL2() {
-        return extendL2().andThen(Commands.waitSeconds(0.5).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything());
+    public Command scoreL2(boolean home) {
+        return extendL2().andThen(Commands.waitSeconds(0.3).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything()).onlyIf(() -> home);
     }
 
     public Command extendL3() {
         return extendElevatorTo(E_L3_POSITION).andThen(coralTo(C_L3_POSITION));
     }
 
-    public Command scoreL3() {
-        return extendL3().andThen(Commands.waitSeconds(0.3).andThen(shootCoral().withTimeout(0.5))).andThen(homeEverything());
+    public Command scoreL3(boolean home) {
+        return extendL3().andThen(Commands.waitSeconds(0.3).andThen(shootCoral().withTimeout(0.5))).andThen(homeEverything()).onlyIf(() -> home);
     }
 
-    public Command scoreCoral(int level) {
+    public Command scoreCoral(int level, boolean home) {
         switch (level) {
             case 1:
                 return scoreL1();
             case 2:
-                return scoreL2();
+                return scoreL2(home);
             case 3:
-                return scoreL3();
+                return scoreL3(home);
             default:
                 return Commands.none();
         }
@@ -384,5 +384,28 @@ public class ArmSubsystem extends SubsystemBase {
             default:
                 return Commands.none();
         }
+    }
+
+    @Override
+    public void simulationPeriodic() {
+        if(coralWristPosition != coralWrist.getEncoder().getPosition()) {
+            Commands.waitSeconds(0.5).andThen(Commands.runOnce(() -> {
+                coralWrist.getEncoder().setPosition(coralWristPosition);
+            })).schedule();
+        }
+        if(elevatorPosition != lElevator.getEncoder().getPosition()) {
+            Commands.waitSeconds(1.5).andThen(Commands.runOnce(() -> {
+                lElevator.getEncoder().setPosition(elevatorPosition);
+                rElevator.getEncoder().setPosition(elevatorPosition);
+            })).schedule();
+            
+
+        }
+        if(algaeWristPosition != algaeWrist.getEncoder().getPosition()) {
+            Commands.waitSeconds(0.5).andThen(Commands.runOnce(() -> {
+                algaeWrist.getEncoder().setPosition(algaeWristPosition);
+            })).schedule();
+        }
+
     }
 }

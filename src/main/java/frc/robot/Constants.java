@@ -78,7 +78,7 @@ public final class Constants
   } // 4 for intaking from coral station
 
   public static class HomeConstants {
-    public static final double CORAL_HOME_POSITION = 5.5;
+    public static final double CORAL_HOME_POSITION = 3.5;
     public static final double CORAL_STOW_POSITION = 0.5;
     public static final double ALGAE_HOME_POSITION = 1.0;
     public static final double ELEVATOR_HOME_POSITION = 0.0;

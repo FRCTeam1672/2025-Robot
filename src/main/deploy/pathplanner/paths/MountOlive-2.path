@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.29675,
-        "y": 7.05725
+        "x": 1.9533390410958904,
+        "y": 6.151134417808219
       },
       "prevControl": {
-        "x": 3.3832500000000003,
-        "y": 4.882999999999999
+        "x": 4.039839041095888,
+        "y": 3.9768844178082183
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
+      "name": "HomeEverything",
       "waypointRelativePos": 0.1399503722084321,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ExtendStation"
+          "name": "HomeEverything"
         }
       }
     }

@@ -103,11 +103,10 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
-          Robot.isSimulation() ? new Pose2d(new Translation2d(Meter.of(2),
-          Meter.of(2)),
-          Rotation2d.fromDegrees(0)) : new Pose2d(new Translation2d(Meter.of(0),
-          Meter.of(0)),
-          Rotation2d.fromDegrees(0)));
+      //IF SIMULATIOn, INITAL POSE
+          Robot.isSimulation() ? new Pose2d(new Translation2d(Meter.of(8.7), Meter.of(6.35)),Rotation2d.fromDegrees(0)) 
+          //IF REAL, INITAL POSE
+          : new Pose2d(new Translation2d(Meter.of(0), Meter.of(0)), Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON
       // files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
@@ -218,7 +217,7 @@ public class SwerveSubsystem extends SubsystemBase {
     FollowPathCommand.warmupCommand().schedule();;
   }
 
-  public Command alignTo(String side) {
+  public Command alignToAndExtend(String side, Command extendCommand) {
     ReefAlignment alignment = Reef.fromSide(side);
     Pose2d waypoint = alignment.getAlignmentPose();
     swerveDrive.field.getObject("AlignPose").setPose(alignment.getAlignmentPose()); 
@@ -241,10 +240,13 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-      AutoBuilder.followPath(path).andThen(
-      Commands.print("start position PID loop"),
-      PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(2)),
-      Commands.print("end position PID loop"))
+    
+        AutoBuilder.followPath(path).andThen(
+          Commands.print("start position PID loop"),
+          PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(2)),
+          Commands.print("end position PID loop")
+        )
+      
     );
   }
 

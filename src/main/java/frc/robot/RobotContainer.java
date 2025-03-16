@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
@@ -67,7 +68,7 @@ public class RobotContainer {
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
             () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
             () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
-            .withControllerRotationAxis(() -> -driverPS5.getRightX())
+            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.3 : 1))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
@@ -81,11 +82,14 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        NamedCommands.registerCommand("AlignL2_I", drivebase.alignToAndExtend("I", arm.extendL2()).andThen(arm.scoreL2(false)));
+        NamedCommands.registerCommand("AlignL2_J", drivebase.alignToAndExtend("J", arm.extendL2()).andThen(arm.scoreL2(false)));
+        NamedCommands.registerCommand("HomeEverything", arm.homeEverything());
         NamedCommands.registerCommand("ExtendL2", arm.extendL2().asProxy());
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
-        NamedCommands.registerCommand("ScoreL2", arm.scoreL2().asProxy());
-        NamedCommands.registerCommand("IntakeCoral", new ProxyCommand(
-                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(2)).andThen(arm.homeEverything()))
+        NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
+        NamedCommands.registerCommand("IntakeCoral", 
+                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(1)).andThen(arm.homeEverything(), Commands.print("COMPLETED INTAKE!"))
         );
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings
@@ -134,7 +138,7 @@ public class RobotContainer {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
-                return drivebase.alignTo(scoringApp.getReefSide())
+                return drivebase.alignToAndExtend(scoringApp.getReefSide(), arm.extendTo(scoringApp.getCoralLevel()))
                         .andThen(arm.extendTo(scoringApp.getCoralLevel()));
                 // arm.scoreCoral(scoringApp.getCoralLevel())
             } catch (FileVersionException e) {
