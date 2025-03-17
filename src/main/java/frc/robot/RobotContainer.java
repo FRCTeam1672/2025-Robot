@@ -82,7 +82,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
         NamedCommands.registerCommand("IntakeCoral",
                                                                                                         //schedule command runs in the background
-                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(1)).andThen(arm.homeEverything().asProxy(), Commands.print("COMPLETED INTAKE!"))
+                arm.dumIntakeCoral().withTimeout(0.5)
         );
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings

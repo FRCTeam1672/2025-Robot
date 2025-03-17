@@ -27,7 +27,7 @@ public class PositionPIDCommand extends Command{
       // drive trains
       new PIDConstants(8, 0.15, 0.03),
       // Translation PID constants
-      new PIDConstants(2.5, 0.0, 0.02)
+      new PIDConstants(1.8, 0.0, 0.02)
     );;
 
     private final Trigger endTrigger;
@@ -59,7 +59,7 @@ public class PositionPIDCommand extends Command{
             return rotation && position && speed;
         });
 
-        endTriggerDebounced = endTrigger.debounce(1);
+        endTriggerDebounced = endTrigger.debounce(0.03);
     }
 
     public static Command generateCommand(SwerveSubsystem swerve, Pose2d goalPose, Time timeout){

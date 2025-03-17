@@ -229,7 +229,7 @@ public class SwerveSubsystem extends SubsystemBase {
     );
 
     PathConstraints constraints = new PathConstraints(
-        0.75, 1,
+        0.45, 1.5,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     PathPlannerPath path = new PathPlannerPath(
@@ -243,7 +243,7 @@ public class SwerveSubsystem extends SubsystemBase {
     
         AutoBuilder.followPath(path).andThen(
           Commands.print("start position PID loop"),
-          PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(2)),
+          // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
           Commands.print("end position PID loop")
         )
       

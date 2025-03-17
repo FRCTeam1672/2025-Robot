@@ -94,23 +94,23 @@ public final class Constants
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(Meters.of(4.5), Meters.of(4));
     public static final Translation2d RED_REEF_CENTER = new Translation2d(Meters.of(13), Meters.of(4));
     //positive = further way
-    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(55), Inches.of(0));
+    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(54), Inches.of(0));
     //positive = further from the center
 
     public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
 
     public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(5.9));
-    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(3.5));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(3.7));
 
   }
 
   public static class ReefLevels {
     public static final double E_L1_POSITION = 15;
-    public static final double E_L2_POSITION = 30;
+    public static final double E_L2_POSITION = 39.5;
     public static final double E_L3_POSITION = 65.5;
 
     public static final double C_L1_POSITION = 1.0;
-    public static final double C_L2_POSITION = 11.5;
+    public static final double C_L2_POSITION = 14.57;
     public static final double C_L3_POSITION = 11.5;
 
     public static final double A_TILT_HIGH_POSITION = 9;

@@ -99,7 +99,7 @@ public class ArmSubsystem extends SubsystemBase {
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);
-        config.closedLoop.maxOutput(0.15);
+        config.closedLoop.maxOutput(0.1);
         config.closedLoop.minOutput(-0.15);
         coralWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -110,11 +110,11 @@ public class ArmSubsystem extends SubsystemBase {
         config.closedLoop.pid(A_WRIST_P, A_WRIST_I, A_WRIST_D);
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        setDefaultCommand(run(
-                () -> {
-                    coralShooter.set(-0.07);
-                }
-        ));
+        // setDefaultCommand(run(
+        //         () -> {
+        //             coralShooter.set(-0.07);
+        //         }
+        // ));
     }
 
     @Override
@@ -239,7 +239,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command dumIntakeCoral() {
-        return run(() -> {
+        return Commands.run(() -> {
             coralShooter.set(CORAL_INTAKE_SPEED);
         }).handleInterrupt(coralShooter::stopMotor);
     }
@@ -262,7 +262,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command shootCoral() {
-        return run(() -> {
+        return Commands.run(() -> {
             coralShooter.set(CORAL_SHOOT_SPEED);
         }).handleInterrupt(coralShooter::stopMotor);
     }
@@ -317,7 +317,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command scoreL2(boolean home) {
-        return extendL2().andThen(Commands.waitSeconds(0.3).andThen(shootCoral().withTimeout(0.7))).andThen(homeEverything()).onlyIf(() -> home);
+        return shootCoral().withTimeout(0.4).andThen(homeEverything().onlyIf(() -> home));
     }
 
     public Command extendL3() {
