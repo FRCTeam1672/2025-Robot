@@ -32,8 +32,7 @@ import frc.robot.util.Elastic.Notification;
 import swervelib.SwerveDrive;
 
 public class VisionSubsystem extends SubsystemBase {
-    private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded
-            .loadAprilTagLayoutField();
+    private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     private final PhotonCamera frontCam = new PhotonCamera("1672_Camera1");
     private final PhotonCamera backCam = new PhotonCamera("1672_Camera2");
 
@@ -45,18 +44,18 @@ public class VisionSubsystem extends SubsystemBase {
     private final Transform3d backCamPos = new Transform3d(new Translation3d(Units.inchesToMeters(4),
             Units.inchesToMeters(-11),
             Units.inchesToMeters(25)),
-            new Rotation3d(0, Math.toRadians(-2), Math.toRadians(179))); // Cam mounted facing forward, half a meter
-                                                                        // forward of center, half a meter up from
-                                                                        // center.
+            new Rotation3d(0, Math.toRadians(-2), Math.toRadians(179)));
+
+
 
     private Trigger backCamTrigger = new Trigger(backCam::isConnected);
     private Trigger frontCamTrigger = new Trigger(frontCam::isConnected);
 
 
     // Construct PhotonPoseEstimator
-    private PhotonPoseEstimator frontPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
+    private final PhotonPoseEstimator frontPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, frontCamPos);
-    private PhotonPoseEstimator backPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
+    private final PhotonPoseEstimator backPoseEst = new PhotonPoseEstimator(aprilTagFieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, backCamPos);
 
     /** Creates a new VisionSubsystem. */

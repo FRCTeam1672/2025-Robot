@@ -45,31 +45,28 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.Elastic;
 
 public class ArmSubsystem extends SubsystemBase {
-    private SparkMax lElevator = new SparkMax(51, MotorType.kBrushless);
-    private SparkMax rElevator = new SparkMax(52, MotorType.kBrushless);
+    private final SparkMax lElevator = new SparkMax(51, MotorType.kBrushless);
+    private final SparkMax rElevator = new SparkMax(52, MotorType.kBrushless);
 
-    private SparkMax coralWrist = new SparkMax(31, MotorType.kBrushless);
-    private SparkMax coralShooter = new SparkMax(32, MotorType.kBrushless);
+    private final SparkMax coralWrist = new SparkMax(31, MotorType.kBrushless);
+    private final SparkMax coralShooter = new SparkMax(32, MotorType.kBrushless);
 
     // Algae
-    private SparkMax algaeWrist = new SparkMax(41, MotorType.kBrushless);
-    private SparkMax lAlgaeIntake = new SparkMax(42, MotorType.kBrushless);
-    private SparkMax rAlgaeIntake = new SparkMax(43, MotorType.kBrushless);
-
-    private SparkMaxConfig config = new SparkMaxConfig();
+    private final SparkMax algaeWrist = new SparkMax(41, MotorType.kBrushless);
+    private final SparkMax lAlgaeIntake = new SparkMax(42, MotorType.kBrushless);
+    private final SparkMax rAlgaeIntake = new SparkMax(43, MotorType.kBrushless);
 
     private double algaeWristPosition = ALGAE_HOME_POSITION;
     private double coralWristPosition = CORAL_STOW_POSITION;
     private double elevatorPosition = ELEVATOR_HOME_POSITION;
 
-    private Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
-    private Trigger badAlgaeTrigger = new Trigger(() -> !isAlgaeGood());
+    private final Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
+    private final Trigger badAlgaeTrigger = new Trigger(() -> !isAlgaeGood());
 
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
@@ -77,13 +74,13 @@ public class ArmSubsystem extends SubsystemBase {
                     new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Unbalanced Elevators",
                             "Elevator motors have gone out of sync, stopped elevators to not break elevator.").withDisplaySeconds(10));
         }));
+        SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         coralShooter.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         lAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         rAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
 
 
         //TODO: CHANEG
@@ -114,9 +111,9 @@ public class ArmSubsystem extends SubsystemBase {
         algaeWrist.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         setDefaultCommand(run(
-            () -> {
-                coralShooter.set(-0.07);
-            }
+                () -> {
+                    coralShooter.set(-0.07);
+                }
         ));
     }
 
@@ -139,10 +136,10 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("elevator/Elevator atPosition", isElevatorAtPosition());
         SmartDashboard.putBoolean("algae/Algae atPosition", isAlgaeAtPosition());
         SmartDashboard.putBoolean("coral/Coral atPosition", isCoralAtPosition());
-        
+
         SmartDashboard.putNumber("algae/lAlgae.get", lAlgaeIntake.get());
         SmartDashboard.putNumber("algae/rAlgae.get", rAlgaeIntake.get());
-        
+
 
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
         algaeWrist.getClosedLoopController().setReference(algaeWristPosition, ControlType.kPosition);
@@ -170,9 +167,10 @@ public class ArmSubsystem extends SubsystemBase {
         return Math
                 .abs(lElevator.getEncoder().getPosition() - rElevator.getEncoder().getPosition()) <= ELEVATOR_TOLERANCE;
     }
-     public boolean isAlgaeGood() {
+
+    public boolean isAlgaeGood() {
         return algaeWrist.getEncoder().getPosition() <= 11;
-     }
+    }
 
     public boolean isCoralIntaked() {
         return coralShooter.get() > 0.0 && MathUtil.isNear(0, coralShooter.getEncoder().getVelocity(), 2000);
@@ -230,7 +228,7 @@ public class ArmSubsystem extends SubsystemBase {
         return Commands.parallel(homeCoral(), homeElevator(), homeAlgae()).andThen(coralTo(CORAL_STOW_POSITION));
     }
 
-    public Command homeNotAlgae() {
+    public Command homeWithAlgae() {
         return Commands.parallel(homeCoral(), homeElevator()).andThen(coralTo(CORAL_STOW_POSITION));
     }
 
@@ -266,9 +264,7 @@ public class ArmSubsystem extends SubsystemBase {
     public Command shootCoral() {
         return run(() -> {
             coralShooter.set(CORAL_SHOOT_SPEED);
-        }).handleInterrupt(() -> {
-            coralShooter.stopMotor();
-        });
+        }).handleInterrupt(coralShooter::stopMotor);
     }
 
     public Command shootAlgae() {
@@ -312,20 +308,12 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendTo(int x) {
-        switch (x) {
-            case 1:
-                return extendL1();
-            case 2:
-                return extendL2();
-            case 3:
-                return extendL3();
-            default:
-                return Commands.none();
-        }
-    }
-
-    public void zeroEncoders() {
-        
+        return switch (x) {
+            case 1 -> extendL1();
+            case 2 -> extendL2();
+            case 3 -> extendL3();
+            default -> Commands.none();
+        };
     }
 
     public Command scoreL2(boolean home) {
@@ -358,15 +346,15 @@ public class ArmSubsystem extends SubsystemBase {
     // }
 
     public Command algaeL2() {
-        return extendElevatorTo(E_AL2_POSITION).andThen(algaeTo(A_TILT_HIGH_POSITION));
+        return extendElevatorTo(E_AL2_POSITION).alongWith(algaeTo(A_TILT_HIGH_POSITION));
     }
 
     public Command algaeL3() {
-        return extendElevatorTo(E_AL3_POSITION).andThen(algaeTo(A_TILT_HIGH_POSITION));
+        return extendElevatorTo(E_AL3_POSITION).alongWith(algaeTo(A_TILT_HIGH_POSITION));
     }
 
     public Command processor() {
-        return extendElevatorTo(E_PROCESSOR_POSITION).andThen(algaeTo(A_IO_POSITION));
+        return extendElevatorTo(E_PROCESSOR_POSITION).alongWith(algaeTo(A_IO_POSITION));
     }
 
     public Command extendCoralStation() {
@@ -384,28 +372,5 @@ public class ArmSubsystem extends SubsystemBase {
             default:
                 return Commands.none();
         }
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        if(coralWristPosition != coralWrist.getEncoder().getPosition()) {
-            Commands.waitSeconds(0.5).andThen(Commands.runOnce(() -> {
-                coralWrist.getEncoder().setPosition(coralWristPosition);
-            })).schedule();
-        }
-        if(elevatorPosition != lElevator.getEncoder().getPosition()) {
-            Commands.waitSeconds(1.5).andThen(Commands.runOnce(() -> {
-                lElevator.getEncoder().setPosition(elevatorPosition);
-                rElevator.getEncoder().setPosition(elevatorPosition);
-            })).schedule();
-            
-
-        }
-        if(algaeWristPosition != algaeWrist.getEncoder().getPosition()) {
-            Commands.waitSeconds(0.5).andThen(Commands.runOnce(() -> {
-                algaeWrist.getEncoder().setPosition(algaeWristPosition);
-            })).schedule();
-        }
-
     }
 }

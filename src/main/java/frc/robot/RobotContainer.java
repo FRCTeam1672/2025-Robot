@@ -4,14 +4,13 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.ClimbConstants.CLIMB_SPEED;
 import static frc.robot.Constants.ReefLevels.A_TILT_HIGH_POSITION;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Driver;
 import java.util.Set;
 
+import edu.wpi.first.wpilibj2.command.*;
 import org.json.simple.parser.ParseException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -22,14 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -82,14 +74,15 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        NamedCommands.registerCommand("AlignL2_I", drivebase.alignToAndExtend("I", arm.extendL2()).andThen(arm.scoreL2(false)));
-        NamedCommands.registerCommand("AlignL2_J", drivebase.alignToAndExtend("J", arm.extendL2()).andThen(arm.scoreL2(false)));
+        NamedCommands.registerCommand("AlignL2_I", getAutoAlignScoreCommand("I"));
+        NamedCommands.registerCommand("AlignL2_J", getAutoAlignScoreCommand("J"));
         NamedCommands.registerCommand("HomeEverything", arm.homeEverything());
         NamedCommands.registerCommand("ExtendL2", arm.extendL2().asProxy());
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
-        NamedCommands.registerCommand("IntakeCoral", 
-                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(1)).andThen(arm.homeEverything(), Commands.print("COMPLETED INTAKE!"))
+        NamedCommands.registerCommand("IntakeCoral",
+                                                                                                        //schedule command runs in the background
+                arm.extendCoralStation().andThen(arm.dumIntakeCoral().withTimeout(1)).andThen(arm.homeEverything().asProxy(), Commands.print("COMPLETED INTAKE!"))
         );
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
         // Configure the trigger bindings
@@ -105,6 +98,10 @@ public class RobotContainer {
         SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
     }
 
+    private Command getAutoAlignScoreCommand(String side) {
+        return Commands.defer(() -> drivebase.alignToAndExtend(side, arm.extendL2()).andThen(arm.scoreL2(false)), Set.of());
+    }
+
     private void configureBindings() throws FileVersionException, IOException, ParseException {
 
         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
@@ -112,26 +109,24 @@ public class RobotContainer {
 
         // Driver PS5
 
-        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true));
         driverPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
         driverPS5.options().onTrue(Commands.runOnce(drivebase::lock, drivebase));
 
-        driverPS5.circle().whileTrue(arm.shootCoral());
-        //L1 IS USED FOR THE SLOW MODE 
 
+        //L1 IS USED FOR THE SLOW MODE
         driverPS5.L1().whileTrue(arm.dumIntakeCoral());
-        driverPS5.povLeft().whileTrue(arm.shootAlgae());
-
-
-
-
         driverPS5.L2().whileTrue(arm.dumIntakeAlgae());
 
+
+        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true));
         driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
+        driverPS5.circle().whileTrue(arm.shootCoral());
+
+        driverPS5.povLeft().whileTrue(arm.shootAlgae());
         driverPS5.povRight().onTrue(arm.algaeL2());
         driverPS5.povUp().onTrue(arm.algaeL3());
-        driverPS5.povDown().onTrue(arm.homeNotAlgae());
+        driverPS5.povDown().onTrue(arm.homeWithAlgae());
 
         // CORAL AUTOSCORE (extending rn)
         driverPS5.R1().whileTrue(Commands.defer(() -> {
@@ -155,8 +150,7 @@ public class RobotContainer {
         }));
 
         // CORAL STATION
-        driverPS5.R2().whileTrue(Commands.defer(
-                () -> {
+        driverPS5.R2().whileTrue(Commands.defer(() -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
                         return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
@@ -172,17 +166,17 @@ public class RobotContainer {
                     }
                 }, Set.of()).andThen(arm.extendCoralStation()).handleInterrupt(() -> {
                     arm.homeEverything().schedule();
-                }));
-        // driverPS5.R1().onTrue(arm.scoreL3());
+        }));
 
-        oppsPS5.create().onTrue(Commands.runOnce(drivebase::zeroGyro));
-        oppsPS5.povLeft().onTrue(arm.processor());
-        oppsPS5.povDown().onTrue(arm.extendL2());
-        oppsPS5.povUp().onTrue(arm.extendL3());
+        oppsPS5.options().onTrue(Commands.runOnce(drivebase::zeroGyro));
 
-        oppsPS5.circle().onTrue(arm.algaeL2());
-        oppsPS5.triangle().onTrue(arm.algaeL3());
-        oppsPS5.square().onTrue(arm.algaeTo(A_TILT_HIGH_POSITION));
+        oppsPS5.povDown().onTrue(arm.processor());
+        oppsPS5.povLeft().onTrue(arm.algaeTo(A_TILT_HIGH_POSITION));
+        oppsPS5.povRight().onTrue(arm.algaeL2());
+        oppsPS5.povUp().onTrue(arm.algaeL3());
+
+        oppsPS5.circle().onTrue(arm.extendL2());
+        oppsPS5.triangle().onTrue(arm.extendL3());
         oppsPS5.cross().onTrue(arm.homeEverything());
 
         oppsPS5.R2().whileTrue(climb.simpleClimb());

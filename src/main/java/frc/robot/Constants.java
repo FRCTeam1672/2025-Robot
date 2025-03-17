@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Meters;
-
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -15,6 +12,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
@@ -92,14 +91,16 @@ public final class Constants
   }
 
   public static class ReefPose {
-    public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.5, 4);
-    public static final Translation2d RED_REEF_CENTER = new Translation2d(13, 4);
+    public static final Translation2d BLUE_REEF_CENTER = new Translation2d(Meters.of(4.5), Meters.of(4));
+    public static final Translation2d RED_REEF_CENTER = new Translation2d(Meters.of(13), Meters.of(4));
     //positive = further way
-    public static final Translation2d frontBackOffset = new Translation2d(Inches.of(55).in(Meters), 0);
+    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(55), Inches.of(0));
     //positive = further from the center
 
-    public static final Translation2d centerOffset = new Translation2d(0, Inches.of(5.9).in(Meters));
-    public static final Translation2d leftRightOffset = new Translation2d(0, Inches.of(3.5).in(Meters));
+    public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
+
+    public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(5.9));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(3.5));
 
   }
 

@@ -50,6 +50,14 @@
         "header": {
           "open": true
         }
+      },
+      "window": {
+        "visible": false
+      }
+    },
+    "RoboRIO": {
+      "6V Rail": {
+        "open": true
       }
     }
   },
@@ -79,6 +87,11 @@
       "/SmartDashboard/navX-Sensor[4]": "Gyro"
     },
     "windows": {
+      "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "OdometryPose": {
           "arrowColor": [
@@ -124,11 +137,11 @@
         "open": true
       },
       "SmartDashboard": {
-        "Field": {
+        "elevator": {
           "open": true
         },
         "open": true,
-        "swerve": {
+        "vision": {
           "open": true
         }
       }
@@ -139,5 +152,32 @@
   },
   "NetworkTables View": {
     "visible": false
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 231
+        },
+        {
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 231
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    }
   }
 }

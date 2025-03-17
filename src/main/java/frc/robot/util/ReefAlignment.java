@@ -11,23 +11,26 @@ import static frc.robot.Constants.ReefPose.*;
 public record ReefAlignment(ReefOrientation orientation, ReefSide side) {
 
     public Pose2d getAlignmentPose() {
-        Translation2d reefPose = BLUE_REEF_CENTER.minus(frontBackOffset).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1)).minus(leftRightOffset);
-        reefPose = reefPose.rotateAround(BLUE_REEF_CENTER, Rotation2d.fromDegrees(orientation.getReefRotation()));
-        return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
+        return getAlignmentPose(FRONT_BACK_OFFSET);
     }
     public Pose2d getInitalPose() {
-        Translation2d reefPose = BLUE_REEF_CENTER.minus(new Translation2d(2, 0)).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1)).minus(leftRightOffset);
+        return getAlignmentPose(INITIAL_ALIGNMENT_OFFSET);
+    }
+
+    private Pose2d getAlignmentPose(Translation2d forwardsBackwardsOffset) {
+        Translation2d reefPose = BLUE_REEF_CENTER.minus(forwardsBackwardsOffset).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1)).minus(leftRightOffset);
         reefPose = reefPose.rotateAround(BLUE_REEF_CENTER, Rotation2d.fromDegrees(orientation.getReefRotation()));
         return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
     }
 
     public Pose2d getCenterPose() {
         Translation2d reefPose = BLUE_REEF_CENTER.minus(new Translation2d(2, 0)).plus(centerOffset.times(side == ReefSide.LEFT ? 1 : -1));
+        reefPose = reefPose.rotateAround(BLUE_REEF_CENTER, Rotation2d.fromDegrees(orientation.getReefRotation()));
         return flipPose(new Pose2d(reefPose, Rotation2d.fromDegrees(orientation.getRobotRotation())));
     }
 
     private Pose2d flipPose(Pose2d pose) {
-        if(!DriverStation.getAlliance().isPresent() || DriverStation.getAlliance().get() == Alliance.Blue){
+        if(DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue){
             System.out.println("Not flipping");
             return pose;
         }
