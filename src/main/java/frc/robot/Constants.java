@@ -62,9 +62,9 @@ public final class Constants
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.000;
 
-    public static final double C_WRIST_P = 0.07;
-    public static final double C_WRIST_I = 0.000003;
-    public static final double C_WRIST_D = 0.4;
+    public static final double C_WRIST_P = 0.09;
+    public static final double C_WRIST_I = 0.0000001;
+    public static final double C_WRIST_D = 0.2;
 
     public static final double A_WRIST_P = 0.14;
     public static final double A_WRIST_I = 0.0;
@@ -94,7 +94,7 @@ public final class Constants
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(Meters.of(4.5), Meters.of(4));
     public static final Translation2d RED_REEF_CENTER = new Translation2d(Meters.of(13), Meters.of(4));
     //positive = further way
-    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(54), Inches.of(0));
+    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(47.5), Inches.of(0));
     //positive = further from the center
 
     public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
@@ -106,11 +106,11 @@ public final class Constants
 
   public static class ReefLevels {
     public static final double E_L1_POSITION = 15;
-    public static final double E_L2_POSITION = 39.5;
-    public static final double E_L3_POSITION = 65.5;
+    public static final double E_L2_POSITION = 38;
+    public static final double E_L3_POSITION = 61.8;
 
     public static final double C_L1_POSITION = 1.0;
-    public static final double C_L2_POSITION = 14.57;
+    public static final double C_L2_POSITION = 14;  
     public static final double C_L3_POSITION = 11.5;
 
     public static final double A_TILT_HIGH_POSITION = 9;

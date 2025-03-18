@@ -77,7 +77,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("AlignL2_I", getAutoAlignScoreCommand("I"));
         NamedCommands.registerCommand("AlignL2_J", getAutoAlignScoreCommand("J"));
         NamedCommands.registerCommand("HomeEverything", arm.homeEverything());
-        NamedCommands.registerCommand("ExtendL2", arm.extendL2().asProxy());
+        NamedCommands.registerCommand("ExtendL2", arm.extendL2());
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
         NamedCommands.registerCommand("IntakeCoral",
@@ -133,8 +133,7 @@ public class RobotContainer {
             try {
                 System.out.println("Reef side " + scoringApp.getReefSide());
                 System.out.println("Coral Level " + scoringApp.getCoralLevel());
-                return drivebase.alignToAndExtend(scoringApp.getReefSide(), arm.extendTo(scoringApp.getCoralLevel()))
-                        .andThen(arm.extendTo(scoringApp.getCoralLevel()));
+                return drivebase.alignToAndExtend(scoringApp.getReefSide(), arm.extendTo(scoringApp.getCoralLevel()));
                 // arm.scoreCoral(scoringApp.getCoralLevel())
             } catch (FileVersionException e) {
                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)

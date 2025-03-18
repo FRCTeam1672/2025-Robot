@@ -24,7 +24,7 @@
     "###/SmartDashboard/Auto Chooser": {
       "Collapsed": "0",
       "Pos": "1173,90",
-      "Size": "254,54"
+      "Size": "307,60"
     },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
@@ -34,7 +34,7 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "9,333",
-      "Size": "169,184"
+      "Size": "202,214"
     },
     "###Joysticks": {
       "Collapsed": "0",
@@ -53,7 +53,7 @@
     },
     "###NetworkTables Info": {
       "Collapsed": "1",
-      "Pos": "249,129",
+      "Pos": "507,478",
       "Size": "750,145"
     },
     "###Other Devices": {
@@ -79,7 +79,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "135,173"
+      "Size": "162,194"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -89,7 +89,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "1141,218",
-      "Size": "99,116"
+      "Size": "118,134"
     }
   }
 }

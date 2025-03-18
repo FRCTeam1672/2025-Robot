@@ -240,7 +240,7 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-    
+        extendCommand,
         AutoBuilder.followPath(path).andThen(
           Commands.print("start position PID loop"),
           // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
