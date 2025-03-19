@@ -19,6 +19,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.RotationTarget;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.FileVersionException;
@@ -228,6 +229,7 @@ public class SwerveSubsystem extends SubsystemBase {
         waypoint
     );
 
+
     PathConstraints constraints = new PathConstraints(
         0.45, 1.5,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
@@ -235,16 +237,18 @@ public class SwerveSubsystem extends SubsystemBase {
     PathPlannerPath path = new PathPlannerPath(
         waypoints,
         constraints,
-        new IdealStartingState(getVelocityMagnitude(swerveDrive.getFieldVelocity()), swerveDrive.getOdometryHeading()),
+        new IdealStartingState(getVelocityMagnitude(swerveDrive.getFieldVelocity()), waypoint.getRotation()),
         new GoalEndState(0.0, waypoint.getRotation())
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-        extendCommand,
-        AutoBuilder.followPath(path).andThen(
-          Commands.print("start position PID loop"),
-          // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
-          Commands.print("end position PID loop")
+        Commands.parallel(
+          extendCommand,
+          AutoBuilder.followPath(path).andThen(
+            Commands.print("start position PID loop"),
+            // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
+            Commands.print("end position PID loop")
+          )
         )
       
     );
@@ -322,7 +326,22 @@ public class SwerveSubsystem extends SubsystemBase {
     return AutoBuilder.pathfindToPose(
         pose,
         constraints,
-        edu.wpi.first.units.Units.MetersPerSecond.of(0.5) // Goal end velocity in meters/sec
+        edu.wpi.first.units.Units.MetersPerSecond.of(1.3) // Goal end velocity in meters/sec
+    );
+  }
+
+  public Command driveToPoseAndStop(Pose2d pose) {
+    // Create the constraints to use while pathfinding
+    PathConstraints constraints = new PathConstraints(
+        1.3, 1,
+        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180)
+    );
+
+    // Since AutoBuilder is configured, we can use it to build pathfinding commands
+    return AutoBuilder.pathfindToPose(
+        pose,
+        constraints,
+        edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
     );
   }
 

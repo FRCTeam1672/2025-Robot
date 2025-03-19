@@ -75,7 +75,6 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
         SmartDashboard.putBoolean("vision/Rear Camera Connected", backCamTrigger.getAsBoolean());
         SmartDashboard.putBoolean("vision/Front Camera Connected", frontCamTrigger.getAsBoolean());
     }
@@ -89,10 +88,9 @@ public class VisionSubsystem extends SubsystemBase {
             if (frontUpdate.isPresent()) {
                 if(frontPhotonPipelineResult.getBestTarget().poseAmbiguity < 0.4) {
                     EstimatedRobotPose estimatedRobotPose = frontUpdate.get();
-
-                swerve.field.getObject("FrontPose").setPose(estimatedRobotPose.estimatedPose.toPose2d());
-                swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
-                        frontPhotonPipelineResult.getTimestampSeconds());
+                    swerve.field.getObject("FrontPose").setPose(estimatedRobotPose.estimatedPose.toPose2d());
+                    swerve.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
+                            frontPhotonPipelineResult.getTimestampSeconds());
                 }
             }
         }
