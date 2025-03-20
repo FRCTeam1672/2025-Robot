@@ -324,7 +324,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendL3() {
-        return extendElevatorTo(E_L3_POSITION).andThen(coralTo(C_L3_POSITION));
+        return Commands.parallel(
+            extendElevatorTo(E_L3_POSITION),
+            Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L3_POSITION))
+        );  
     }
 
     public Command scoreL3(boolean home) {

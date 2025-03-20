@@ -242,15 +242,12 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-        Commands.parallel(
           extendCommand,
           AutoBuilder.followPath(path).andThen(
             Commands.print("start position PID loop"),
             // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
             Commands.print("end position PID loop")
-          )
-        )
-      
+          )      
     );
   }
 
@@ -298,7 +295,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return new PathPlannerAuto(pathName);
   }
 
-  public Command getPath(String pathName) throws FileVersionException, IOException, ParseException {
+  public Command getPathAndExtend(String pathName, Command extendCommand) throws FileVersionException, IOException, ParseException {
     PathPlannerPath fromPathFile = PathPlannerPath.fromPathFile(pathName);
     Pose2d pose;
     if(DriverStation.getAlliance().get() == Alliance.Red) {
@@ -307,7 +304,12 @@ public class SwerveSubsystem extends SubsystemBase {
     else {
       pose = fromPathFile.getStartingHolonomicPose().get(); 
     }
-    return driveToPose(pose).andThen(AutoBuilder.followPath(fromPathFile));
+    return driveToPose(pose).andThen(
+      Commands.parallel(
+        extendCommand,
+        AutoBuilder.followPath(fromPathFile)
+      )
+    );
   }
 
   /**

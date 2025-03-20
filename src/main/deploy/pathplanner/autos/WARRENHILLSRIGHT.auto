@@ -5,39 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ScoreL2_I"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "WHL-2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "STATION-2"
+            "pathName": "WHR-1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "IntakeCoral"
+            "name": "ScoreL2_E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "WHL-3"
+            "pathName": "WHR-2"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ScoreL2_J"
+            "pathName": "STATION-5"
           }
         }
       ]

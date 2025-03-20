@@ -5,15 +5,45 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "WHA-1"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "ScoreL2_I"
+            "name": "IntakeAlgae"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "WHL-2"
+            "pathName": "WHA-2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OuttakeAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHA-3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL3_I"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHA-4"
           }
         },
         {
@@ -31,13 +61,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "WHL-3"
+            "pathName": "WHA-5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ScoreL2_J"
+            "name": "ScoreL3_J"
           }
         }
       ]

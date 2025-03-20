@@ -74,8 +74,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        NamedCommands.registerCommand("AlignL2_I", getAutoAlignScoreCommand("I"));
-        NamedCommands.registerCommand("AlignL2_J", getAutoAlignScoreCommand("J"));
+        NamedCommands.registerCommand("ScoreL2_I", getAutoAlignScoreCommand("I", 2));
+        NamedCommands.registerCommand("ScoreL2_J", getAutoAlignScoreCommand("J", 2));
+        NamedCommands.registerCommand("ScoreL3_I", getAutoAlignScoreCommand("I", 3));
+        NamedCommands.registerCommand("ScoreL3_J", getAutoAlignScoreCommand("J", 3));
         NamedCommands.registerCommand("HomeEverything", arm.homeEverything());
         NamedCommands.registerCommand("ExtendL2", arm.extendL2());
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
@@ -98,8 +100,9 @@ public class RobotContainer {
         SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
     }
 
-    private Command getAutoAlignScoreCommand(String side) {
-        return Commands.defer(() -> drivebase.alignToAndExtend(side, arm.extendL2()).andThen(arm.scoreL2(false)), Set.of());
+    private Command getAutoAlignScoreCommand(String side, int level) {
+        //.andThen(arm.scoreL2(false))
+        return Commands.defer(() -> drivebase.alignToAndExtend(side, arm.extendTo(level)).asProxy(), Set.of());
     }
 
     private void configureBindings() throws FileVersionException, IOException, ParseException {
@@ -152,7 +155,7 @@ public class RobotContainer {
         driverPS5.R2().whileTrue(Commands.defer(() -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
-                        return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
+                        return drivebase.getPathAndExtend("STATION-" + scoringApp.getCoralStation(), arm.extendCoralStation());
                         // .andThen(arm.extendCoralStation());a
                     } catch (FileVersionException | IOException | ParseException e) {
                         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
@@ -163,7 +166,7 @@ public class RobotContainer {
                         e.printStackTrace();
                         return Commands.none();
                     }
-                }, Set.of()).andThen(arm.extendCoralStation()).handleInterrupt(() -> {
+                }, Set.of()).handleInterrupt(() -> {
                     arm.homeEverything().schedule();
         }));
 

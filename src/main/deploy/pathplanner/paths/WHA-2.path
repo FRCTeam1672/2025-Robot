@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3260000000000003,
-        "y": 1.34375
+        "x": 5.128,
+        "y": 5.205
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1633021566360084,
-        "y": 1.1539358494086756
+        "x": 5.41125,
+        "y": 5.897
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.9945,
-        "y": 0.8952499999999998
+        "x": 5.70375,
+        "y": 6.6964999999999995
       },
       "prevControl": {
-        "x": 1.1530198970517622,
-        "y": 1.088566947624099
+        "x": 5.54775,
+        "y": 6.384499999999998
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -125.72533076544455
+    "rotation": -20.151747034211894
   },
   "reversed": false,
-  "folder": "CORAL STATION ALIGNMENT",
+  "folder": "PATHS FOR WH ALGAE AUTO",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -127.50414236027011
+    "rotation": -113.78527879019391
   },
   "useDefaultConstraints": true
 }
