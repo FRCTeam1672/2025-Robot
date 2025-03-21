@@ -242,14 +242,13 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-        Commands.parallel(
           extendCommand,
           AutoBuilder.followPath(path).andThen(
             Commands.print("start position PID loop"),
             // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
             Commands.print("end position PID loop")
           )
-        )
+        
       
     );
   }

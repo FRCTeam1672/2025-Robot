@@ -100,7 +100,7 @@ public final class Constants
     public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
 
     public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(6.2));
-    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(2.7));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(2.3));
 
   }
 
