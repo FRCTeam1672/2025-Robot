@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5405000000000002,
-        "y": 1.645999999999999
+        "x": 5.28325131345524,
+        "y": 5.600759927674672
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3778021566360084,
-        "y": 1.4561858494086746
+        "x": 5.5436992528657205,
+        "y": 6.155084948144105
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.9359999999999999,
-        "y": 0.7879999999999996
+        "x": 5.868211398062227,
+        "y": 6.379459351118995
       },
       "prevControl": {
-        "x": 1.094519897051762,
-        "y": 0.9813169476240989
+        "x": 5.453240993449782,
+        "y": 5.925721121042576
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "OuttakeAlgae",
+      "waypointRelativePos": 0.6574830072944289,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "OuttakeAlgae"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -125.72533076544455
+    "rotation": -23.70082849898606
   },
   "reversed": false,
-  "folder": "CORAL STATION ALIGNMENT",
+  "folder": "New Folder",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -127.50414236027011
+    "rotation": -117.60089094278467
   },
   "useDefaultConstraints": true
 }
