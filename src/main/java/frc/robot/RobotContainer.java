@@ -152,7 +152,7 @@ public class RobotContainer {
         driverPS5.R2().whileTrue(Commands.defer(() -> {
                     try {
                         System.out.println("Coral Station" + scoringApp.getCoralStation());
-                        return drivebase.getPath("STATION-" + scoringApp.getCoralStation());
+                        return drivebase.getPathAndExtend("STATION-" + scoringApp.getCoralStation(), arm.extendCoralStation());
                         // .andThen(arm.extendCoralStation());a
                     } catch (FileVersionException | IOException | ParseException e) {
                         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
@@ -163,7 +163,7 @@ public class RobotContainer {
                         e.printStackTrace();
                         return Commands.none();
                     }
-                }, Set.of()).andThen(arm.extendCoralStation()).handleInterrupt(() -> {
+                }, Set.of()).handleInterrupt(() -> {
                     arm.homeEverything().schedule();
         }));
 
