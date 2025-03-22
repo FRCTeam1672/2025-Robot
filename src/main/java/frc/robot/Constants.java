@@ -97,10 +97,10 @@ public final class Constants
     public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(47.5), Inches.of(0));
     //positive = further from the center
 
-    public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(1.7).plus(Inches.of(0)), Meters.of(0));
+    public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
 
     public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(6.2));
-    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(1.9));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(2.3));
 
   }
 
@@ -120,7 +120,7 @@ public final class Constants
     public static final double E_AL3_POSITION = 75;
     public static final double A_IO_POSITION = 8;
 
-    public static final double E_STATION_POSITION = 18.7; // tweak this value a bit
+    public static final double E_STATION_POSITION = 18.34; // tweak this value a bit
     public static final double C_STATION_POSITION = 5.95;
   }
 

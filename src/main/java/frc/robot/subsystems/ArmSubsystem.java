@@ -68,18 +68,6 @@ public class ArmSubsystem extends SubsystemBase {
     private final Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
     private final Trigger badAlgaeTrigger = new Trigger(() -> !isAlgaeGood());
 
-    
-    private boolean elevatorManualOverride = false;
-    private boolean algaeManualOverride = false;
-
-    public void setAlgaeManualOverride(boolean v) {
-        this.algaeManualOverride = v;
-    }
-
-    public void setElevatorManualOverride(boolean v) {
-        this.elevatorManualOverride = v;
-    }
-
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
             Elastic.sendNotification(
@@ -143,8 +131,6 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("elevator/Elevator Setpoint", elevatorPosition);
 
         SmartDashboard.putBoolean("elevator/Elevator Safety", badElevTrigger.getAsBoolean());
-        SmartDashboard.putBoolean("elevator/Elevator Safety OVERRIDE", elevatorManualOverride);
-        SmartDashboard.putBoolean("algae/Algae Safety OVERRIDE", algaeManualOverride);
         SmartDashboard.putBoolean("algae/Algae Safety", badAlgaeTrigger.getAsBoolean());
 
         SmartDashboard.putBoolean("elevator/Elevator atPosition", isElevatorAtPosition());
@@ -158,7 +144,7 @@ public class ArmSubsystem extends SubsystemBase {
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
         algaeWrist.getClosedLoopController().setReference(algaeWristPosition, ControlType.kPosition);
 
-        if (!badElevTrigger.getAsBoolean() && !elevatorManualOverride) {
+        if (!badElevTrigger.getAsBoolean()) {
             lElevator.getClosedLoopController().setReference(elevatorPosition, ControlType.kPosition);
             rElevator.getClosedLoopController().setReference(elevatorPosition, ControlType.kPosition);
         } else {
@@ -166,7 +152,7 @@ public class ArmSubsystem extends SubsystemBase {
             rElevator.stopMotor();
         }
 
-        if (badAlgaeTrigger.getAsBoolean() && !algaeManualOverride) {
+        if (badAlgaeTrigger.getAsBoolean()) {
             algaeWrist.stopMotor();
         }
     }

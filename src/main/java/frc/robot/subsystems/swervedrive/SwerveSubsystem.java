@@ -172,7 +172,7 @@ public class SwerveSubsystem extends SubsystemBase {
       AutoBuilder.configure(
           this::getPose,
           // Robot pose supplier
-          this::resetOdometryPP,
+          this::resetOdometry,
           // Method to reset odometry (will be called if your auto has a starting pose)
           this::getRobotVelocity,
           // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -231,7 +231,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
     PathConstraints constraints = new PathConstraints(
-        0.65, 1.5,
+        0.45, 1.5,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     PathPlannerPath path = new PathPlannerPath(
@@ -601,9 +601,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d initialHolonomicPose) {
     swerveDrive.resetOdometry(initialHolonomicPose);
   }
-
-  public void resetOdometryPP(Pose2d initialHolonomicPose) {}
-
 
   /**
    * Gets the current pose (position and rotation) of the robot, as reported by
