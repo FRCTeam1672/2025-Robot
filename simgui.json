@@ -59,6 +59,11 @@
       "6V Rail": {
         "open": true
       }
+    },
+    "Timing": {
+      "window": {
+        "visible": false
+      }
     }
   },
   "NTProvider": {

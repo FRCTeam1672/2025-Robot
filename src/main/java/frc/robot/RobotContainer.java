@@ -96,6 +96,8 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
+        SmartDashboard.putData("Override Elevator Safety", Commands.runOnce(() -> arm.setElevatorManualOverride(true)).ignoringDisable(true));
+        SmartDashboard.putData("Override Algae Safety", Commands.runOnce(() -> arm.setAlgaeManualOverride(true)).ignoringDisable(true));
     }
 
     private Command getAutoAlignScoreCommand(String side) {
