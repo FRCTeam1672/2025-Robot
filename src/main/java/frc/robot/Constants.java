@@ -109,6 +109,8 @@ public final class Constants
     public static final double E_L2_POSITION = 35.5;
     public static final double E_L3_POSITION = 61.8;
 
+    public static final double E_OFFSET = 0.6;
+
     public static final double C_L1_POSITION = 1.0;
     public static final double C_L2_POSITION = 14;  
     public static final double C_L3_POSITION = 12;

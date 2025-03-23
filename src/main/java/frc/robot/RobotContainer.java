@@ -60,7 +60,7 @@ public class RobotContainer {
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
             () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
             () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
-            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.2 : 1))
+            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.15 : 1))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
@@ -96,6 +96,11 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
+
+
+        SmartDashboard.putData("Add Elev Offset", arm.addElevOffset().ignoringDisable(true));
+        SmartDashboard.putData("Subtract Elev Offset", arm.subtractElevOffset().ignoringDisable(true));
+        
     }
 
     private Command getAutoAlignScoreCommand(String side) {
@@ -118,7 +123,7 @@ public class RobotContainer {
         driverPS5.L2().whileTrue(arm.dumIntakeAlgae());
 
 
-        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true));
+        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true).withTimeout(3));
         driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
         driverPS5.circle().whileTrue(arm.shootCoral());
@@ -126,7 +131,7 @@ public class RobotContainer {
         driverPS5.povLeft().whileTrue(arm.shootAlgae());
         driverPS5.povRight().onTrue(arm.algaeL2());
         driverPS5.povUp().onTrue(arm.algaeL3());
-        driverPS5.povDown().onTrue(arm.homeWithAlgae());
+        driverPS5.povDown().onTrue(arm.homeWithAlgae().withTimeout(3));
 
         // CORAL AUTOSCORE (extending rn)
         driverPS5.R1().whileTrue(Commands.defer(() -> {
@@ -144,9 +149,7 @@ public class RobotContainer {
                 e.printStackTrace();
                 return Commands.none();
             }
-        }, Set.of()).handleInterrupt(() -> {
-            arm.homeEverything().schedule();
-        }));
+        }, Set.of()));
 
         // CORAL STATION
         driverPS5.R2().whileTrue(Commands.defer(() -> {
@@ -163,9 +166,7 @@ public class RobotContainer {
                         e.printStackTrace();
                         return Commands.none();
                     }
-                }, Set.of()).handleInterrupt(() -> {
-                    arm.homeEverything().schedule();
-        }));
+                }, Set.of()));
 
         oppsPS5.options().onTrue(Commands.runOnce(drivebase::zeroGyro));
 
@@ -176,7 +177,7 @@ public class RobotContainer {
 
         oppsPS5.circle().onTrue(arm.extendL2());
         oppsPS5.triangle().onTrue(arm.extendL3());
-        oppsPS5.cross().onTrue(arm.homeEverything());
+        oppsPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true).withTimeout(3));
 
         oppsPS5.R2().whileTrue(climb.simpleClimb());
         oppsPS5.L2().whileTrue(climb.simpleUnClimb());
