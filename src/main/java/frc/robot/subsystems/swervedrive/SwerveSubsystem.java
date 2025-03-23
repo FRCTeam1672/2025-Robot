@@ -68,6 +68,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
+import swervelib.SwerveModule;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
@@ -242,7 +243,10 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     path.preventFlipping = true;
     return driveToPose(alignment.getInitalPose()).andThen(
-          extendCommand,
+          Commands.parallel(
+            extendCommand,
+            Commands.runOnce(this::pointModulesForward)
+          ),
           AutoBuilder.followPath(path).andThen(
             Commands.print("start position PID loop"),
             // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
@@ -251,6 +255,12 @@ public class SwerveSubsystem extends SubsystemBase {
         
       
     );
+  }
+
+  public void pointModulesForward() {
+    for (SwerveModule modules : swerveDrive.getModules()) {
+      modules.setAngle(0);
+    }
   }
 
   private Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {

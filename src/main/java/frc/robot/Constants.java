@@ -94,13 +94,13 @@ public final class Constants
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(Meters.of(4.5), Meters.of(4));
     public static final Translation2d RED_REEF_CENTER = new Translation2d(Meters.of(13), Meters.of(4));
     //positive = further way
-    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(47.5), Inches.of(0));
+    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(46), Inches.of(0));
     //positive = further from the center
 
     public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
 
     public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(6.2));
-    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(2.3));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(1.7));
 
   }
 

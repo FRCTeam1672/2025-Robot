@@ -60,7 +60,7 @@ public class RobotContainer {
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
             () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
             () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
-            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.3 : 1))
+            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.2 : 1))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
@@ -81,7 +81,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
         NamedCommands.registerCommand("IntakeCoral",
-                                                                                                        //schedule command runs in the background
+            //schedule command runs in the background
                 arm.dumIntakeCoral().withTimeout(0.5)
         );
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
