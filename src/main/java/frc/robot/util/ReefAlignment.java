@@ -13,6 +13,9 @@ public record ReefAlignment(ReefOrientation orientation, ReefSide side) {
     public Pose2d getAlignmentPose() {
         return getAlignmentPose(FRONT_BACK_OFFSET);
     }
+    public Pose2d getInitialPathfindPose() {
+        return getAlignmentPose(PATHFIND_OFFSET);
+    }
     public Pose2d getInitalPose() {
         return getAlignmentPose(INITIAL_ALIGNMENT_OFFSET);
     }

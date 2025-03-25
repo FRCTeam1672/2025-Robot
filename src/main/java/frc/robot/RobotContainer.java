@@ -100,6 +100,13 @@ public class RobotContainer {
 
         SmartDashboard.putData("Add Elev Offset", arm.addElevOffset().ignoringDisable(true));
         SmartDashboard.putData("Subtract Elev Offset", arm.subtractElevOffset().ignoringDisable(true));
+
+        SmartDashboard.putData("Override Elev", Commands.runOnce(() -> {
+            arm.elevOverride = true;
+        }));
+        SmartDashboard.putData("Override Algae", Commands.runOnce(() -> {
+            arm.algaeOverride = true;
+        }));
         
     }
 

@@ -71,6 +71,9 @@ public class ArmSubsystem extends SubsystemBase {
     private final Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
     private final Trigger badAlgaeTrigger = new Trigger(() -> !isAlgaeGood());
 
+    public boolean elevOverride = false;
+    public boolean algaeOverride = false;
+
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
             Elastic.sendNotification(
@@ -159,7 +162,7 @@ public class ArmSubsystem extends SubsystemBase {
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
         algaeWrist.getClosedLoopController().setReference(algaeWristPosition, ControlType.kPosition);
 
-        if (!badElevTrigger.getAsBoolean()) {
+        if (!badElevTrigger.getAsBoolean() && !elevOverride) {
             lElevator.getClosedLoopController().setReference(elevatorPosition + elevOffset, ControlType.kPosition);
             rElevator.getClosedLoopController().setReference(elevatorPosition + elevOffset, ControlType.kPosition);
         } else {
@@ -167,7 +170,7 @@ public class ArmSubsystem extends SubsystemBase {
             rElevator.stopMotor();
         }
 
-        if (badAlgaeTrigger.getAsBoolean()) {
+        if (badAlgaeTrigger.getAsBoolean() && !algaeOverride) {
             algaeWrist.stopMotor();
         }
     }

@@ -116,6 +116,7 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via
                                              // angle.
     swerveDrive.setCosineCompensator(false);// !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for
@@ -242,7 +243,7 @@ public class SwerveSubsystem extends SubsystemBase {
         new GoalEndState(0.0, waypoint.getRotation())
     );
     path.preventFlipping = true;
-    return driveToPose(alignment.getInitalPose()).andThen(
+    return driveToPose(alignment.getInitialPathfindPose()).andThen(
           Commands.parallel(
             extendCommand,
             Commands.runOnce(this::pointModulesForward)
