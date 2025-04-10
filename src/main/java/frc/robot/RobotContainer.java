@@ -58,8 +58,8 @@ public class RobotContainer {
      * by angular velocity.
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-            () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
-            () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
+            () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.25 : 1),
+            () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.25 : 1))
             .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.35 : 1))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
@@ -67,7 +67,8 @@ public class RobotContainer {
 
 
     public boolean isSlowMode() {
-        return driverPS5.L1().getAsBoolean();
+        return true;
+        //return driverPS5.L1().getAsBoolean();
     }
 
     /**
@@ -141,39 +142,39 @@ public class RobotContainer {
         driverPS5.povDown().onTrue(arm.homeWithAlgae().withTimeout(3));
 
         // CORAL AUTOSCORE (extending rn)
-        driverPS5.R1().whileTrue(Commands.defer(() -> {
-            try {
-                System.out.println("Reef side " + scoringApp.getReefSide());
-                System.out.println("Coral Level " + scoringApp.getCoralLevel());
-                return drivebase.alignToAndExtend(scoringApp.getReefSide(), arm.extendTo(scoringApp.getCoralLevel()));
-                // arm.scoreCoral(scoringApp.getCoralLevel())
-            } catch (FileVersionException e) {
-                Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
-                        .withTitle("Could not load pathplanner path for coral auto-scoring.")
-                        .withDescription("Please use manual scoring.")
-                        .withDisplaySeconds(10));
-                DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
-                e.printStackTrace();
-                return Commands.none();
-            }
-        }, Set.of()));
+        // driverPS5.R1().whileTrue(Commands.defer(() -> {
+        //     try {
+        //         System.out.println("Reef side " + scoringApp.getReefSide());
+        //         System.out.println("Coral Level " + scoringApp.getCoralLevel());
+        //         return drivebase.alignToAndExtend(scoringApp.getReefSide(), arm.extendTo(scoringApp.getCoralLevel()));
+        //         // arm.scoreCoral(scoringApp.getCoralLevel())
+        //     } catch (FileVersionException e) {
+        //         Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
+        //                 .withTitle("Could not load pathplanner path for coral auto-scoring.")
+        //                 .withDescription("Please use manual scoring.")
+        //                 .withDisplaySeconds(10));
+        //         DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
+        //         e.printStackTrace();
+        //         return Commands.none();
+        //     }
+        // }, Set.of()));
 
         // CORAL STATION
-        driverPS5.R2().whileTrue(Commands.defer(() -> {
-                    try {
-                        System.out.println("Coral Station" + scoringApp.getCoralStation());
-                        return drivebase.getPathAndExtend("STATION-" + scoringApp.getCoralStation(), arm.extendCoralStation());
-                        // .andThen(arm.extendCoralStation());a
-                    } catch (FileVersionException | IOException | ParseException e) {
-                        Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
-                                .withTitle("Could not load pathplanner path for coral station.")
-                                .withDescription("Please use alignment.")
-                                .withDisplaySeconds(10));
-                        DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
-                        e.printStackTrace();
-                        return Commands.none();
-                    }
-                }, Set.of()));
+        // driverPS5.R2().whileTrue(Commands.defer(() -> {
+        //             try {
+        //                 System.out.println("Coral Station" + scoringApp.getCoralStation());
+        //                 return drivebase.getPathAndExtend("STATION-" + scoringApp.getCoralStation(), arm.extendCoralStation());
+        //                 // .andThen(arm.extendCoralStation());a
+        //             } catch (FileVersionException | IOException | ParseException e) {
+        //                 Elastic.sendNotification(new Notification().withLevel(NotificationLevel.ERROR)
+        //                         .withTitle("Could not load pathplanner path for coral station.")
+        //                         .withDescription("Please use alignment.")
+        //                         .withDisplaySeconds(10));
+        //                 DriverStation.reportError("Could not load pathplanner path!!", e.getStackTrace());
+        //                 e.printStackTrace();
+        //                 return Commands.none();
+        //             }
+        //         }, Set.of()));
 
         oppsPS5.options().onTrue(Commands.runOnce(drivebase::zeroGyro));
 
