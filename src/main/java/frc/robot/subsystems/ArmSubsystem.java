@@ -296,10 +296,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendElevatorTo(double pos) {
-        return coralTo(CORAL_HOME_POSITION).andThen(Commands.runOnce(() -> {
+        return coralTo(CORAL_HOME_POSITION).onlyIf(() -> coralWrist.getEncoder().getPosition() < CORAL_HOME_POSITION).andThen(Commands.runOnce(() -> {
             elevatorPosition = pos;
         }).andThen(Commands.waitUntil(this::isElevatorAtPosition)));
-    }
+    }   
 
     public Command coralTo(double pos) {
         return Commands.runOnce(() -> {

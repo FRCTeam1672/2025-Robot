@@ -93,22 +93,22 @@ public class SwerveSubsystem extends SubsystemBase {
    * PhotonVision class to keep an accurate odometry.
    */
   private VisionSubsystem vision;
-  
-    /**
-     * Initialize {@link SwerveDrive} with the directory provided.
-     *
-     * @param directory Directory of swerve drive config files.
-     */
-    public SwerveSubsystem(File directory) {
-      // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
+
+  /**
+   * Initialize {@link SwerveDrive} with the directory provided.
+   *
+   * @param directory Directory of swerve drive config files.
+   */
+  public SwerveSubsystem(File directory) {
+    // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
     // objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
-      //IF SIMULATIOn, INITAL POSE
-          Robot.isSimulation() ? new Pose2d(new Translation2d(Meter.of(8.7), Meter.of(6.35)),Rotation2d.fromDegrees(0)) 
-          //IF REAL, INITAL POSE
-          : new Pose2d(new Translation2d(Meter.of(0), Meter.of(0)), Rotation2d.fromDegrees(0)));
+          // IF SIMULATIOn, INITAL POSE
+          Robot.isSimulation() ? new Pose2d(new Translation2d(Meter.of(8.7), Meter.of(6.35)), Rotation2d.fromDegrees(0))
+              // IF REAL, INITAL POSE
+              : new Pose2d(new Translation2d(Meter.of(0), Meter.of(0)), Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON
       // files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
@@ -150,9 +150,9 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
-      swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
-    
+    swerveDrive.updateOdometry();
+    vision.updatePoseEstimation(swerveDrive);
+
   }
 
   @Override
@@ -217,45 +217,38 @@ public class SwerveSubsystem extends SubsystemBase {
     // Preload PathPlanner Path finding
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
-    FollowPathCommand.warmupCommand().schedule();;
+    FollowPathCommand.warmupCommand().schedule();
+    ;
   }
 
   public Command alignToAndExtend(String side, Command extendCommand) {
     ReefAlignment alignment = Reef.fromSide(side);
     Pose2d waypoint = alignment.getAlignmentPose();
-    swerveDrive.field.getObject("AlignPose").setPose(alignment.getAlignmentPose()); 
+    swerveDrive.field.getObject("AlignPose").setPose(alignment.getAlignmentPose());
     swerveDrive.field.getObject("InitialPose").setPose(alignment.getInitalPose());
     swerveDrive.field.getObject("CenterPose").setPose(alignment.getCenterPose());
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
         alignment.getInitalPose(),
-        waypoint
-    );
-
+        waypoint);
 
     PathConstraints constraints = new PathConstraints(
-        0.45, 1.5,
+        0.25, 1.5,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     PathPlannerPath path = new PathPlannerPath(
         waypoints,
         constraints,
         new IdealStartingState(getVelocityMagnitude(swerveDrive.getFieldVelocity()), waypoint.getRotation()),
-        new GoalEndState(0.0, waypoint.getRotation())
-    );
+        new GoalEndState(0.0, waypoint.getRotation()));
     path.preventFlipping = true;
     return driveToPose(alignment.getInitialPathfindPose()).andThen(
-          Commands.parallel(
+        Commands.parallel(
             extendCommand,
-            Commands.runOnce(this::pointModulesForward)
-          ),
-          AutoBuilder.followPath(path).andThen(
-            Commands.print("start position PID loop"),
-            // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
-            Commands.print("end position PID loop")
-          )
-        
-      
-    );
+            Commands.runOnce(this::pointModulesForward).andThen(
+                AutoBuilder.followPath(path).andThen(
+                    Commands.print("start position PID loop"),
+                    // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
+                    Commands.print("end position PID loop")))));
   }
 
   public void pointModulesForward() {
@@ -275,6 +268,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private LinearVelocity getVelocityMagnitude(ChassisSpeeds cs) {
     return MetersPerSecond.of(new Translation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond).getNorm());
   }
+
   /**
    * Aim the robot at the target returned by PhotonVision.
    *
@@ -308,21 +302,19 @@ public class SwerveSubsystem extends SubsystemBase {
     return new PathPlannerAuto(pathName);
   }
 
-  public Command getPathAndExtend(String pathName, Command extendCommand) throws FileVersionException, IOException, ParseException {
+  public Command getPathAndExtend(String pathName, Command extendCommand)
+      throws FileVersionException, IOException, ParseException {
     PathPlannerPath fromPathFile = PathPlannerPath.fromPathFile(pathName);
     Pose2d pose;
-    if(DriverStation.getAlliance().get() == Alliance.Red) {
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
       pose = fromPathFile.flipPath().getStartingHolonomicPose().get();
-    }
-    else {
-      pose = fromPathFile.getStartingHolonomicPose().get(); 
+    } else {
+      pose = fromPathFile.getStartingHolonomicPose().get();
     }
     return driveToPose(pose).andThen(
-       Commands.parallel(
-         extendCommand,
-         AutoBuilder.followPath(fromPathFile)
-       )
-     );
+        Commands.parallel(
+            extendCommand,
+            AutoBuilder.followPath(fromPathFile)));
   }
 
   /**
@@ -349,8 +341,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
         1.3, 1,
-        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180)
-    );
+        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(180));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands
     return AutoBuilder.pathfindToPose(

@@ -22,7 +22,7 @@ import frc.robot.util.Elastic;
 
 public class ClimbSubsystem extends SubsystemBase {
     private SparkMax lClimb = new SparkMax(61, MotorType.kBrushless);
-    // private SparkMax rClimb = new SparkMax(62, MotorType.kBrushless);
+    private SparkMax rClimb = new SparkMax(62, MotorType.kBrushless);
 
     private SparkMaxConfig config = new SparkMaxConfig();
 
@@ -37,12 +37,12 @@ public class ClimbSubsystem extends SubsystemBase {
         config.idleMode(IdleMode.kBrake);
         lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
-        // rClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void periodic() {        
         SmartDashboard.putNumber("climb/lHeight", lClimb.getEncoder().getPosition());
-        // SmartDashboard.putNumber("climb/rHeight", rClimb.getEncoder().getPosition());
+        SmartDashboard.putNumber("climb/rHeight", rClimb.getEncoder().getPosition());
         SmartDashboard.putBoolean("climb/twist", badClimbTrigger.getAsBoolean());
 
         // if (badClimbTrigger.getAsBoolean()) {
@@ -58,7 +58,7 @@ public class ClimbSubsystem extends SubsystemBase {
     public Command simpleClimb() {
         return Commands.run(() -> {
             lClimb.set(CLIMB_SPEED);
-            // rClimb.set(CLIMB_SPEED);
+            rClimb.set(CLIMB_SPEED);
         }).handleInterrupt(() -> {
             lClimb.stopMotor();
             // rClimb.stopMotor();
@@ -68,20 +68,20 @@ public class ClimbSubsystem extends SubsystemBase {
     public Command simpleUnClimb() {
         return Commands.run(() -> {
             lClimb.set(-CLIMB_SPEED);
-            // rClimb.set(-CLIMB_SPEED);
+            rClimb.set(-CLIMB_SPEED);
         }).handleInterrupt(() -> {
             lClimb.stopMotor();
-            // rClimb.stopMotor();
+            rClimb.stopMotor();
         });
     }
 
     public Command climbAtSpeed(Supplier<Double> speed) {
         return Commands.run(() -> {
             lClimb.set(-speed.get());
-            // rClimb.set(-speed.get());
+            rClimb.set(-speed.get());
         }).handleInterrupt(() -> {
             lClimb.stopMotor();
-            // rClimb.stopMotor();
+            rClimb.stopMotor();
         });
     }
 
