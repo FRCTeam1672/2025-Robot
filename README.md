@@ -1,7 +1,7 @@
 
 # Team 1672 REEFSCAPE
 
-The current work-in-progress codebase which we used for the 2025 FIRST Robotics Competition Game, REEFSCAPE, based on the YAGSL-Example project.
+The codebase which we used for the 2025 FIRST Robotics Competition Game, REEFSCAPE, based on the YAGSL-Example project, for 1672's Robot, Nautilus. 
 
 Electrical Robot Specifications:
 * SDS MK4i Modules
