@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.Elastic;
 
 public class ClimbSubsystem extends SubsystemBase {
-    private SparkMax lClimb = new SparkMax(61, MotorType.kBrushless);
+    // private SparkMax lClimb = new SparkMax(61, MotorType.kBrushless);
     private SparkMax rClimb = new SparkMax(62, MotorType.kBrushless);
 
     private SparkMaxConfig config = new SparkMaxConfig();
@@ -35,13 +35,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
-        lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // lClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         config.inverted(true);
         rClimb.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void periodic() {        
-        SmartDashboard.putNumber("climb/lHeight", lClimb.getEncoder().getPosition());
+        // SmartDashboard.putNumber("climb/lHeight", lClimb.getEncoder().getPosition());
         SmartDashboard.putNumber("climb/rHeight", rClimb.getEncoder().getPosition());
         SmartDashboard.putBoolean("climb/twist", badClimbTrigger.getAsBoolean());
 
@@ -57,46 +57,47 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public Command simpleClimb() {
         return Commands.run(() -> {
-            lClimb.set(CLIMB_SPEED);
+            // lClimb.set(CLIMB_SPEED);
             rClimb.set(CLIMB_SPEED);
         }).handleInterrupt(() -> {
-            lClimb.stopMotor();
+            // lClimb.stopMotor();
             // rClimb.stopMotor();
         });
     }
 
     public Command simpleUnClimb() {
         return Commands.run(() -> {
-            lClimb.set(-CLIMB_SPEED);
+            // lClimb.set(-CLIMB_SPEED);
             rClimb.set(-CLIMB_SPEED);
         }).handleInterrupt(() -> {
-            lClimb.stopMotor();
+            // lClimb.stopMotor();
             rClimb.stopMotor();
         });
     }
 
     public Command climbAtSpeed(Supplier<Double> speed) {
         return Commands.run(() -> {
-            lClimb.set(-speed.get());
+            // lClimb.set(-speed.get());
             rClimb.set(-speed.get());
         }).handleInterrupt(() -> {
-            lClimb.stopMotor();
+            // lClimb.stopMotor();
             rClimb.stopMotor();
         });
     }
 
     public Command unclimbAtSpeed(Supplier<Double> speed) {
         return Commands.run(() -> {
-            lClimb.set(speed.get());
+            // lClimb.set(speed.get());
             // rClimb.set(speed.get());
         }).handleInterrupt(() -> {
-            lClimb.stopMotor();
+            // lClimb.stopMotor();
             // rClimb.stopMotor();
         });
     }
 
     public boolean isClimbGood() {
         // - rClimb.getEncoder().getPosition()
-        return Math.abs(lClimb.getEncoder().getPosition()) <= CLIMB_TOLERANCE;
+        return false;
+        // return Math.abs(lClimb.getEncoder().getPosition()) <= CLIMB_TOLERANCE;
     }
 }

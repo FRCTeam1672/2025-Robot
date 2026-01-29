@@ -306,6 +306,7 @@ public class ArmSubsystem extends SubsystemBase {
             coralWristPosition = pos;
         }).andThen(Commands.waitUntil(this::isCoralAtPosition));
     }
+    
 
     public Command algaeTo(double pos) {
         return Commands.runOnce(() -> {
