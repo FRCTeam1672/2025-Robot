@@ -83,7 +83,7 @@ public class ArmSubsystem extends SubsystemBase {
         rAlgaeIntake.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
-        //TODO: CHANEG
+        //TO-DO: CHANGE
         config.smartCurrentLimit(40);
         config.idleMode(IdleMode.kBrake);
         config.inverted(false);
@@ -95,7 +95,7 @@ public class ArmSubsystem extends SubsystemBase {
         config.inverted(true);
         lElevator.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        //TODO CHANGE
+        //TO-DO CHANGE
         config.idleMode(IdleMode.kBrake);
         config.smartCurrentLimit(20);
         config.closedLoop.pid(C_WRIST_P, C_WRIST_I, C_WRIST_D);

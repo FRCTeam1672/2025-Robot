@@ -1,7 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.util.ReefAlignment;
-
 public class Reef {
     public static ReefAlignment fromSide(String side) {
         side = side.toLowerCase();
