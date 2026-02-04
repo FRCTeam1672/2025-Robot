@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL2_I"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHL-2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STATION-2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHL-3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL2_J"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "Warren Hills",
+  "choreoAuto": false
+}

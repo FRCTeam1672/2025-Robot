@@ -1,0 +1,105 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.450249999994202,
+        "y": 5.536250000004446
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.80675,
+        "y": 6.90125
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.6715,
+        "y": 5.585
+      },
+      "prevControl": {
+        "x": 3.222672263094736,
+        "y": 4.972586374339183
+      },
+      "nextControl": {
+        "x": 2.2327499999999993,
+        "y": 6.0725
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.794,
+        "y": 6.433249999999999
+      },
+      "prevControl": {
+        "x": 2.27175,
+        "y": 5.936
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.18340248962655215,
+      "rotationDegrees": -172.69290659707247
+    },
+    {
+      "waypointRelativePos": 0.6796680497925174,
+      "rotationDegrees": 138.00689492853752
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.0,
+      "maxWaypointRelativePos": 0.8942928039702236,
+      "constraints": {
+        "maxVelocity": 0.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ExtendStation",
+      "waypointRelativePos": 0.11811414392059713,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendStation"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 1.5,
+    "rotation": 132.47388308838046
+  },
+  "reversed": false,
+  "folder": "PATHS FOR WARREN HILLS AUTO",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -121.45682335755522
+  },
+  "useDefaultConstraints": false
+}

@@ -11,20 +11,20 @@ import edu.wpi.first.networktables.StringTopic;
 public class ScoringApp {
     private static ScoringApp instance;
 
-    private IntegerSubscriber coralLevel;
-    private IntegerSubscriber algaeLevel;
-    private StringSubscriber reefSide;
-    private IntegerSubscriber coralStation;
+    private final IntegerSubscriber coralLevel;
+    private final IntegerSubscriber algaeLevel;
+    private final StringSubscriber reefSide;
+    private final IntegerSubscriber coralStation;
 
     public ScoringApp() {
-        IntegerTopic coralIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralLevel");
-        IntegerTopic algaeIntegerTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/AlgaeLevel");
-        StringTopic reefStringTopic = NetworkTableInstance.getDefault().getStringTopic("/AppScoring/ReefSide");
-        IntegerTopic coralIntegerTopic2 = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralStation");
-        coralLevel = coralIntegerTopic.subscribe(-1, PubSubOption.sendAll(true));
-        algaeLevel = algaeIntegerTopic.subscribe(-1, PubSubOption.sendAll(true));
-        reefSide = reefStringTopic.subscribe("A", PubSubOption.sendAll(true));
-        coralStation = coralIntegerTopic2.subscribe(-1, PubSubOption.sendAll(true));
+        IntegerTopic coralLevelTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralLevel");
+        IntegerTopic algaeLevelTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/AlgaeLevel");
+        StringTopic reefSideTopic = NetworkTableInstance.getDefault().getStringTopic("/AppScoring/ReefSide");
+        IntegerTopic coralStationTopic = NetworkTableInstance.getDefault().getIntegerTopic("/AppScoring/CoralStation");
+        coralLevel = coralLevelTopic.subscribe(-1, PubSubOption.sendAll(true));
+        algaeLevel = algaeLevelTopic.subscribe(-1, PubSubOption.sendAll(true));
+        reefSide = reefSideTopic.subscribe("A", PubSubOption.sendAll(true));
+        coralStation = coralStationTopic.subscribe(-1, PubSubOption.sendAll(true));
     }
 
     public static ScoringApp getInstance() {

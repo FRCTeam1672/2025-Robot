@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.309027777777777,
-        "y": 5.240885416666666
+        "x": 5.382570558723715,
+        "y": 5.3730583091654145
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.532638888888888,
-        "y": 5.981597222222223
+        "x": 5.606181669834826,
+        "y": 6.113770114720971
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.7871527777777765,
-        "y": 7.239409722222222
+        "x": 1.605,
+        "y": 6.666
       },
       "prevControl": {
-        "x": 2.58376736111111,
-        "y": 6.9598958333333325
+        "x": 1.992097222222224,
+        "y": 5.898840277777778
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 1.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 139.76364169072613
+    "rotation": 129.6779259899675
   },
   "reversed": false,
   "folder": "PATHS FOR AUTO3",
@@ -62,5 +62,5 @@
     "velocity": 0,
     "rotation": -121.59751879814004
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

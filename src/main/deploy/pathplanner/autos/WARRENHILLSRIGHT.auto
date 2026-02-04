@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHR-1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL2_E"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WHR-2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STATION-5"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "Warren Hills",
+  "choreoAuto": false
+}

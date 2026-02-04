@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5697500000000002,
+        "y": 6.72575
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.27175,
+        "y": 6.199249999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.2671006944444425,
+        "y": 6.750260416666666
+      },
+      "prevControl": {
+        "x": 3.9961145833333287,
+        "y": 7.855434027777777
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ExtendL2",
+      "waypointRelativePos": 0.23325062034739685,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendL2"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.7,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 1.5,
+    "rotation": -113.1985905136481
+  },
+  "reversed": false,
+  "folder": "PATHS FOR WARREN HILLS AUTO",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 133.34576387539832
+  },
+  "useDefaultConstraints": false
+}

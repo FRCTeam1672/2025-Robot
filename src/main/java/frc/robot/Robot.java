@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -22,9 +21,9 @@ public class Robot extends TimedRobot
 {
 
   private static Robot   instance;
-  private        Command m_autonomousCommand;
+  private Command autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
 
   private Timer disabledTimer;
 
@@ -46,7 +45,7 @@ public class Robot extends TimedRobot
   {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
     CameraServer.startAutomaticCapture();
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
@@ -74,10 +73,15 @@ public class Robot extends TimedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putString("Reefscoring", ScoringApp.getInstance().getReefSide());
-    SmartDashboard.putNumber("CORAL_level", ScoringApp.getInstance().getCoralLevel());
+    SmartDashboard.putString("App/Reef Side", ScoringApp.getInstance().getReefSide());
+    SmartDashboard.putNumber("App/Coral Level", ScoringApp.getInstance().getCoralLevel());
+    SmartDashboard.putNumber("App/Coral Station", ScoringApp.getInstance().getCoralStation());
+    SmartDashboard.putNumber("App/Algae Level", ScoringApp.getInstance().getAlgaeLevel());
 
-    new PrintCommand("stuff in network tables");
+    SmartDashboard.putNumber("FMS/MatchTime", DriverStation.getMatchTime());
+    SmartDashboard.putNumber("FMS/MatchNumber", DriverStation.getMatchNumber());
+
+    SmartDashboard.putBoolean("Controller/SlowMode", robotContainer.isSlowMode());
   }
 
   /**
@@ -86,7 +90,7 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
-    m_robotContainer.setMotorBrake(true);
+    robotContainer.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
   }
@@ -96,7 +100,7 @@ public class Robot extends TimedRobot
   {
     if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME))
     {
-      m_robotContainer.setMotorBrake(false);
+      robotContainer.setMotorBrake(false);
       disabledTimer.stop();
     }
   }
@@ -107,13 +111,13 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    m_robotContainer.setMotorBrake(true);
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    robotContainer.setMotorBrake(true);
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null)
+    if (autonomousCommand != null)
     {
-      m_autonomousCommand.schedule();
+      autonomousCommand.schedule();
     }
   }
 
@@ -132,13 +136,15 @@ public class Robot extends TimedRobot
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null)
+    if (autonomousCommand != null)
     {
-      m_autonomousCommand.cancel();
-    } else
-    {
-      CommandScheduler.getInstance().cancelAll();
+      autonomousCommand.cancel();
     }
+//
+//    else
+//    {
+//      CommandScheduler.getInstance().cancelAll();
+//    }
   }
 
   /**

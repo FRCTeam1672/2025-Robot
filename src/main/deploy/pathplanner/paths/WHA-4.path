@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.31375,
+        "y": 5.1754999999999995
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.68975,
+        "y": 7.2425
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.522,
+        "y": 6.381
+      },
+      "prevControl": {
+        "x": 3.998500000000001,
+        "y": 6.839250000000001
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ExtendStation",
+      "waypointRelativePos": 0.05459057071960391,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendStation"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 125.6528964983808
+  },
+  "reversed": false,
+  "folder": "PATHS FOR WH ALGAE AUTO",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -122.61924307119281
+  },
+  "useDefaultConstraints": true
+}

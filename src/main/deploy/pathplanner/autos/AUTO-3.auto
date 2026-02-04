@@ -13,7 +13,19 @@
         {
           "type": "path",
           "data": {
+            "pathName": "CORAL-I"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "AUTO3-PATH2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STATION-2"
           }
         },
         {
