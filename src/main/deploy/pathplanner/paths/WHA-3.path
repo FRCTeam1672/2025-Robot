@@ -3,6 +3,13 @@
   "waypoints": [
     {
       "anchor": {
+        "x": 5.320522311681223,
+        "y": 5.4017317992631
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.695716344841703,
+        "y": 6.531836363946507
         "x": 5.704,
         "y": 6.696
       },
@@ -16,6 +23,12 @@
     },
     {
       "anchor": {
+        "x": 1.6605302435862448,
+        "y": 6.480145929994542
+      },
+      "prevControl": {
+        "x": 3.244921875,
+        "y": 6.173895077101528
         "x": 5.694000000000001,
         "y": 5.6825
       },
@@ -33,12 +46,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "ExtendStation",
+      "waypointRelativePos": 0.16697405503978763,
       "name": "ExtendL3",
       "waypointRelativePos": 0.21538461538461406,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
+          "name": "ExtendStation"
           "name": "ExtendL3"
         }
       }
@@ -53,6 +69,14 @@
     "unlimited": false
   },
   "goalEndState": {
+    "velocity": 1.0,
+    "rotation": 129.6529750210071
+  },
+  "reversed": false,
+  "folder": "New Folder",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -117.83660959614596
     "velocity": 0,
     "rotation": -123.20657031508948
   },

@@ -94,20 +94,24 @@ public final class Constants
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(Meters.of(4.5), Meters.of(4));
     public static final Translation2d RED_REEF_CENTER = new Translation2d(Meters.of(13), Meters.of(4));
     //positive = further way
-    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(47.5), Inches.of(0));
+    public static final Translation2d FRONT_BACK_OFFSET = new Translation2d(Inches.of(46), Inches.of(0));
+    public static final Translation2d PATHFIND_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(13)), Inches.of(0));
     //positive = further from the center
 
     public static final Translation2d INITIAL_ALIGNMENT_OFFSET = new Translation2d(Meters.of(2).plus(Inches.of(3)), Meters.of(0));
 
     public static final Translation2d centerOffset = new Translation2d(Inches.of(0), Inches.of(6.2));
-    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(2.7));
+    public static final Translation2d leftRightOffset = new Translation2d(Inches.of(0), Inches.of(1.7));
 
   }
 
   public static class ReefLevels {
     public static final double E_L1_POSITION = 15;
+    public static final double E_L2_POSITION = 37;
     public static final double E_L2_POSITION = 35.5;
     public static final double E_L3_POSITION = 61.8;
+
+    public static final double E_OFFSET = 0.6;
 
     public static final double C_L1_POSITION = 1.0;
     public static final double C_L2_POSITION = 14;  
@@ -120,7 +124,7 @@ public final class Constants
     public static final double E_AL3_POSITION = 75;
     public static final double A_IO_POSITION = 8;
 
-    public static final double E_STATION_POSITION = 18.34; // tweak this value a bit
+    public static final double E_STATION_POSITION = 17.5; // tweak this value a bit
     public static final double C_STATION_POSITION = 5.95;
   }
 

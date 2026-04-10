@@ -58,16 +58,17 @@ public class RobotContainer {
      * by angular velocity.
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-            () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.3 : 1),
-            () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.3 : 1))
-            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.3 : 1))
+            () -> -driverPS5.getLeftY() * (isSlowMode() ? 0.25 : 1),
+            () -> -driverPS5.getLeftX() * (isSlowMode() ? 0.25 : 1))
+            .withControllerRotationAxis(() -> -driverPS5.getRightX() * (isSlowMode() ? 0.35 : 1))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
 
 
     public boolean isSlowMode() {
-        return driverPS5.L1().getAsBoolean();
+        return false;
+        //return driverPS5.L1().getAsBoolean();
     }
 
     /**
@@ -83,7 +84,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ExtendStation", arm.extendCoralStation().asProxy());
         NamedCommands.registerCommand("ScoreL2", arm.scoreL2(false).asProxy());
         NamedCommands.registerCommand("IntakeCoral",
-                                                                                                        //schedule command runs in the background
+            //schedule command runs in the background
                 arm.dumIntakeCoral().withTimeout(0.5)
         );
         // SmartDashboard.putData("Home Everything", Commands.runOnce)        
@@ -95,9 +96,21 @@ public class RobotContainer {
                     e.getStackTrace());
             e.printStackTrace();
         }
-        autoChooser = AutoBuilder.buildAutoChooser("AUTO-LEAVE");
+        autoChooser = AutoBuilder.buildAutoChooser("AUTO-1");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         SmartDashboard.putData("Zero Coral", arm.zeroCoralWrist().ignoringDisable(true));
+
+
+        SmartDashboard.putData("Add Elev Offset", arm.addElevOffset().ignoringDisable(true));
+        SmartDashboard.putData("Subtract Elev Offset", arm.subtractElevOffset().ignoringDisable(true));
+
+        SmartDashboard.putData("Override Elev", Commands.runOnce(() -> {
+            arm.elevOverride = true;
+        }));
+        SmartDashboard.putData("Override Algae", Commands.runOnce(() -> {
+            arm.algaeOverride = true;
+        }));
+        
     }
 
     private Command getAutoAlignScoreCommand(String side, int level) {
@@ -121,7 +134,7 @@ public class RobotContainer {
         driverPS5.L2().whileTrue(arm.dumIntakeAlgae());
 
 
-        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true));
+        driverPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true).withTimeout(3));
         driverPS5.triangle().onTrue(arm.extendCoralStation());
         driverPS5.square().onTrue(arm.coralTo(5.8));
         driverPS5.circle().whileTrue(arm.shootCoral());
@@ -129,7 +142,7 @@ public class RobotContainer {
         driverPS5.povLeft().whileTrue(arm.shootAlgae());
         driverPS5.povRight().onTrue(arm.algaeL2());
         driverPS5.povUp().onTrue(arm.algaeL3());
-        driverPS5.povDown().onTrue(arm.homeWithAlgae());
+        driverPS5.povDown().onTrue(arm.homeWithAlgae().withTimeout(3));
 
         // CORAL AUTOSCORE (extending rn)
         driverPS5.R1().whileTrue(Commands.defer(() -> {
@@ -147,9 +160,7 @@ public class RobotContainer {
                 e.printStackTrace();
                 return Commands.none();
             }
-        }, Set.of()).handleInterrupt(() -> {
-            arm.homeEverything().schedule();
-        }));
+        }, Set.of()));
 
         // CORAL STATION
         driverPS5.R2().whileTrue(Commands.defer(() -> {
@@ -166,6 +177,7 @@ public class RobotContainer {
                         e.printStackTrace();
                         return Commands.none();
                     }
+                }, Set.of()));
                 }, Set.of()).handleInterrupt(() -> {
                     arm.homeEverything().schedule();
         }));
@@ -179,7 +191,7 @@ public class RobotContainer {
 
         oppsPS5.circle().onTrue(arm.extendL2());
         oppsPS5.triangle().onTrue(arm.extendL3());
-        oppsPS5.cross().onTrue(arm.homeEverything());
+        oppsPS5.cross().onTrue(arm.homeEverything().ignoringDisable(true).withTimeout(3));
 
         oppsPS5.R2().whileTrue(climb.simpleClimb());
         oppsPS5.L2().whileTrue(climb.simpleUnClimb());

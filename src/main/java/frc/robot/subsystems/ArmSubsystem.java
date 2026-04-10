@@ -35,6 +35,7 @@ import static frc.robot.Constants.ReefLevels.E_AL3_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L1_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L2_POSITION;
 import static frc.robot.Constants.ReefLevels.E_L3_POSITION;
+import static frc.robot.Constants.ReefLevels.E_OFFSET;
 import static frc.robot.Constants.ReefLevels.E_PROCESSOR_POSITION;
 import static frc.robot.Constants.ReefLevels.E_STATION_POSITION;
 import static frc.robot.Constants.Tolerances.ELEVATOR_TOLERANCE;
@@ -65,8 +66,13 @@ public class ArmSubsystem extends SubsystemBase {
     private double coralWristPosition = CORAL_STOW_POSITION;
     private double elevatorPosition = ELEVATOR_HOME_POSITION;
 
+    private double elevOffset = 0;
+
     private final Trigger badElevTrigger = new Trigger(() -> !isElevatorGood());
     private final Trigger badAlgaeTrigger = new Trigger(() -> !isAlgaeGood());
+
+    public boolean elevOverride = false;
+    public boolean algaeOverride = false;
 
     public ArmSubsystem() {
         badElevTrigger.onTrue(Commands.runOnce(() -> {
@@ -117,6 +123,17 @@ public class ArmSubsystem extends SubsystemBase {
         // ));
     }
 
+    public Command addElevOffset() {
+        return Commands.runOnce(() -> {
+            elevOffset += E_OFFSET;
+        });
+    }
+    public Command subtractElevOffset() {
+        return Commands.runOnce(() -> {
+            elevOffset -= E_OFFSET;
+        });
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("coral/Coral Shooter Velocity", coralShooter.getEncoder().getVelocity());
@@ -129,6 +146,7 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("coral/Coral Wrist Setpoint", coralWristPosition);
         SmartDashboard.putNumber("algae/Algae Wrist Setpoint", algaeWristPosition);
         SmartDashboard.putNumber("elevator/Elevator Setpoint", elevatorPosition);
+        SmartDashboard.putNumber("elevator/Elevator Offset Amount", elevOffset);
 
         SmartDashboard.putBoolean("elevator/Elevator Safety", badElevTrigger.getAsBoolean());
         SmartDashboard.putBoolean("algae/Algae Safety", badAlgaeTrigger.getAsBoolean());
@@ -144,15 +162,15 @@ public class ArmSubsystem extends SubsystemBase {
         coralWrist.getClosedLoopController().setReference(coralWristPosition, ControlType.kPosition);
         algaeWrist.getClosedLoopController().setReference(algaeWristPosition, ControlType.kPosition);
 
-        if (!badElevTrigger.getAsBoolean()) {
-            lElevator.getClosedLoopController().setReference(elevatorPosition, ControlType.kPosition);
-            rElevator.getClosedLoopController().setReference(elevatorPosition, ControlType.kPosition);
+        if (!badElevTrigger.getAsBoolean() && !elevOverride) {
+            lElevator.getClosedLoopController().setReference(elevatorPosition + elevOffset, ControlType.kPosition);
+            rElevator.getClosedLoopController().setReference(elevatorPosition + elevOffset, ControlType.kPosition);
         } else {
             lElevator.stopMotor();
             rElevator.stopMotor();
         }
 
-        if (badAlgaeTrigger.getAsBoolean()) {
+        if (badAlgaeTrigger.getAsBoolean() && !algaeOverride) {
             algaeWrist.stopMotor();
         }
     }
@@ -181,7 +199,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean isElevatorHomed() {
-        return MathUtil.isNear(ELEVATOR_HOME_POSITION,
+        return MathUtil.isNear(ELEVATOR_HOME_POSITION + elevOffset,
                 (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 0.5);
     }
 
@@ -194,7 +212,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean isElevatorAtPosition() {
-        return MathUtil.isNear(elevatorPosition,
+        return MathUtil.isNear(elevatorPosition + elevOffset,
                 (lElevator.getEncoder().getPosition() + rElevator.getEncoder().getPosition()) / 2.0, 0.5);
     }
 
@@ -278,16 +296,17 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command extendElevatorTo(double pos) {
-        return coralTo(CORAL_HOME_POSITION).andThen(Commands.runOnce(() -> {
+        return coralTo(CORAL_HOME_POSITION).onlyIf(() -> coralWrist.getEncoder().getPosition() < CORAL_HOME_POSITION).andThen(Commands.runOnce(() -> {
             elevatorPosition = pos;
         }).andThen(Commands.waitUntil(this::isElevatorAtPosition)));
-    }
+    }   
 
     public Command coralTo(double pos) {
         return Commands.runOnce(() -> {
             coralWristPosition = pos;
         }).andThen(Commands.waitUntil(this::isCoralAtPosition));
     }
+    
 
     public Command algaeTo(double pos) {
         return Commands.runOnce(() -> {
@@ -306,6 +325,7 @@ public class ArmSubsystem extends SubsystemBase {
     public Command extendL2() {
         return Commands.parallel(
             extendElevatorTo(E_L2_POSITION),
+            homeAlgae(),
             Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L2_POSITION))
         );
     }
@@ -325,6 +345,10 @@ public class ArmSubsystem extends SubsystemBase {
 
     public Command extendL3() {
         return Commands.parallel(
+             extendElevatorTo(E_L3_POSITION),
+             homeAlgae(),
+             Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L3_POSITION))
+         );
             extendElevatorTo(E_L3_POSITION),
             Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L3_POSITION))
         );  
