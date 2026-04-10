@@ -108,6 +108,7 @@ public final class Constants
   public static class ReefLevels {
     public static final double E_L1_POSITION = 15;
     public static final double E_L2_POSITION = 37;
+    public static final double E_L2_POSITION = 35.5;
     public static final double E_L3_POSITION = 61.8;
 
     public static final double E_OFFSET = 0.6;

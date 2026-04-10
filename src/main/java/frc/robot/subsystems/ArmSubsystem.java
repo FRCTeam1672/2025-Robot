@@ -349,6 +349,9 @@ public class ArmSubsystem extends SubsystemBase {
              homeAlgae(),
              Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L3_POSITION))
          );
+            extendElevatorTo(E_L3_POSITION),
+            Commands.waitUntil(() -> isCoralAtPosition()).andThen(coralTo(C_L3_POSITION))
+        );  
     }
 
     public Command scoreL3(boolean home) {

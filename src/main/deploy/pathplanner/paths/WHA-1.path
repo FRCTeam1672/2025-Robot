@@ -10,6 +10,13 @@
       "nextControl": {
         "x": 7.069365362308952,
         "y": 6.208322103575328
+        "x": 7.240573770491803,
+        "y": 6.152817622950819
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.574282786885245,
+        "y": 6.6682889344262275
       },
       "isLocked": false,
       "linkedName": null
@@ -22,6 +29,12 @@
       "prevControl": {
         "x": 5.92998046875,
         "y": 7.299658842794759
+        "x": 5.1285,
+        "y": 5.204749999999999
+      },
+      "prevControl": {
+        "x": 5.7525,
+        "y": 6.49175
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,6 +52,12 @@
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.9763241876657828,
       "maxWaypointRelativePos": 0.8617270391246676,
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.0,
+      "maxWaypointRelativePos": 0.8982630272952847,
       "constraints": {
         "maxVelocity": 0.5,
         "maxAcceleration": 3.0,
@@ -54,6 +73,7 @@
     {
       "name": "ExtendAlgae",
       "waypointRelativePos": 0.10904343501326254,
+      "waypointRelativePos": 0.0506203473945389,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -93,4 +113,13 @@
     "rotation": -158.6112538457087
   },
   "useDefaultConstraints": false
+    "rotation": -117.89727103094764
+  },
+  "reversed": false,
+  "folder": "PATHS FOR WH ALGAE AUTO",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -142.04576912486752
+  },
+  "useDefaultConstraints": true
 }

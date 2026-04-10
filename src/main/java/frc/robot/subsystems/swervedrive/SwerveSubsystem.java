@@ -255,6 +255,14 @@ public class SwerveSubsystem extends SubsystemBase {
     for (SwerveModule modules : swerveDrive.getModules()) {
       modules.setAngle(0);
     }
+    return driveToPose(alignment.getInitalPose()).andThen(
+          extendCommand,
+          AutoBuilder.followPath(path).andThen(
+            Commands.print("start position PID loop"),
+            // PositionPIDCommand.generateCommand(this, waypoint, Seconds.of(0.4)),
+            Commands.print("end position PID loop")
+          )      
+    );
   }
 
   private Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {
@@ -304,6 +312,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public Command getPathAndExtend(String pathName, Command extendCommand)
       throws FileVersionException, IOException, ParseException {
+  public Command getPathAndExtend(String pathName, Command extendCommand) throws FileVersionException, IOException, ParseException {
     PathPlannerPath fromPathFile = PathPlannerPath.fromPathFile(pathName);
     Pose2d pose;
     if (DriverStation.getAlliance().get() == Alliance.Red) {
@@ -315,6 +324,15 @@ public class SwerveSubsystem extends SubsystemBase {
         Commands.parallel(
             extendCommand,
             AutoBuilder.followPath(fromPathFile)));
+    else {
+      pose = fromPathFile.getStartingHolonomicPose().get(); 
+    }
+    return driveToPose(pose).andThen(
+      Commands.parallel(
+        extendCommand,
+        AutoBuilder.followPath(fromPathFile)
+      )
+    );
   }
 
   /**

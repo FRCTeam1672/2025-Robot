@@ -10,6 +10,13 @@
       "nextControl": {
         "x": 3.695716344841703,
         "y": 6.531836363946507
+        "x": 5.704,
+        "y": 6.696
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.5965,
+        "y": 6.3065
       },
       "isLocked": false,
       "linkedName": null
@@ -22,6 +29,12 @@
       "prevControl": {
         "x": 3.244921875,
         "y": 6.173895077101528
+        "x": 5.694000000000001,
+        "y": 5.6825
+      },
+      "prevControl": {
+        "x": 5.6160000000000005,
+        "y": 6.3065
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,11 +48,14 @@
     {
       "name": "ExtendStation",
       "waypointRelativePos": 0.16697405503978763,
+      "name": "ExtendL3",
+      "waypointRelativePos": 0.21538461538461406,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "ExtendStation"
+          "name": "ExtendL3"
         }
       }
     }
@@ -61,6 +77,14 @@
   "idealStartingState": {
     "velocity": 0,
     "rotation": -117.83660959614596
+    "velocity": 0,
+    "rotation": -123.20657031508948
+  },
+  "reversed": false,
+  "folder": "PATHS FOR WH ALGAE AUTO",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -17.37371503453982
   },
   "useDefaultConstraints": true
 }
